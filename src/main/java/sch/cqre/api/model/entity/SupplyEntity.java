@@ -10,6 +10,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Data;
+
+@Data
 @Entity
 @Table(name = "Supply", schema = "main")
 public class SupplyEntity {
@@ -23,30 +26,6 @@ public class SupplyEntity {
 	@Basic
 	@Column(name = "amount")
 	private Byte amount;
-
-	public int getSupplyId() {
-		return supplyId;
-	}
-
-	public void setSupplyId(int supplyId) {
-		this.supplyId = supplyId;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public Byte getAmount() {
-		return amount;
-	}
-
-	public void setAmount(Byte amount) {
-		this.amount = amount;
-	}
 
 	@Override
 	public boolean equals(Object o) {

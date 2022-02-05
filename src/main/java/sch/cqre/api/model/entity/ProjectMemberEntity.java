@@ -10,6 +10,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Data;
+
+@Data
 @Entity
 @Table(name = "ProjectMember", schema = "main")
 public class ProjectMemberEntity {
@@ -23,30 +26,6 @@ public class ProjectMemberEntity {
 	@Basic
 	@Column(name = "member_type")
 	private String memberType;
-
-	public int getProjectId() {
-		return projectId;
-	}
-
-	public void setProjectId(int projectId) {
-		this.projectId = projectId;
-	}
-
-	public int getMemberId() {
-		return memberId;
-	}
-
-	public void setMemberId(int memberId) {
-		this.memberId = memberId;
-	}
-
-	public String getMemberType() {
-		return memberType;
-	}
-
-	public void setMemberType(String memberType) {
-		this.memberType = memberType;
-	}
 
 	@Override
 	public boolean equals(Object o) {

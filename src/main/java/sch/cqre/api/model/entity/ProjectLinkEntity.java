@@ -10,6 +10,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Data;
+
+@Data
 @Entity
 @Table(name = "ProjectLink", schema = "main")
 public class ProjectLinkEntity {
@@ -20,22 +23,6 @@ public class ProjectLinkEntity {
 	@Basic
 	@Column(name = "link")
 	private String link;
-
-	public int getProjectId() {
-		return projectId;
-	}
-
-	public void setProjectId(int projectId) {
-		this.projectId = projectId;
-	}
-
-	public String getLink() {
-		return link;
-	}
-
-	public void setLink(String link) {
-		this.link = link;
-	}
 
 	@Override
 	public boolean equals(Object o) {

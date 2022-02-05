@@ -10,6 +10,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Data;
+
+@Data
 @Entity
 @Table(name = "Book", schema = "main")
 public class BookEntity {
@@ -32,54 +35,6 @@ public class BookEntity {
 	@Basic
 	@Column(name = "remain_amount")
 	private byte remainAmount;
-
-	public int getBookId() {
-		return bookId;
-	}
-
-	public void setBookId(int bookId) {
-		this.bookId = bookId;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getPublisher() {
-		return publisher;
-	}
-
-	public void setPublisher(String publisher) {
-		this.publisher = publisher;
-	}
-
-	public String getAuthor() {
-		return author;
-	}
-
-	public void setAuthor(String author) {
-		this.author = author;
-	}
-
-	public byte getAmount() {
-		return amount;
-	}
-
-	public void setAmount(byte amount) {
-		this.amount = amount;
-	}
-
-	public byte getRemainAmount() {
-		return remainAmount;
-	}
-
-	public void setRemainAmount(byte remainAmount) {
-		this.remainAmount = remainAmount;
-	}
 
 	@Override
 	public boolean equals(Object o) {

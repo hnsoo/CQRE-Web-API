@@ -10,6 +10,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Data;
+
+@Data
 @Entity
 @Table(name = "HashTag", schema = "main")
 public class HashTagEntity {
@@ -20,22 +23,6 @@ public class HashTagEntity {
 	@Basic
 	@Column(name = "name")
 	private String name;
-
-	public int getHashtagId() {
-		return hashtagId;
-	}
-
-	public void setHashtagId(int hashtagId) {
-		this.hashtagId = hashtagId;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
 
 	@Override
 	public boolean equals(Object o) {

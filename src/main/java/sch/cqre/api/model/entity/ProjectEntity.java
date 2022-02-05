@@ -11,6 +11,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Data;
+
+@Data
 @Entity
 @Table(name = "Project", schema = "main")
 public class ProjectEntity {
@@ -30,46 +33,6 @@ public class ProjectEntity {
 	@Basic
 	@Column(name = "finished_at")
 	private Timestamp finishedAt;
-
-	public int getProjectId() {
-		return projectId;
-	}
-
-	public void setProjectId(int projectId) {
-		this.projectId = projectId;
-	}
-
-	public String getProjectTitle() {
-		return projectTitle;
-	}
-
-	public void setProjectTitle(String projectTitle) {
-		this.projectTitle = projectTitle;
-	}
-
-	public String getProjectContent() {
-		return projectContent;
-	}
-
-	public void setProjectContent(String projectContent) {
-		this.projectContent = projectContent;
-	}
-
-	public Timestamp getStartedAt() {
-		return startedAt;
-	}
-
-	public void setStartedAt(Timestamp startedAt) {
-		this.startedAt = startedAt;
-	}
-
-	public Timestamp getFinishedAt() {
-		return finishedAt;
-	}
-
-	public void setFinishedAt(Timestamp finishedAt) {
-		this.finishedAt = finishedAt;
-	}
 
 	@Override
 	public boolean equals(Object o) {

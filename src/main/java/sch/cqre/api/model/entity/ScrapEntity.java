@@ -10,6 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
 
+import lombok.Data;
+
+@Data
 @Entity
 @Table(name = "Scrap", schema = "main")
 @IdClass(ScrapEntityPK.class)
@@ -22,22 +25,6 @@ public class ScrapEntity {
 	@Id
 	@Column(name = "post_id")
 	private int postId;
-
-	public int getUserId() {
-		return userId;
-	}
-
-	public void setUserId(int userId) {
-		this.userId = userId;
-	}
-
-	public int getPostId() {
-		return postId;
-	}
-
-	public void setPostId(int postId) {
-		this.postId = postId;
-	}
 
 	@Override
 	public boolean equals(Object o) {

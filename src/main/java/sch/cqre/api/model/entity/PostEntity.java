@@ -11,6 +11,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Data;
+
+@Data
 @Entity
 @Table(name = "Post", schema = "main")
 public class PostEntity {
@@ -42,78 +45,6 @@ public class PostEntity {
 	@Basic
 	@Column(name = "updated_at")
 	private Timestamp updatedAt;
-
-	public int getPostId() {
-		return postId;
-	}
-
-	public void setPostId(int postId) {
-		this.postId = postId;
-	}
-
-	public int getAuthorId() {
-		return authorId;
-	}
-
-	public void setAuthorId(int authorId) {
-		this.authorId = authorId;
-	}
-
-	public String getPostTitle() {
-		return postTitle;
-	}
-
-	public void setPostTitle(String postTitle) {
-		this.postTitle = postTitle;
-	}
-
-	public String getPostContent() {
-		return postContent;
-	}
-
-	public void setPostContent(String postContent) {
-		this.postContent = postContent;
-	}
-
-	public Object getViews() {
-		return views;
-	}
-
-	public void setViews(Object views) {
-		this.views = views;
-	}
-
-	public Object getLikes() {
-		return likes;
-	}
-
-	public void setLikes(Object likes) {
-		this.likes = likes;
-	}
-
-	public String getThumbnail() {
-		return thumbnail;
-	}
-
-	public void setThumbnail(String thumbnail) {
-		this.thumbnail = thumbnail;
-	}
-
-	public Timestamp getCreatedAt() {
-		return createdAt;
-	}
-
-	public void setCreatedAt(Timestamp createdAt) {
-		this.createdAt = createdAt;
-	}
-
-	public Timestamp getUpdatedAt() {
-		return updatedAt;
-	}
-
-	public void setUpdatedAt(Timestamp updatedAt) {
-		this.updatedAt = updatedAt;
-	}
 
 	@Override
 	public boolean equals(Object o) {

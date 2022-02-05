@@ -8,6 +8,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import lombok.Data;
+
+@Data
 public class PostHashTagEntityPK implements Serializable {
 	@Column(name = "post_id")
 	@Id
@@ -17,22 +20,6 @@ public class PostHashTagEntityPK implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int hashtagId;
-
-	public int getPostId() {
-		return postId;
-	}
-
-	public void setPostId(int postId) {
-		this.postId = postId;
-	}
-
-	public int getHashtagId() {
-		return hashtagId;
-	}
-
-	public void setHashtagId(int hashtagId) {
-		this.hashtagId = hashtagId;
-	}
 
 	@Override
 	public boolean equals(Object o) {

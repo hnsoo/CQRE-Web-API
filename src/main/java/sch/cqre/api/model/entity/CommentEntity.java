@@ -11,6 +11,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Data;
+
+@Data
 @Entity
 @Table(name = "Comment", schema = "main")
 public class CommentEntity {
@@ -33,54 +36,6 @@ public class CommentEntity {
 	@Basic
 	@Column(name = "updated_at")
 	private Timestamp updatedAt;
-
-	public int getCommentId() {
-		return commentId;
-	}
-
-	public void setCommentId(int commentId) {
-		this.commentId = commentId;
-	}
-
-	public Integer getPostId() {
-		return postId;
-	}
-
-	public void setPostId(Integer postId) {
-		this.postId = postId;
-	}
-
-	public Integer getAuthorId() {
-		return authorId;
-	}
-
-	public void setAuthorId(Integer authorId) {
-		this.authorId = authorId;
-	}
-
-	public String getCommentContent() {
-		return commentContent;
-	}
-
-	public void setCommentContent(String commentContent) {
-		this.commentContent = commentContent;
-	}
-
-	public Timestamp getCreatedAt() {
-		return createdAt;
-	}
-
-	public void setCreatedAt(Timestamp createdAt) {
-		this.createdAt = createdAt;
-	}
-
-	public Timestamp getUpdatedAt() {
-		return updatedAt;
-	}
-
-	public void setUpdatedAt(Timestamp updatedAt) {
-		this.updatedAt = updatedAt;
-	}
 
 	@Override
 	public boolean equals(Object o) {

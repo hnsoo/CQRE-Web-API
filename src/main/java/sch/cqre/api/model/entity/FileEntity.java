@@ -10,6 +10,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Data;
+
+@Data
 @Entity
 @Table(name = "File", schema = "main")
 public class FileEntity {
@@ -32,54 +35,6 @@ public class FileEntity {
 	@Basic
 	@Column(name = "filetype")
 	private String filetype;
-
-	public int getFileId() {
-		return fileId;
-	}
-
-	public void setFileId(int fileId) {
-		this.fileId = fileId;
-	}
-
-	public String getOriginalname() {
-		return originalname;
-	}
-
-	public void setOriginalname(String originalname) {
-		this.originalname = originalname;
-	}
-
-	public String getFilename() {
-		return filename;
-	}
-
-	public void setFilename(String filename) {
-		this.filename = filename;
-	}
-
-	public String getFilepath() {
-		return filepath;
-	}
-
-	public void setFilepath(String filepath) {
-		this.filepath = filepath;
-	}
-
-	public Integer getSize() {
-		return size;
-	}
-
-	public void setSize(Integer size) {
-		this.size = size;
-	}
-
-	public String getFiletype() {
-		return filetype;
-	}
-
-	public void setFiletype(String filetype) {
-		this.filetype = filetype;
-	}
 
 	@Override
 	public boolean equals(Object o) {

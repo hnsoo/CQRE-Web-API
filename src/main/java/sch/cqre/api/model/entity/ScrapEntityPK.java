@@ -8,6 +8,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import lombok.Data;
+
+@Data
 public class ScrapEntityPK implements Serializable {
 	@Column(name = "user_id")
 	@Id
@@ -17,22 +20,6 @@ public class ScrapEntityPK implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int postId;
-
-	public int getUserId() {
-		return userId;
-	}
-
-	public void setUserId(int userId) {
-		this.userId = userId;
-	}
-
-	public int getPostId() {
-		return postId;
-	}
-
-	public void setPostId(int postId) {
-		this.postId = postId;
-	}
 
 	@Override
 	public boolean equals(Object o) {

@@ -10,6 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
 
+import lombok.Data;
+
+@Data
 @Entity
 @Table(name = "PostHashTag", schema = "main")
 @IdClass(PostHashTagEntityPK.class)
@@ -22,22 +25,6 @@ public class PostHashTagEntity {
 	@Id
 	@Column(name = "hashtag_id")
 	private int hashtagId;
-
-	public int getPostId() {
-		return postId;
-	}
-
-	public void setPostId(int postId) {
-		this.postId = postId;
-	}
-
-	public int getHashtagId() {
-		return hashtagId;
-	}
-
-	public void setHashtagId(int hashtagId) {
-		this.hashtagId = hashtagId;
-	}
 
 	@Override
 	public boolean equals(Object o) {

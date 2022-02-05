@@ -11,6 +11,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Data;
+
+@Data
 @Entity
 @Table(name = "Rental", schema = "main")
 public class RentalEntity {
@@ -27,38 +30,6 @@ public class RentalEntity {
 	@Basic
 	@Column(name = "book_id")
 	private int bookId;
-
-	public int getUserId() {
-		return userId;
-	}
-
-	public void setUserId(int userId) {
-		this.userId = userId;
-	}
-
-	public Timestamp getBorrowAt() {
-		return borrowAt;
-	}
-
-	public void setBorrowAt(Timestamp borrowAt) {
-		this.borrowAt = borrowAt;
-	}
-
-	public Timestamp getReturnAt() {
-		return returnAt;
-	}
-
-	public void setReturnAt(Timestamp returnAt) {
-		this.returnAt = returnAt;
-	}
-
-	public int getBookId() {
-		return bookId;
-	}
-
-	public void setBookId(int bookId) {
-		this.bookId = bookId;
-	}
 
 	@Override
 	public boolean equals(Object o) {

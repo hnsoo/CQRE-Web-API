@@ -10,6 +10,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Data;
+
+@Data
 @Entity
 @Table(name = "User", schema = "main")
 public class UserEntity {
@@ -32,54 +35,6 @@ public class UserEntity {
 	@Basic
 	@Column(name = "user_type")
 	private String userType;
-
-	public int getUserId() {
-		return userId;
-	}
-
-	public void setUserId(int userId) {
-		this.userId = userId;
-	}
-
-	public int getStudentId() {
-		return studentId;
-	}
-
-	public void setStudentId(int studentId) {
-		this.studentId = studentId;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getNickname() {
-		return nickname;
-	}
-
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
-	}
-
-	public String getUserType() {
-		return userType;
-	}
-
-	public void setUserType(String userType) {
-		this.userType = userType;
-	}
 
 	@Override
 	public boolean equals(Object o) {
