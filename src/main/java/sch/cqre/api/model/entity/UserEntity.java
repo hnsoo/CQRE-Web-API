@@ -19,10 +19,10 @@ public class UserEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	@Column(name = "user_id")
-	private int userId;
+	private Long userId;
 	@Basic
 	@Column(name = "student_id")
-	private int studentId;
+	private Long studentId;
 	@Basic
 	@Column(name = "password")
 	private String password;

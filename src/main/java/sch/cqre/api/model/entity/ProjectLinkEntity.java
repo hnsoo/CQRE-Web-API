@@ -19,7 +19,7 @@ public class ProjectLinkEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	@Column(name = "project_id")
-	private int projectId;
+	private Long projectId;
 	@Basic
 	@Column(name = "link")
 	private String link;

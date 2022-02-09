@@ -15,11 +15,11 @@ public class ScrapEntityPK implements Serializable {
 	@Column(name = "user_id")
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int userId;
+	private Long userId;
 	@Column(name = "post_id")
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int postId;
+	private Long postId;
 
 	@Override
 	public boolean equals(Object o) {

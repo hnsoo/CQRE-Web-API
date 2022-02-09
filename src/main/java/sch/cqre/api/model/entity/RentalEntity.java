@@ -20,7 +20,7 @@ public class RentalEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	@Column(name = "user_id")
-	private int userId;
+	private Long userId;
 	@Basic
 	@Column(name = "borrow_at")
 	private Timestamp borrowAt;

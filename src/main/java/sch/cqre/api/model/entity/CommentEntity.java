@@ -20,13 +20,13 @@ public class CommentEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	@Column(name = "comment_id")
-	private int commentId;
+	private Long commentId;
 	@Basic
 	@Column(name = "post_id")
-	private Integer postId;
+	private Long postId;
 	@Basic
 	@Column(name = "author_id")
-	private Integer authorId;
+	private Long authorId;
 	@Basic
 	@Column(name = "comment_content")
 	private String commentContent;
