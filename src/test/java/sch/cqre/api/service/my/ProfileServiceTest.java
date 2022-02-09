@@ -17,7 +17,7 @@ class ProfileServiceTest {
 	@Autowired UserRepository userRepo;
 	@Test
 	void setProfile() {
-		//given
+		//given: 추후 로그인 완성되면 DB 생성 테스트 추가
 		//When
 		UserEntity testUser = profileService.changeProfile(1L,"C:\\Users\\khs\\Documents");
 		//Then
