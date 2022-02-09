@@ -15,11 +15,11 @@ public class PostHashTagEntityPK implements Serializable {
 	@Column(name = "post_id")
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int postId;
+	private Long postId;
 	@Column(name = "hashtag_id")
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int hashtagId;
+	private Long hashtagId;
 
 	@Override
 	public boolean equals(Object o) {

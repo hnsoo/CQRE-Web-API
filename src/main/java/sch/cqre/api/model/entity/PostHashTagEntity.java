@@ -20,11 +20,11 @@ public class PostHashTagEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	@Column(name = "post_id")
-	private int postId;
+	private Long postId;
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	@Column(name = "hashtag_id")
-	private int hashtagId;
+	private Long hashtagId;
 
 	@Override
 	public boolean equals(Object o) {
