@@ -13,7 +13,7 @@ import sch.cqre.api.repository.UserRepository;
 public class ProfileService {
 	private final UserRepository userRepo;
 
-	public UserEntity setProfile(int id, String path) {
+	public UserEntity changeProfile(Long id, String path) {
 		UserEntity userEntity = this.userRepo.findById(id)
 			.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 		userEntity.setProfile(path);
