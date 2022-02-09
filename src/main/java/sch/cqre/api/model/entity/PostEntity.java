@@ -32,10 +32,10 @@ public class PostEntity {
 	private String postContent;
 	@Basic
 	@Column(name = "views")
-	private Object views;
+	private int views;
 	@Basic
 	@Column(name = "likes")
-	private Object likes;
+	private int likes;
 	@Basic
 	@Column(name = "thumbnail")
 	private String thumbnail;
