@@ -19,10 +19,10 @@ public class UserEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	@Column(name = "user_id")
-	private int userId;
+	private Long userId;
 	@Basic
 	@Column(name = "student_id")
-	private int studentId;
+	private Long studentId;
 	@Basic
 	@Column(name = "password")
 	private String password;
@@ -35,6 +35,9 @@ public class UserEntity {
 	@Basic
 	@Column(name = "user_type")
 	private String userType;
+	@Basic
+	@Column(name = "profile")
+	private String profile;
 
 	@Override
 	public boolean equals(Object o) {
@@ -45,11 +48,11 @@ public class UserEntity {
 		UserEntity that = (UserEntity)o;
 		return userId == that.userId && studentId == that.studentId && Objects.equals(password, that.password)
 			&& Objects.equals(email, that.email) && Objects.equals(nickname, that.nickname)
-			&& Objects.equals(userType, that.userType);
+			&& Objects.equals(userType, that.userType) && Objects.equals(profile, that.profile);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(userId, studentId, password, email, nickname, userType);
+		return Objects.hash(userId, studentId, password, email, nickname, userType, profile);
 	}
 }

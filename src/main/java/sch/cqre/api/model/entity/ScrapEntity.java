@@ -20,11 +20,11 @@ public class ScrapEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	@Column(name = "user_id")
-	private int userId;
+	private Long userId;
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	@Column(name = "post_id")
-	private int postId;
+	private Long postId;
 
 	@Override
 	public boolean equals(Object o) {

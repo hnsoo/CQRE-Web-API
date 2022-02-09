@@ -19,7 +19,7 @@ public class FileEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	@Column(name = "file_id")
-	private int fileId;
+	private Long fileId;
 	@Basic
 	@Column(name = "originalname")
 	private String originalname;

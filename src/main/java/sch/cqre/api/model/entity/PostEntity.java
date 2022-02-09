@@ -20,10 +20,10 @@ public class PostEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	@Column(name = "post_id")
-	private int postId;
+	private Long postId;
 	@Basic
 	@Column(name = "author_id")
-	private int authorId;
+	private Long authorId;
 	@Basic
 	@Column(name = "post_title")
 	private String postTitle;
@@ -32,10 +32,10 @@ public class PostEntity {
 	private String postContent;
 	@Basic
 	@Column(name = "views")
-	private Object views;
+	private int views;
 	@Basic
 	@Column(name = "likes")
-	private Object likes;
+	private int likes;
 	@Basic
 	@Column(name = "thumbnail")
 	private String thumbnail;

@@ -19,10 +19,10 @@ public class ProjectMemberEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	@Column(name = "project_id")
-	private int projectId;
+	private Long projectId;
 	@Basic
 	@Column(name = "member_id")
-	private int memberId;
+	private Long memberId;
 	@Basic
 	@Column(name = "member_type")
 	private String memberType;
