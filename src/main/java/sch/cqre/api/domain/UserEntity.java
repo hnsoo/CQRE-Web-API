@@ -1,4 +1,4 @@
-package sch.cqre.api.model.entity;
+package sch.cqre.api.domain;
 
 import java.util.Objects;
 

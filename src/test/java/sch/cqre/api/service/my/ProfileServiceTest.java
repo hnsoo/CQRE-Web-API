@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import sch.cqre.api.model.entity.UserEntity;
+import sch.cqre.api.domain.UserEntity;
 import sch.cqre.api.repository.UserRepository;
 
 @SpringBootTest

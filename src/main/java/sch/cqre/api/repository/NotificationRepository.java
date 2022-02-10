@@ -3,9 +3,8 @@ package sch.cqre.api.repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.expression.spel.support.ReflectivePropertyAccessor;
 
-import sch.cqre.api.model.entity.NotificationEntity;
+import sch.cqre.api.domain.NotificationEntity;
 
 public interface NotificationRepository extends JpaRepository<NotificationEntity, Long> {
 	List<NotificationEntity> deleteByReceiverId(Long receiverId);

@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import lombok.AllArgsConstructor;
-import sch.cqre.api.model.entity.NotificationEntity;
+import sch.cqre.api.domain.NotificationEntity;
 import sch.cqre.api.repository.NotificationRepository;
 
 @Service
