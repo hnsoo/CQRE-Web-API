@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import lombok.AllArgsConstructor;
-import sch.cqre.api.model.entity.UserEntity;
+import sch.cqre.api.domain.UserEntity;
 import sch.cqre.api.repository.UserRepository;
 
 @Service

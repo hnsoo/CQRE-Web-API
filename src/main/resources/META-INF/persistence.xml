@@ -5,19 +5,19 @@
              version="3.0">
   <persistence-unit name="default">
 
-    <class>sch.cqre.api.model.entity.BookEntity</class>
-    <class>sch.cqre.api.model.entity.CommentEntity</class>
-    <class>sch.cqre.api.model.entity.FileEntity</class>
-      <class>sch.cqre.api.model.entity.HashTagEntity</class>
-      <class>sch.cqre.api.model.entity.PostEntity</class>
-      <class>sch.cqre.api.model.entity.PostHashTagEntity</class>
-      <class>sch.cqre.api.model.entity.ProjectEntity</class>
-      <class>sch.cqre.api.model.entity.ProjectLinkEntity</class>
-      <class>sch.cqre.api.model.entity.ProjectMemberEntity</class>
-      <class>sch.cqre.api.model.entity.RentalEntity</class>
-      <class>sch.cqre.api.model.entity.ScrapEntity</class>
-      <class>sch.cqre.api.model.entity.SupplyEntity</class>
-      <class>sch.cqre.api.model.entity.UserEntity</class>
+    <class>sch.cqre.api.domain.BookEntity</class>
+    <class>sch.cqre.api.domain.CommentEntity</class>
+    <class>sch.cqre.api.domain.FileEntity</class>
+      <class>sch.cqre.api.domain.HashTagEntity</class>
+      <class>sch.cqre.api.domain.PostEntity</class>
+      <class>sch.cqre.api.domain.PostHashTagEntity</class>
+      <class>sch.cqre.api.domain.ProjectEntity</class>
+      <class>sch.cqre.api.domain.ProjectLinkEntity</class>
+      <class>sch.cqre.api.domain.ProjectMemberEntity</class>
+      <class>sch.cqre.api.domain.RentalEntity</class>
+      <class>sch.cqre.api.domain.ScrapEntity</class>
+      <class>sch.cqre.api.domain.SupplyEntity</class>
+      <class>sch.cqre.api.domain.UserEntity</class>
     <properties>
       <property name="hibernate.connection.url"
                 value="jdbc:mysql://cqre-web-db.cwybj99o2hv9.ap-northeast-2.rds.amazonaws.com:3306"/>

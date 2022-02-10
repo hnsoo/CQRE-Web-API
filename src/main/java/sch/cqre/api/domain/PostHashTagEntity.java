@@ -1,4 +1,4 @@
-package sch.cqre.api.model.entity;
+package sch.cqre.api.domain;
 
 import java.util.Objects;
 
@@ -14,17 +14,17 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "Scrap", schema = "main")
-@IdClass(ScrapEntityPK.class)
-public class ScrapEntity {
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Id
-	@Column(name = "user_id")
-	private Long userId;
+@Table(name = "PostHashTag", schema = "main")
+@IdClass(PostHashTagEntityPK.class)
+public class PostHashTagEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	@Column(name = "post_id")
 	private Long postId;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id
+	@Column(name = "hashtag_id")
+	private Long hashtagId;
 
 	@Override
 	public boolean equals(Object o) {
@@ -32,12 +32,12 @@ public class ScrapEntity {
 			return true;
 		if (o == null || getClass() != o.getClass())
 			return false;
-		ScrapEntity that = (ScrapEntity)o;
-		return userId == that.userId && postId == that.postId;
+		PostHashTagEntity that = (PostHashTagEntity)o;
+		return postId == that.postId && hashtagId == that.hashtagId;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(userId, postId);
+		return Objects.hash(postId, hashtagId);
 	}
 }

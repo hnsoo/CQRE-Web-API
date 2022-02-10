@@ -1,4 +1,4 @@
-package sch.cqre.api.model.entity;
+package sch.cqre.api.domain;
 
 import java.util.Objects;
 
@@ -14,15 +14,15 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "HashTag", schema = "main")
-public class HashTagEntity {
+@Table(name = "ProjectLink", schema = "main")
+public class ProjectLinkEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
-	@Column(name = "hashtag_id")
-	private Long hashtagId;
+	@Column(name = "project_id")
+	private Long projectId;
 	@Basic
-	@Column(name = "name")
-	private String name;
+	@Column(name = "link")
+	private String link;
 
 	@Override
 	public boolean equals(Object o) {
@@ -30,12 +30,12 @@ public class HashTagEntity {
 			return true;
 		if (o == null || getClass() != o.getClass())
 			return false;
-		HashTagEntity that = (HashTagEntity)o;
-		return hashtagId == that.hashtagId && Objects.equals(name, that.name);
+		ProjectLinkEntity that = (ProjectLinkEntity)o;
+		return projectId == that.projectId && Objects.equals(link, that.link);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(hashtagId, name);
+		return Objects.hash(projectId, link);
 	}
 }
