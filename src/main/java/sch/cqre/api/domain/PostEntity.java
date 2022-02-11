@@ -11,23 +11,26 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Entity
+@NoArgsConstructor
 @Table(name = "Post", schema = "main")
 public class PostEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	@Column(name = "post_id")
 	private Long postId;
-	@Basic
+	@Basic(optional = false)
 	@Column(name = "author_id")
 	private Long authorId;
-	@Basic
+	@Basic(optional = false)
 	@Column(name = "post_title")
 	private String postTitle;
-	@Basic
+	@Basic(optional = false)
 	@Column(name = "post_content")
 	private String postContent;
 	@Basic
@@ -39,12 +42,25 @@ public class PostEntity {
 	@Basic
 	@Column(name = "thumbnail")
 	private String thumbnail;
-	@Basic
+	@Basic(optional = false)
 	@Column(name = "created_at")
 	private Timestamp createdAt;
-	@Basic
+	@Basic(optional = false)
 	@Column(name = "updated_at")
 	private Timestamp updatedAt;
+
+	@Builder
+	public PostEntity(Long authorId, String postTitle, String postContent, int views, int likes, String thumbnail,
+		Timestamp createdAt, Timestamp updatedAt) {
+		this.authorId = authorId;
+		this.postTitle = postTitle;
+		this.postContent = postContent;
+		this.views = views;
+		this.likes = likes;
+		this.thumbnail = thumbnail;
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
+	}
 
 	@Override
 	public boolean equals(Object o) {

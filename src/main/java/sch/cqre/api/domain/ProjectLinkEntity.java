@@ -10,19 +10,27 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Entity
+@NoArgsConstructor
 @Table(name = "ProjectLink", schema = "main")
 public class ProjectLinkEntity {
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	@Column(name = "project_id")
 	private Long projectId;
-	@Basic
+	@Basic(optional = false)
 	@Column(name = "link")
 	private String link;
+
+	@Builder
+	public ProjectLinkEntity(Long projectId, String link) {
+		this.projectId = projectId;
+		this.link = link;
+	}
 
 	@Override
 	public boolean equals(Object o) {

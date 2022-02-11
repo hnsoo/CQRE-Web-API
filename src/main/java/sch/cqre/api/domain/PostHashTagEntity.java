@@ -10,21 +10,28 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
 
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Entity
+@NoArgsConstructor
 @Table(name = "PostHashTag", schema = "main")
 @IdClass(PostHashTagEntityPK.class)
 public class PostHashTagEntity {
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	@Column(name = "post_id")
 	private Long postId;
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	@Column(name = "hashtag_id")
 	private Long hashtagId;
+
+	@Builder
+	public PostHashTagEntity(Long postId, Long hashtagId) {
+		this.postId = postId;
+		this.hashtagId = hashtagId;
+	}
 
 	@Override
 	public boolean equals(Object o) {
