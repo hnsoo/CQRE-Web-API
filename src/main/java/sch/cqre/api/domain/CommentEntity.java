@@ -11,31 +11,44 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Entity
+@NoArgsConstructor
 @Table(name = "Comment", schema = "main")
 public class CommentEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	@Column(name = "comment_id")
 	private Long commentId;
-	@Basic
+	@Basic(optional = false)
 	@Column(name = "post_id")
 	private Long postId;
-	@Basic
+	@Basic(optional = false)
 	@Column(name = "author_id")
 	private Long authorId;
-	@Basic
+	@Basic(optional = false)
 	@Column(name = "comment_content")
 	private String commentContent;
-	@Basic
+	@Basic(optional = false)
 	@Column(name = "created_at")
 	private Timestamp createdAt;
-	@Basic
+	@Basic(optional = false)
 	@Column(name = "updated_at")
 	private Timestamp updatedAt;
+
+	@Builder
+	public CommentEntity(Long postId, Long authorId, String commentContent, Timestamp createdAt,
+		Timestamp updatedAt) {
+		this.postId = postId;
+		this.authorId = authorId;
+		this.commentContent = commentContent;
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
+	}
 
 	@Override
 	public boolean equals(Object o) {

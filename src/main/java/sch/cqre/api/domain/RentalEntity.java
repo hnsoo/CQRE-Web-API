@@ -11,25 +11,35 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Entity
+@NoArgsConstructor
 @Table(name = "Rental", schema = "main")
 public class RentalEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	@Column(name = "user_id")
 	private Long userId;
-	@Basic
+	@Basic(optional = false)
 	@Column(name = "borrow_at")
 	private Timestamp borrowAt;
-	@Basic
+	@Basic(optional = false)
 	@Column(name = "return_at")
 	private Timestamp returnAt;
-	@Basic
+	@Basic(optional = false)
 	@Column(name = "book_id")
 	private int bookId;
+
+	@Builder
+	public RentalEntity(Timestamp borrowAt, Timestamp returnAt, int bookId) {
+		this.borrowAt = borrowAt;
+		this.returnAt = returnAt;
+		this.bookId = bookId;
+	}
 
 	@Override
 	public boolean equals(Object o) {

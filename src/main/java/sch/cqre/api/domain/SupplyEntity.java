@@ -10,22 +10,31 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Entity
+@NoArgsConstructor
 @Table(name = "Supply", schema = "main")
 public class SupplyEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	@Column(name = "supply_id")
 	private Long supplyId;
-	@Basic
+	@Basic(optional = false)
 	@Column(name = "name")
 	private String name;
 	@Basic
 	@Column(name = "amount")
 	private Byte amount;
+
+	@Builder
+	public SupplyEntity(String name, Byte amount) {
+		this.name = name;
+		this.amount = amount;
+	}
 
 	@Override
 	public boolean equals(Object o) {

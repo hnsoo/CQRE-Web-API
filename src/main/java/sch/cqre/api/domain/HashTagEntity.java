@@ -10,19 +10,27 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Entity
+@NoArgsConstructor
 @Table(name = "HashTag", schema = "main")
 public class HashTagEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	@Column(name = "hashtag_id")
 	private Long hashtagId;
-	@Basic
+	@Basic(optional = false)
 	@Column(name = "name")
 	private String name;
+
+	@Builder
+	public HashTagEntity(String name) {
+		this.name = name;
+	}
 
 	@Override
 	public boolean equals(Object o) {

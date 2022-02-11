@@ -11,28 +11,39 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Entity
+@NoArgsConstructor
 @Table(name = "Project", schema = "main")
 public class ProjectEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	@Column(name = "project_id")
 	private Long projectId;
-	@Basic
+	@Basic(optional = false)
 	@Column(name = "project_title")
 	private String projectTitle;
-	@Basic
+	@Basic(optional = false)
 	@Column(name = "project_content")
 	private String projectContent;
-	@Basic
+	@Basic(optional = false)
 	@Column(name = "started_at")
 	private Timestamp startedAt;
 	@Basic
 	@Column(name = "finished_at")
 	private Timestamp finishedAt;
+
+	@Builder
+	public ProjectEntity(String projectTitle, String projectContent, Timestamp startedAt, Timestamp finishedAt) {
+		this.projectTitle = projectTitle;
+		this.projectContent = projectContent;
+		this.startedAt = startedAt;
+		this.finishedAt = finishedAt;
+	}
 
 	@Override
 	public boolean equals(Object o) {

@@ -10,21 +10,28 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
 
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Entity
+@NoArgsConstructor
 @Table(name = "Scrap", schema = "main")
 @IdClass(ScrapEntityPK.class)
 public class ScrapEntity {
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	@Column(name = "user_id")
 	private Long userId;
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	@Column(name = "post_id")
 	private Long postId;
+
+	@Builder
+	public ScrapEntity(Long userId, Long postId) {
+		this.userId = userId;
+		this.postId = postId;
+	}
 
 	@Override
 	public boolean equals(Object o) {
