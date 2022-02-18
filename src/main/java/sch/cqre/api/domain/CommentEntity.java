@@ -23,13 +23,13 @@ public class CommentEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	@Column(name = "comment_id")
-	private Long commentId;
+	private Integer commentId;
 	@Basic(optional = false)
 	@Column(name = "post_id")
-	private Long postId;
+	private Integer postId;
 	@Basic(optional = false)
 	@Column(name = "author_id")
-	private Long authorId;
+	private Integer authorId;
 	@Basic(optional = false)
 	@Column(name = "comment_content")
 	private String commentContent;
@@ -41,7 +41,7 @@ public class CommentEntity {
 	private Timestamp updatedAt;
 
 	@Builder
-	public CommentEntity(Long postId, Long authorId, String commentContent, Timestamp createdAt,
+	public CommentEntity(Integer postId, Integer authorId, String commentContent, Timestamp createdAt,
 		Timestamp updatedAt) {
 		this.postId = postId;
 		this.authorId = authorId;

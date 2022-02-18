@@ -25,10 +25,10 @@ public class UserEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	@Column(name = "user_id")
-	private Long userId;
+	private Integer userId;
 	@Basic(optional = false)
 	@Column(name = "student_id")
-	private Long studentId;
+	private Integer studentId;
 	@Basic(optional = false)
 	@Column(name = "password")
 	private String password;
@@ -46,7 +46,7 @@ public class UserEntity {
 	private String profile;
 
 	@Builder
-	public UserEntity(Long studentId, String password, String email, String nickname, String userType,
+	public UserEntity(Integer studentId, String password, String email, String nickname, String userType,
 		String profile) {
 		this.studentId = studentId;
 		this.password = password;

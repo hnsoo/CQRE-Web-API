@@ -23,19 +23,19 @@ public class NotificationEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	@Column(name = "not_id")
-	private Long notId;
+	private Integer notId;
 	@Basic(optional = false)
 	@Column(name = "receiver_id")
-	private Long receiverId;
+	private Integer receiverId;
 	@Basic(optional = false)
 	@Column(name = "sender_id")
-	private Long senderId;
+	private Integer senderId;
 	@Basic(optional = false)
 	@Column(name = "not_type")
 	private String notType;
 	@Basic(optional = false)
 	@Column(name = "not_post")
-	private Long notPost;
+	private Integer notPost;
 	@Basic(optional = false)
 	@Column(name = "not_content")
 	private String notContent;
@@ -53,7 +53,7 @@ public class NotificationEntity {
 	private Integer readOrNot;
 
 	@Builder
-	public NotificationEntity(Long receiverId, Long senderId, String notType, Long notPost,
+	public NotificationEntity(Integer receiverId, Integer senderId, String notType, Integer notPost,
 		String notContent, String notUrl, Timestamp notDatetime, Timestamp notReadDatetime, Integer readOrNot) {
 		this.receiverId = receiverId;
 		this.senderId = senderId;

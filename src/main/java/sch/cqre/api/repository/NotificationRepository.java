@@ -6,8 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import sch.cqre.api.domain.NotificationEntity;
 
-public interface NotificationRepository extends JpaRepository<NotificationEntity, Long> {
-	List<NotificationEntity> deleteByReceiverId(Long receiverId);
-	List<NotificationEntity> findByReceiverId(Long receiverId);
-	List<NotificationEntity> deleteByReceiverIdAndReadOrNot(Long receiverId, int readOrNot);
+public interface NotificationRepository extends JpaRepository<NotificationEntity, Integer> {
+	List<NotificationEntity> deleteByReceiverId(Integer receiverId);
+	List<NotificationEntity> findByReceiverId(Integer receiverId);
+	List<NotificationEntity> deleteByReceiverIdAndReadOrNot(Integer receiverId, int readOrNot);
 }

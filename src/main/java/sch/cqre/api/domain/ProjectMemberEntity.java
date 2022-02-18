@@ -21,16 +21,16 @@ import lombok.NoArgsConstructor;
 public class ProjectMemberEntity {
 	@Id
 	@Column(name = "project_id")
-	private Long projectId;
+	private Integer projectId;
 	@Basic(optional = false)
 	@Column(name = "member_id")
-	private Long memberId;
+	private Integer memberId;
 	@Basic(optional = false)
 	@Column(name = "member_type")
 	private String memberType;
 
 	@Builder
-	public ProjectMemberEntity(Long projectId, Long memberId, String memberType) {
+	public ProjectMemberEntity(Integer projectId, Integer memberId, String memberType) {
 		this.projectId = projectId;
 		this.memberId = memberId;
 		this.memberType = memberType;

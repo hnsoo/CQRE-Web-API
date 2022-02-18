@@ -16,8 +16,12 @@ import sch.cqre.api.repository.NotificationRepository;
 public class NoticeService {
 	private final NotificationRepository notificationRepo;
 
+	public List<NotificationEntity> searchAllByUserId(Integer userId) {
+		return this.notificationRepo.findByReceiverId(userId);
+	}
+
 	@Transactional
-	public List<NotificationEntity> readAllNotice(Long userId) {
+	public List<NotificationEntity> readAllNotice(Integer userId) {
 		List<NotificationEntity> result = this.notificationRepo.findByReceiverId(userId);
 		if (result != null) {
 			for (NotificationEntity notificationEntity : result) {
@@ -26,20 +30,21 @@ public class NoticeService {
 		}
 		return result;
 	}
+
 	@Transactional
-	public String checkNotice(Long notId) {
+	public String checkNotice(Integer notId) {
 		NotificationEntity notificationEntity = this.notificationRepo.findById(notId)
 			.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 		notificationEntity.setReadOrNot(1);
 		return notificationEntity.getNotUrl();
 	}
-	public void deleteAllReadNotice(Long userId) {
+	public void deleteAllReadNotice(Integer userId) {
 		this.notificationRepo.deleteByReceiverIdAndReadOrNot(userId, 1);
 	}
-	public void deleteAllNotice(Long userId) {
+	public void deleteAllNotice(Integer userId) {
 		this.notificationRepo.deleteByReceiverId(userId);
 	}
-	public void deleteOneNotice(Long notId) {
+	public void deleteOneNotice(Integer notId) {
 		this.notificationRepo.deleteById(notId);
 	}
 }

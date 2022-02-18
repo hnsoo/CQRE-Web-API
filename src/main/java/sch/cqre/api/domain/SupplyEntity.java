@@ -22,7 +22,7 @@ public class SupplyEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	@Column(name = "supply_id")
-	private Long supplyId;
+	private Integer supplyId;
 	@Basic(optional = false)
 	@Column(name = "name")
 	private String name;

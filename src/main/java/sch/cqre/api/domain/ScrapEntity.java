@@ -22,13 +22,13 @@ import lombok.NoArgsConstructor;
 public class ScrapEntity {
 	@Id
 	@Column(name = "user_id")
-	private Long userId;
+	private Integer userId;
 	@Id
 	@Column(name = "post_id")
-	private Long postId;
+	private Integer postId;
 
 	@Builder
-	public ScrapEntity(Long userId, Long postId) {
+	public ScrapEntity(Integer userId, Integer postId) {
 		this.userId = userId;
 		this.postId = postId;
 	}

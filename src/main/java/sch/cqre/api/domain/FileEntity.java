@@ -22,7 +22,7 @@ public class FileEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	@Column(name = "file_id")
-	private Long fileId;
+	private Integer fileId;
 	@Basic(optional = false)
 	@Column(name = "originalname")
 	private String originalname;

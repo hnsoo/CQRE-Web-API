@@ -19,9 +19,9 @@ class ProfileServiceTest {
 	void setProfile() {
 		//given: 추후 로그인 완성되면 DB 생성 테스트 추가
 		//When
-		UserEntity testUser = profileService.changeProfile(1L,"C:\\Users\\khs\\Documents");
+		UserEntity testUser = profileService.setProfile(1,"C:\\Users\\khs\\Documents");
 		//Then
-		UserEntity findUser = userRepo.findById(1L).get();
+		UserEntity findUser = userRepo.findById(1).get();
 		assertEquals(testUser.getProfile(), findUser.getProfile());
 	}
 }

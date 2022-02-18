@@ -21,13 +21,13 @@ import lombok.NoArgsConstructor;
 public class ProjectLinkEntity {
 	@Id
 	@Column(name = "project_id")
-	private Long projectId;
+	private Integer projectId;
 	@Basic(optional = false)
 	@Column(name = "link")
 	private String link;
 
 	@Builder
-	public ProjectLinkEntity(Long projectId, String link) {
+	public ProjectLinkEntity(Integer projectId, String link) {
 		this.projectId = projectId;
 		this.link = link;
 	}
