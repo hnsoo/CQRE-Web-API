@@ -54,7 +54,6 @@ public class UserEntity {
 	@Builder
 	public UserEntity(Long userId, Long studentId, String password, String email, String nickname, String userType,
 		String profile) {
-		this.userId = userId; //line added by hun
 		this.studentId = studentId;
 		this.password = password;
 		this.email = email;

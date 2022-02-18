@@ -2,11 +2,14 @@ package sch.cqre.api.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sch.cqre.api.domain.UserEntity;
 import sch.cqre.api.dto.UserDto;
-import sch.cqre.api.repository.UserRepository;
+import sch.cqre.api.UserRepository;
 
 @Service
 @Transactional(readOnly = true)
@@ -15,8 +18,6 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    @Autowired
-    private UserDto memberDao;
 
     //Login
     public boolean getLoginChk() throws Exception{
@@ -25,14 +26,12 @@ public class UserService {
 
 
     //Join
+    @Transactional
     public Long createUser(UserDto form){
        UserEntity user = form.toEntity();
        userRepository.save(user);
        return user.getUserId();
     }
-
-
-
 
     //Modify
 
