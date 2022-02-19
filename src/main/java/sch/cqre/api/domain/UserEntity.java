@@ -32,10 +32,10 @@ public class UserEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	@Column(name = "user_id")
-	private Long userId;
+	private int userId;
 	@Basic(optional = false)
 	@Column(name = "student_id")
-	private Long studentId;
+	private int studentId;
 	@Basic(optional = false)
 	// @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	@Column(name = "password")
@@ -57,7 +57,7 @@ public class UserEntity {
 	private String provider; // defaultValue = "local"
 
 	@Builder
-	public UserEntity(Long userId, Long studentId, String password, String email, String nickname, String userType,
+	public UserEntity(int userId, int studentId, String password, String email, String nickname, String userType,
 		String profile) {
 		this.studentId = studentId;
 		this.password = password;

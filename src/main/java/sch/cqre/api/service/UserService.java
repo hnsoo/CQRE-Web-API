@@ -24,6 +24,7 @@ import java.util.Map;
 public class UserService {
 
     private final UserDAO userDao;
+    private final UserRepository userRepository;
     //private final EmailCheckValidator emailCheckValidator;
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
@@ -47,10 +48,16 @@ public class UserService {
 
     //Join
     @Transactional
-    public Long createUser(UserDto form){
-        //  if (userVo.invaildForm(form)) //회원가입 값 유효성 확인
-        //userDao.
-       // emailCheckValidator
+    public UserEntity createUser(UserDto form){
+
+        if(userRepository.findByEmail(form.getEmail())){
+            throw new RuntimeException("사용중인 이메일 입니다.");
+        }
+
+        if(userRepository.findByStudentId(form.getStudentId())){
+            throw new RuntimeException("사용중인 학번 입니다.");
+        }
+
         return userDao.add(form);
     }
 

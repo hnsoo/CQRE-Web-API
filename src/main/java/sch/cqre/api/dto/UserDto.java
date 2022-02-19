@@ -16,7 +16,7 @@ import java.util.Collection;
 @Data
 @NoArgsConstructor
 public class UserDto implements UserDetails {
-    private Long userId;
+    private int userId;
 
 
     //TODO : 학번 정규식 적용 -> pattern은 string만되서... range로 대체했음
@@ -24,10 +24,11 @@ public class UserDto implements UserDetails {
    // @NotBlank(message = "학번을 입력해주세요.")
 
     @Range(min = 20000000, max = 29999999, message = "학번을 제대로 입력해주세요.")
-    private Long studentId;
+    private int studentId;
 
     @NotBlank(message = "비밀번호를 입력해주세요.")
     @Size(min = 8, max = 20, message = "비밀번호는 2자 이상 10자 이하로 입력해주세요.")
+    //TODO : access = JsonProperty.Access.WRITE_ONLY
     private String password;
 
 
@@ -44,7 +45,6 @@ public class UserDto implements UserDetails {
     private String profile;
 
     public UserDto(UserEntity user){
-        //Long userId, Long studentId, String password, String email, String nickname, String userType, String profile
         this.userId = user.getUserId();
         this.studentId = user.getStudentId();
         this.password = user.getPassword();

@@ -1,15 +1,22 @@
 package sch.cqre.api.repository;
 
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import sch.cqre.api.domain.UserEntity;
 import sch.cqre.api.dto.UserDto;
 
+/*
+
+        TODO : USerDto @Lazy를 빈 순환 참조로 인해 임시방편으로 했음.
+                난중에 수정바람
+ */
+
 @Repository
 public class UserDAO {
 
-    private final UserRepository userRepository;
-    public UserDAO(UserRepository userRepository) {
+    private final @Lazy UserRepository userRepository;
+    public UserDAO(@Lazy UserDAO userDao, UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -37,19 +44,17 @@ public class UserDAO {
     } */
 
     @Transactional
-    public Long add(UserDto form){
+    public UserEntity add( @Lazy UserDto form){
         //user테이블에 회원정보를 넣습니다.
         UserEntity user = form.toEntity();
-        userRepository.save(user);
-        return user.getUserId();
+        return userRepository.save(user);
     }
 
     @Transactional
-    public Long modify(UserDto form){
+    public UserEntity modify(@Lazy UserDto form){
         //user테이블 -> 회원정보를 수정합니다.
         UserEntity user = form.toEntity();
-        userRepository.save(user);
-        return user.getUserId();
+        return userRepository.save(user);
     }
 
 
