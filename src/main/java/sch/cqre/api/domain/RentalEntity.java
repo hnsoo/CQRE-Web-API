@@ -20,25 +20,23 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Table(name = "Rental", schema = "main")
 public class RentalEntity {
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	@Column(name = "user_id")
 	private Long userId;
 	@Basic(optional = false)
-	@Column(name = "borrow_at")
+	@Column(name = "borrow_at", nullable = true, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	private Timestamp borrowAt;
 	@Basic(optional = false)
 	@Column(name = "return_at")
 	private Timestamp returnAt;
-	@Basic(optional = false)
+	@Id
 	@Column(name = "book_id")
 	private int bookId;
 
 	@Builder
-	public RentalEntity(Timestamp borrowAt, Timestamp returnAt, int bookId) {
+	public RentalEntity(Timestamp borrowAt, Timestamp returnAt) {
 		this.borrowAt = borrowAt;
 		this.returnAt = returnAt;
-		this.bookId = bookId;
 	}
 
 	@Override
