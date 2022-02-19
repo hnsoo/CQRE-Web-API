@@ -3,10 +3,9 @@ package sch.cqre.api.controller;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import sch.cqre.api.dto.UserDto;
 import sch.cqre.api.service.UserService;
 
@@ -31,7 +30,6 @@ public class SingupController {
         model.addAttribute("nickname", nickname);
         model.addAttribute("profile", profile);
 
-        logger.warn("email is " + email);
 
         UserDto signUpForm = new UserDto();
         signUpForm.setStudentId(Long.valueOf(studentId.trim()));
@@ -64,6 +62,15 @@ public class SingupController {
         return "/";//(String) model.getAttribute("userId");
 
     }
+
+
+
+
+
+
+
+
+
 
 
 }

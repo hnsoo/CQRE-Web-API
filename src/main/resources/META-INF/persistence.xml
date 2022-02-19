@@ -17,7 +17,8 @@
       <class>sch.cqre.api.domain.RentalEntity</class>
       <class>sch.cqre.api.domain.ScrapEntity</class>
       <class>sch.cqre.api.domain.SupplyEntity</class>
-      <class>sch.cqre.api.domain.UserEntity</class>
+    <class>sch.cqre.api.domain.UserEntity</class>
+
     <properties>
       <property name="hibernate.connection.url"
                 value="jdbc:mysql://cqre-web-db.cwybj99o2hv9.ap-northeast-2.rds.amazonaws.com:3306"/>

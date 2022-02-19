@@ -1,15 +1,14 @@
-package sch.cqre.api;
+package sch.cqre.api.repository;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import sch.cqre.api.domain.UserEntity;
 
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
-
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity,Long>{
 
+    boolean existsByStudentId(long studentId);
+    boolean existByEmail(String email);
+    boolean existsByNickname(String nickname);
 
 }
