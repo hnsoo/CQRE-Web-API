@@ -1,16 +1,22 @@
 package sch.cqre.api.controller;
 
+
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
+import org.springframework.validation.ObjectError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import sch.cqre.api.dto.UserDto;
 import sch.cqre.api.service.UserService;
-import sch.cqre.api.validator.EmailCheckValidator;
+//import sch.cqre.api.validator.EmailCheckValidator;
 
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -21,15 +27,19 @@ public class SingupController {
 
     private final UserService userService;
 
-    private final EmailCheckValidator emailCheckValidator;
+//    @Autowired
+//    private final EmailCheckValidator emailCheckValidator;
 
 
     /* 커스텀 유효성 검증을 위해 추가 */
-    @InitBinder public void validatorBinder(WebDataBinder binder) {
+   /* @InitBinder
+    public void validatorBinder(WebDataBinder binder) {
         binder.addValidators(emailCheckValidator);
       //  binder.addValidators(nicknameCheckValidator);
        // binder.addValidators(emailCheckValidator);
     }
+    */
+
 
 
     @GetMapping("/auth/join")
@@ -49,7 +59,8 @@ public class SingupController {
     }
 
     @RequestMapping("/register")
-    public String joinProc(UserDto userinfo,
+    public String joinProc(@Validated UserDto userinfo,
+                           BindingResult bindingResult,
                            Errors errors){
 
 
@@ -60,7 +71,13 @@ public class SingupController {
          */
         //UserDto signUpForm = new UserDto();
 
-        if (errors.hasErrors()) {
+        if(bindingResult.hasErrors()) {
+            List<ObjectError> list = bindingResult.getAllErrors();
+            for (ObjectError e : list) {
+                logger.warn("[C] Singup : " + e.getDefaultMessage());
+            }
+            return "join"; //다시 회원가입창으로
+        }
 
             /* 회원가입 실패시 입력 데이터 값을 유지 */
             //model.addAttribute("userDto", userDto);
@@ -81,12 +98,11 @@ public class SingupController {
 
              */
 
+        userService.createUser(userinfo);
+        return "redirect:/login";
+    }
 
-
-
-            /* 회원 가입 페이지로 다시 리턴 */
-            return "/register";
-        }
+        //emailCheckValidator.validate(event, bindingResult);
 
 
 /*
@@ -95,8 +111,10 @@ public class SingupController {
         signUpForm.setEmail(email);
         signUpForm.setNickname(nickname);
         signUpForm.setProfile(profile); */
-        logger.warn("info : " + userinfo.getStudentId());
-        userService.createUser(userinfo);
+        //logger.warn("info : " + userinfo.getStudentId());
+
+
+        //userService.createUser(userinfo);
 
         /*
         studentId=20194581
@@ -108,27 +126,7 @@ public class SingupController {
 
          */
 
-
-
-
-
-
         //model.addAttribute("body", new UserDto());
-
-
-
-        return "redirect:/login";//(String) model.getAttribute("userId");
-
-    }
-
-
-
-
-
-
-
-
-
 
 
 }

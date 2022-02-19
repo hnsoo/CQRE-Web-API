@@ -4,14 +4,13 @@ package sch.cqre.api.dto;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Range;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import sch.cqre.api.domain.UserEntity;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.Collection;
 
 @Data
@@ -20,19 +19,24 @@ public class UserDto implements UserDetails {
     private Long userId;
 
 
-    //TODO : 학번 정규식 적용
+    //TODO : 학번 정규식 적용 -> pattern은 string만되서... range로 대체했음
+    //@Pattern(regexp = "([2-9])0([0-9][0-9][0-9][0-9][0-9][0-9])", message = "학번을 제대로 입력해주세요.")
+   // @NotBlank(message = "학번을 입력해주세요.")
+
+    @Range(min = 20000000, max = 29999999, message = "학번을 제대로 입력해주세요.")
     private Long studentId;
 
     @NotBlank(message = "비밀번호를 입력해주세요.")
-    @Size(min = 8, max = 20, message = "비밀번호는 2자 이상 10자 이하로 입력해주세요")
+    @Size(min = 8, max = 20, message = "비밀번호는 2자 이상 10자 이하로 입력해주세요.")
     private String password;
+
 
     @NotBlank(message = "이메일을 입력해주세요.")
     @Email(message = "올바른 이메일 주소를 입력해주세요.")
     private String email;
 
     @NotBlank(message = "닉네임을 입력해주세요.")
-    @Size(min = 2, max = 10, message = "닉네임은 2자 이상 10자 이하로 입력해주세요")
+    @Size(min = 2, max = 10, message = "닉네임은 2자 이상 10자 이하로 입력해주세요.")
     private String nickname;
 
     private String userType = "Guest"; // defaultValue = "Guest"

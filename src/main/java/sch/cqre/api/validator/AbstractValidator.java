@@ -1,11 +1,14 @@
+/*
 package sch.cqre.api.validator;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 
 @Slf4j
+@Component
 public abstract class AbstractValidator < T > implements Validator {
     @Override public boolean supports(Class < ? > clazz) {
         return true;
@@ -21,6 +24,8 @@ public abstract class AbstractValidator < T > implements Validator {
     }
     protected abstract void doValidate(final T dto, final Errors errors);
 }
+
+*/
 
 
 
