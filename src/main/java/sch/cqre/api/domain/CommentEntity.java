@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 public class CommentEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
-	@Column(name = "comment_id")
+	@Column(name = "comment_id", nullable = false)
 	private Long commentId;
 	@Basic(optional = false)
 	@Column(name = "post_id")
@@ -33,10 +33,8 @@ public class CommentEntity {
 	@Basic(optional = false)
 	@Column(name = "comment_content")
 	private String commentContent;
-	@Basic(optional = false)
-	@Column(name = "created_at")
+	@Column(name = "created_at", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	private Timestamp createdAt;
-	@Basic(optional = false)
 	@Column(name = "updated_at")
 	private Timestamp updatedAt;
 
