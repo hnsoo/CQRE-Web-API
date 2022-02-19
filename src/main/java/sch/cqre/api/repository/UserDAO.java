@@ -13,6 +13,7 @@ public class UserDAO {
         this.userRepository = userRepository;
     }
 
+    /*
     public boolean accountDuplicationChk(UserDto form){
 
         boolean emailChk = userRepository.existByEmail(form.getEmail());
@@ -33,7 +34,7 @@ public class UserDAO {
 
         return false;
 
-    }
+    } */
 
     @Transactional
     public Long add(UserDto form){

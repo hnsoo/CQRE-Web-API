@@ -5,12 +5,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
 import sch.cqre.api.domain.UserEntity;
 import sch.cqre.api.dto.UserDto;
 
 import sch.cqre.api.repository.UserDAO;
 import sch.cqre.api.repository.UserRepository;
 import sch.cqre.api.repository.UserVO;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 @Transactional(readOnly = true)
@@ -50,6 +55,17 @@ public class UserService {
         userDao.accountDuplicationChk(form);
         return userDao.add(form);
     }
+
+    /* 회원가입 시, 유효성 체크 */
+    @Transactional(readOnly = true) public Map < String, String > validateHandling(Errors errors) {
+        Map< String, String > validatorResult = new HashMap< >(); /* 유효성 검사에 실패한 필드 목록을 받음 */
+        for (FieldError error: errors.getFieldErrors()) {
+            String validKeyName = String.format("valid_%s", error.getField());
+            validatorResult.put(validKeyName, error.getDefaultMessage());
+        }
+        return validatorResult;
+    }
+
 
 
 
