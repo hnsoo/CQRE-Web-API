@@ -13,6 +13,7 @@ import sch.cqre.api.dto.UserDto;
 import sch.cqre.api.repository.UserDAO;
 import sch.cqre.api.repository.UserRepository;
 import sch.cqre.api.repository.UserVO;
+import sch.cqre.api.validator.EmailCheckValidator;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,9 +23,8 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class UserService {
 
-    private final UserRepository userRepository;
     private final UserDAO userDao;
-    private final UserVO userVo;
+    private final EmailCheckValidator emailCheckValidator;
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 
@@ -32,9 +32,6 @@ public class UserService {
 
     //private SqlSessionTemplate session;
 
-    public boolean checkEmailDuplicate(String email){
-        return false;
-    }
 
     //Login
     public boolean getLoginChk() throws Exception{
@@ -44,15 +41,16 @@ public class UserService {
 
     public boolean existId(String id){
 
-    //    UserVO user = session.selectOne("userDB.selectUser", id);
-       return false;
+        //    UserVO user = session.selectOne("userDB.selectUser", id);
+        return false;
     }
 
     //Join
     @Transactional
     public Long createUser(UserDto form){
-      //  if (userVo.invaildForm(form)) //회원가입 값 유효성 확인
-        userDao.accountDuplicationChk(form);
+        //  if (userVo.invaildForm(form)) //회원가입 값 유효성 확인
+        //userDao.
+        emailCheckValidator.
         return userDao.add(form);
     }
 
