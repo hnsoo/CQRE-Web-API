@@ -34,16 +34,16 @@ public class PostEntity {
 	@Column(name = "post_content")
 	private String postContent;
 	@Basic
-	@Column(name = "views")
+	@Column(name = "views", columnDefinition = "int unsigned default 0")
 	private int views;
 	@Basic
-	@Column(name = "likes")
+	@Column(name = "likes", columnDefinition = "int unsigned default 0")
 	private int likes;
 	@Basic
 	@Column(name = "thumbnail")
 	private String thumbnail;
 	@Basic(optional = false)
-	@Column(name = "created_at")
+	@Column(name = "created_at", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	private Timestamp createdAt;
 	@Basic(optional = false)
 	@Column(name = "updated_at")
