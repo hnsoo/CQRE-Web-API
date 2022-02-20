@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import lombok.AllArgsConstructor;
+import sch.cqre.api.domain.NotificationEntity;
 import sch.cqre.api.domain.PostEntity;
 import sch.cqre.api.domain.ScrapEntity;
 import sch.cqre.api.repository.PostRepository;
@@ -23,4 +24,14 @@ public class PostService {
 		return result;
 	}
 
+	public List<PostEntity> searchScrapByUserId(Integer userId) {
+		List<ScrapEntity> scraps = this.scrapRepo.findByUserId(userId);
+		List<PostEntity> result = null;
+		if (scraps != null) {
+			for (ScrapEntity scrapEntity : scraps) {
+				result.add(postRepo.getById(scrapEntity.getPostId()));
+			}
+		}
+		return result;
+	}
 }

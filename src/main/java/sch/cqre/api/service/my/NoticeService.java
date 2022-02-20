@@ -38,7 +38,7 @@ public class NoticeService {
 		notificationEntity.setReadOrNot(1);
 		return notificationEntity.getNotUrl();
 	}
-	public void deleteAllReadNotice(Integer userId) {
+	public void deleteReadNotice(Integer userId) {
 		this.notificationRepo.deleteByReceiverIdAndReadOrNot(userId, 1);
 	}
 	public void deleteAllNotice(Integer userId) {

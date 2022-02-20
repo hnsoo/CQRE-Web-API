@@ -14,18 +14,12 @@ import sch.cqre.api.repository.UserRepository;
 public class AccountService {
 	private final UserRepository userRepo;
 
-	public UserEntity searchById(Integer id) {3
+	public UserEntity searchById(Integer id) {
 		UserEntity result = this.userRepo.findById(id)
 			.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 		return result;
 	}
-	@Transactional
-	public UserEntity setProfile(Integer userid, String path) {
-		UserEntity userEntity = this.userRepo.findById(userid)
-			.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-		userEntity.setProfile(path);
-		return userEntity;
-	}
+
 	@Transactional
 	public UserEntity setEmail(Integer userId, String email) {
 		UserEntity userEntity = this.userRepo.findById(userId)
