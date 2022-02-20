@@ -7,34 +7,29 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import net.bytebuddy.build.HashCodeAndEqualsPlugin;
 
 import lombok.AllArgsConstructor;
 import sch.cqre.api.domain.NotificationEntity;
 import sch.cqre.api.domain.PostEntity;
-import sch.cqre.api.domain.ScrapEntity;
 import sch.cqre.api.domain.UserEntity;
 import sch.cqre.api.dto.mypage.MyInfoDTO;
 import sch.cqre.api.repository.UserRepository;
 import sch.cqre.api.service.my.AccountService;
 import sch.cqre.api.service.my.NoticeService;
 import sch.cqre.api.service.my.PostService;
-import sch.cqre.api.service.my.ProfileService;
 
  /*
   * 마이페이지 컨트롤러
   * 제작자: 김현수
   * 비밀번호 변경 기능 추가 필요
   * */
+
  @AllArgsConstructor
  @RestController
  @RequestMapping("/mypage")
  public class MyPageController {
-	 private final ProfileService profileService;
 	 private final AccountService accountService;
 	 private final PostService postService;
 	 private final NoticeService noticeService;

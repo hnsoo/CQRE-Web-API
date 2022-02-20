@@ -12,6 +12,5 @@ public class MyInfoDTO {
 	public MyInfoDTO(UserEntity userEntity) {
 		this.userId = userEntity.getUserId();
 		this.email = userEntity.getEmail();
-		this.profile = userEntity.getProfile();
 	}
 }
