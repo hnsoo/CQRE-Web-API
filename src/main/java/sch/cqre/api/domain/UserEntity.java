@@ -44,9 +44,6 @@ public class UserEntity {
 	@Basic
 	@Column(name = "user_type") // nullable, signup때 포함하지 않을 것임
 	private String userType; // defaultValue = "Guest"
-	@Basic(optional = false)
-	@Column(name = "profile")
-	private String profile;
 	@Basic // nullable, 자동으로 들어감
  	@Column(name = "provider", length = 45) // social login
 	private String provider; // defaultValue = "local"
@@ -59,7 +56,6 @@ public class UserEntity {
 		this.email = email;
 		this.nickname = nickname;
 		this.userType = userType;
-		this.profile = profile;
 	}
 
 	@Override
@@ -72,11 +68,11 @@ public class UserEntity {
 		((UserEntity)o).setUserType("Guest");
 		return userId == that.userId && studentId == that.studentId && Objects.equals(password, that.password)
 			&& Objects.equals(email, that.email) && Objects.equals(nickname, that.nickname)
-			&& Objects.equals(userType, that.userType) && Objects.equals(profile, that.profile);
+			&& Objects.equals(userType, that.userType);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(userId, studentId, password, email, nickname, userType, profile);
+		return Objects.hash(userId, studentId, password, email, nickname, userType);
 	}
 }
