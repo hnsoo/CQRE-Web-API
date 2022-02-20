@@ -6,14 +6,14 @@ import org.springframework.transaction.annotation.Transactional;
 import sch.cqre.api.domain.UserEntity;
 import sch.cqre.api.dto.UserDto;
 
-/*
-
-        TODO : USerDto @Lazy를 빈 순환 참조로 인해 임시방편으로 했음.
-                난중에 수정바람
- */
-
 @Repository
 public class UserDAO {
+
+    /* TODO : @LAZY 해결
+        빈 오류 임시방편
+
+       */
+
 
     private final @Lazy UserRepository userRepository;
     public UserDAO(@Lazy UserDAO userDao, UserRepository userRepository) {
@@ -44,14 +44,14 @@ public class UserDAO {
     } */
 
     @Transactional
-    public UserEntity add( @Lazy UserDto form){
+    public UserEntity add( UserDto form){
         //user테이블에 회원정보를 넣습니다.
         UserEntity user = form.toEntity();
         return userRepository.save(user);
     }
 
     @Transactional
-    public UserEntity modify(@Lazy UserDto form){
+    public UserEntity modify(UserDto form){
         //user테이블 -> 회원정보를 수정합니다.
         UserEntity user = form.toEntity();
         return userRepository.save(user);

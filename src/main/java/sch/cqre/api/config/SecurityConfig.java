@@ -2,6 +2,8 @@ package sch.cqre.api.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 import sch.cqre.api.jwt.JwtAccessDeniedHandler;
 import sch.cqre.api.jwt.JwtAuthenticationEntryPoint;
@@ -21,7 +23,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 /*
  * @PreAuthorize를 method 단위로 추가하기 위해 사용
  * */
-@Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -36,19 +37,43 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+    //added
+    /*
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        User.UserBuilder users = User.withDefaultPasswordEncoder();
+
+        auth.inMemoryAuthentication()
+                .withUser(users.username("testAdmin").password("testAdmin").roles("ADMIN"))
+                .withUser(users.username("testUser").password("testUser").roles("USER"));
+    }
+
+     */
+
+
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web
+                web
                 .ignoring()
-                .antMatchers("/h2-console/**"
-                        ,"/favicon.ico"
+                .antMatchers("/favicon.ico"
+
                 );
     }
+
+
+    /* TODO :: https://daddyprogrammer.org/post/636/springboot2-springsecurity-authentication-authorization/
+    */
+
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
+                //rest api라 필요업슴
+
+                .httpBasic().disable()
+                //restapi이므로 필요업슴
 
                 .exceptionHandling()
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
@@ -64,11 +89,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
 
+
                 .authorizeRequests()
-                .antMatchers("/api/hello").permitAll()
-                .antMatchers("/api/authenticate").permitAll()
-                .antMatchers("/api/signup").permitAll()
-                .antMatchers("/api/encode").permitAll()
+
+                .antMatchers("/api/v1/**").permitAll()
+             //   .antMatchers("/api/authenticate").permitAll()
+
+                .antMatchers("/login").permitAll()
+                .antMatchers("/signup").permitAll()
+
+                //인가된 유저만 접속
+                .antMatchers("/mypage").hasRole("USER")
+                .antMatchers("/board").hasRole("USER")
+
+       //          .antMatchers("*").permitAll()
                 .anyRequest().authenticated()
                 .and()
 

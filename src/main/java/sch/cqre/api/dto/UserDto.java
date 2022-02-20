@@ -1,6 +1,7 @@
 package sch.cqre.api.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,11 +21,12 @@ public class UserDto implements UserDetails {
 
 
     //TODO : 학번 정규식 적용 -> pattern은 string만되서... range로 대체했음
-    //@Pattern(regexp = "([2-9])0([0-9][0-9][0-9][0-9][0-9][0-9])", message = "학번을 제대로 입력해주세요.")
+    //@Pattern(regexp = "(", message = "학번을 제대로 입력해주세요.")
    // @NotBlank(message = "학번을 입력해주세요.")
 
     @Range(min = 20000000, max = 29999999, message = "학번을 제대로 입력해주세요.")
     private int studentId;
+
 
     @NotBlank(message = "비밀번호를 입력해주세요.")
     @Size(min = 8, max = 20, message = "비밀번호는 2자 이상 10자 이하로 입력해주세요.")
@@ -42,7 +44,7 @@ public class UserDto implements UserDetails {
 
     private String userType = "Guest"; // defaultValue = "Guest"
 
-    private String profile;
+   // private String profile;
 
     public UserDto(UserEntity user){
         this.userId = user.getUserId();
@@ -51,7 +53,7 @@ public class UserDto implements UserDetails {
         this.email = user.getEmail();
         this.nickname = user.getNickname();
         this.userType = user.getUserType();
-        this.profile = user.getProfile();
+     //   this.profile = user.getProfile();
     }
 
     public UserEntity toEntity(){
@@ -62,7 +64,7 @@ public class UserDto implements UserDetails {
                 .email(email)
                 .nickname(nickname)
                 .userType(userType)
-                .profile(profile)
+          //      .profile(profile)
                 .build();
     }
 

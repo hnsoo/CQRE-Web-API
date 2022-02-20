@@ -1,6 +1,4 @@
 package sch.cqre.api.controller;
 
-
-public class LoginController {
-
+public class ImageV1Controller {
 }

@@ -8,8 +8,10 @@ import sch.cqre.api.domain.UserEntity;
 public interface UserRepository extends JpaRepository<UserEntity,Long>{
 
     //boolean existsByStudentId(long studentId);
-    boolean findByEmail(String email);
-    boolean findByStudentId(int studentId);
+    int countByEmail(String email);
+    int countByStudentId(int studentId);
+    int countByNickname(String nickname);
+    UserEntity findOnceByEmail(String email);
     //boolean existsByNickname(String nickname);
 
 }

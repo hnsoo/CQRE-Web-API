@@ -12,6 +12,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.DynamicInsert;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -39,6 +40,7 @@ public class UserEntity {
 	@Basic(optional = false)
 	// @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	@Column(name = "password")
+	@JsonIgnore
 	private String password;
 	@Basic(optional = false)
 	@Column(name = "email", unique = true)
@@ -49,22 +51,22 @@ public class UserEntity {
 	@Basic
 	@Column(name = "user_type") // nullable, signup때 포함하지 않을 것임
 	private String userType; // defaultValue = "Guest"
-	@Basic(optional = false)
-	@Column(name = "profile")
-	private String profile;
-	@Basic // nullable, 자동으로 들어감
- 	@Column(name = "provider", length = 45) // social login
-	private String provider; // defaultValue = "local"
+	//@Basic(optional = false)
+	//@Column(name = "profile")
+	//private String profile;
+	//@Basic // nullable, 자동으로 들어감
+ 	//@Column(name = "provider", length = 45) // social login
+	//private String provider; // defaultValue = "local"
 
 	@Builder
-	public UserEntity(int userId, int studentId, String password, String email, String nickname, String userType,
-		String profile) {
+	public UserEntity(int userId, int studentId, String password, String email, String nickname, String userType){
+	//	String profile) {
 		this.studentId = studentId;
 		this.password = password;
 		this.email = email;
 		this.nickname = nickname;
 		this.userType = userType;
-		this.profile = profile;
+	//	this.profile = profile;
 	}
 
 	@Override
@@ -74,14 +76,14 @@ public class UserEntity {
 		if (o == null || getClass() != o.getClass())
 			return false;
 		UserEntity that = (UserEntity)o;
-		((UserEntity)o).setUserType("Guest");
+		((UserEntity)o).setUserType("guest");
 		return userId == that.userId && studentId == that.studentId && Objects.equals(password, that.password)
 			&& Objects.equals(email, that.email) && Objects.equals(nickname, that.nickname)
-			&& Objects.equals(userType, that.userType) && Objects.equals(profile, that.profile);
+			&& Objects.equals(userType, that.userType) ; //&& Objects.equals(profile, that.profile);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(userId, studentId, password, email, nickname, userType, profile);
+		return Objects.hash(userId, studentId, password, email, nickname, userType); // profile);
 	}
 }
