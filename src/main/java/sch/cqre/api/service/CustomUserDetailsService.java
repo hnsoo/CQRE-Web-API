@@ -1,57 +1,51 @@
-/*
+
 
 package sch.cqre.api.service;
 
 
 import lombok.RequiredArgsConstructor;
-import me.kimchi.JwtTest.entity.Authority;
-import me.kimchi.JwtTest.entity.User;
-import me.kimchi.JwtTest.repository.UserRepository;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import sch.cqre.api.domain.UserEntity;
+import sch.cqre.api.dto.UserDto;
+import sch.cqre.api.jwt.SecurityUser;
+import sch.cqre.api.repository.UserRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component("userDetailsService")
+@Slf4j
 @RequiredArgsConstructor
+
 public class CustomUserDetailsService implements UserDetailsService {
 
+/*
+       로그인하려는 email이 DB에 있는지 확인하는 loadUserByUsername
 
+       유효하다면, UserEntity가 아닌 커스텀 유저인 SecurityUser를 반환
+
+ */
     private final UserRepository userRepository;
 
 
     @Override
-    @Transactional(readOnly = true)
-    public UserDetails loadUserByUsername(final String userName) throws UsernameNotFoundException {
-        return userRepository.findOneWithAuthoritiesByUsername(userName)
-                .map(user -> createUser(userName, user))
-                .orElseThrow(() ->new UsernameNotFoundException("there is no User By "+userName));
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Optional<UserEntity> findMember = Optional.ofNullable(userRepository.findOnceByEmail(email));
+        if (!findMember.isPresent()) throw new UsernameNotFoundException("존재하지 않는 email 입니다.");
+
+        log.info("loadUserByUsername member.username = {}", email);
+
+        return new SecurityUser(findMember.get());
     }
-
-    private org.springframework.security.core.userdetails.User createUser(String userName, User user){
-        if(!user.isActivated()){
-            throw new RuntimeException(userName+ "-> not Activated");
-        }
-        List<GrantedAuthority> grantedAuthorities = user.getAuthorities().stream()
-                .map(authority -> new SimpleGrantedAuthority(authority.getAuthorityName()))
-                .collect(Collectors.toList());
-
-        return new org.springframework.security.core.userdetails.User(user.getUsername(),
-                user.getPassword(),
-                grantedAuthorities);
-    }
-
-
-
 
 
 }
 
-*/
+
 

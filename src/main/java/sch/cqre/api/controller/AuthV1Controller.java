@@ -1,6 +1,7 @@
 package sch.cqre.api.controller;
 
 
+import com.nimbusds.jose.shaded.json.JSONObject;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.service.spi.InjectService;
 import org.slf4j.Logger;
@@ -14,6 +15,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import sch.cqre.api.dto.UserDto;
+import sch.cqre.api.service.JsonMessager;
 import sch.cqre.api.service.UserService;
 
 @Controller
@@ -27,19 +29,27 @@ public class AuthV1Controller {
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    private final JsonMessager jsonMessager;
+
 
 
     @PostMapping("/signup")
-        public ResponseEntity signupRestMap(@RequestParam("studentId") String studentId,
-                                         @RequestParam("password") String password, @RequestParam("email") String email,
-                                         @RequestParam("nickname") String nickname, @RequestParam("profile") String profile
+
+        public ResponseEntity signupRestMap(@RequestParam(value="studentId", required = false, defaultValue = "") String studentId,
+                                            @RequestParam(value = "password", required = false, defaultValue = "") String password,
+                                            @RequestParam(value = "email" , required = false, defaultValue = "") String email,
+                                         @RequestParam(value = "nickname" ,required = false,defaultValue = "") String nickname
                                          ){
-                        /*
-                        TODO : @Validated를 통한 UserDto userinfo 유효성 검증 로직 추가
-                         */
 
             UserDto signUpForm = new UserDto();
 
+
+            if (studentId.isBlank() || password.isBlank() || email.isBlank() || nickname.isBlank() ){
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("message", "notVaildInput");
+                jsonObject.put("status", "error");
+                return ResponseEntity.badRequest().body(jsonObject);
+            }
 
             signUpForm.setStudentId(Integer.parseInt(studentId));
              signUpForm.setPassword(password);
@@ -51,11 +61,7 @@ public class AuthV1Controller {
             String validChk = userService.signupValidChk(signUpForm);
             if (validChk != "fine") {
                 //회원가입 폼이 유효하지 않음
-                MultiValueMap<String, String> header = new LinkedMultiValueMap<>();
-                header.add("status","fail");
-                header.add("message", validChk); // 첫번째 에러만 전달
-                return ResponseEntity.badRequest()
-                        .body(validChk);
+                return jsonMessager.err(validChk);
             }
 
             //유효성 검증이후 패스워드 암호화
@@ -65,8 +71,7 @@ public class AuthV1Controller {
             if (duplicateChk != "fine") {
                 //중복있음
                 MultiValueMap<String, String> header = new LinkedMultiValueMap<>();
-                return ResponseEntity.badRequest()
-                        .body(duplicateChk);
+                return jsonMessager.err(duplicateChk);
             }
                 logger.warn("good~");
                 return ResponseEntity.ok(userService.createUser(signUpForm));
@@ -79,7 +84,9 @@ public class AuthV1Controller {
 */
 
     @PostMapping("/login")
-        public ResponseEntity loginRestMap(@RequestParam("email") String email, @RequestParam("password") String password){
+        public ResponseEntity loginRestMap(@RequestParam(value = "email" , required = false, defaultValue = "") String email,
+                                           @RequestParam(value = "password", required = false, defaultValue = "") String password){
+        logger.warn("loginRestMap called");
         return userService.loginProc(email, password); //ResponseEntity loginResult =
         }
 

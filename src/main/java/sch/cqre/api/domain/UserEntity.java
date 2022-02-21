@@ -2,25 +2,15 @@ package sch.cqre.api.domain;
 
 import java.util.Objects;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.DynamicInsert;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.validation.annotation.Validated;
+import sch.cqre.api.jwt.Role;
 
 @Data
 @Entity
@@ -48,9 +38,15 @@ public class UserEntity {
 	@Basic(optional = false)
 	@Column(name = "nickname")
 	private String nickname;
+
 	@Basic
 	@Column(name = "user_type") // nullable, signup때 포함하지 않을 것임
-	private String userType; // defaultValue = "Guest"
+	//@Enumerated(EnumType.STRING)
+	//private String userType; // defaultValue = "Guest"
+	private String role;
+
+	//엔티티 이름 변경
+
 	//@Basic(optional = false)
 	//@Column(name = "profile")
 	//private String profile;
@@ -59,16 +55,17 @@ public class UserEntity {
 	//private String provider; // defaultValue = "local"
 
 	@Builder
-	public UserEntity(int userId, int studentId, String password, String email, String nickname, String userType){
+	public UserEntity(int userId, int studentId, String password, String email, String nickname, String role){
 	//	String profile) {
 		this.studentId = studentId;
 		this.password = password;
 		this.email = email;
 		this.nickname = nickname;
-		this.userType = userType;
+		this.role = role;
 	//	this.profile = profile;
 	}
 
+	/*
 	@Override
 	public boolean equals(Object o) {
 		if (this == o)
@@ -80,10 +77,10 @@ public class UserEntity {
 		return userId == that.userId && studentId == that.studentId && Objects.equals(password, that.password)
 			&& Objects.equals(email, that.email) && Objects.equals(nickname, that.nickname)
 			&& Objects.equals(userType, that.userType) ; //&& Objects.equals(profile, that.profile);
-	}
+	}*/
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(userId, studentId, password, email, nickname, userType); // profile);
+		return Objects.hash(userId, studentId, password, email, nickname, role); // profile);
 	}
 }

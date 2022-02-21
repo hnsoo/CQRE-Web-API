@@ -1,4 +1,4 @@
-package sch.cqre.api.controller;
+/*package sch.cqre.api.controller;
 
 import antlr.Token;
 import lombok.RequiredArgsConstructor;
@@ -48,3 +48,4 @@ public class AuthController {
 
     }
 }
+*/

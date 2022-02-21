@@ -1,15 +1,13 @@
 package sch.cqre.api.dto;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import sch.cqre.api.domain.UserEntity;
+import sch.cqre.api.jwt.Role;
 
 import javax.validation.constraints.*;
 import java.util.Collection;
@@ -19,31 +17,17 @@ import java.util.Collection;
 public class UserDto implements UserDetails {
     private int userId;
 
-
-    //TODO : 학번 정규식 적용 -> pattern은 string만되서... range로 대체했음
-    //@Pattern(regexp = "(", message = "학번을 제대로 입력해주세요.")
-   // @NotBlank(message = "학번을 입력해주세요.")
-
-    @Range(min = 20000000, max = 29999999, message = "학번을 제대로 입력해주세요.")
     private int studentId;
 
-
-    @NotBlank(message = "비밀번호를 입력해주세요.")
-    @Size(min = 8, max = 20, message = "비밀번호는 2자 이상 10자 이하로 입력해주세요.")
-    //TODO : access = JsonProperty.Access.WRITE_ONLY
     private String password;
 
-
-    @NotBlank(message = "이메일을 입력해주세요.")
-    @Email(message = "올바른 이메일 주소를 입력해주세요.")
     private String email;
 
-    @NotBlank(message = "닉네임을 입력해주세요.")
-    @Size(min = 2, max = 10, message = "닉네임은 2자 이상 10자 이하로 입력해주세요.")
     private String nickname;
 
-    private String userType = "Guest"; // defaultValue = "Guest"
-
+    private String role;
+    //UserRole userType;
+    //TODO : 디폴트 변수 상수화 - hun
    // private String profile;
 
     public UserDto(UserEntity user){
@@ -52,9 +36,10 @@ public class UserDto implements UserDetails {
         this.password = user.getPassword();
         this.email = user.getEmail();
         this.nickname = user.getNickname();
-        this.userType = user.getUserType();
+        this.role = user.getRole();
      //   this.profile = user.getProfile();
     }
+
 
     public UserEntity toEntity(){
         return UserEntity.builder()
@@ -63,7 +48,7 @@ public class UserDto implements UserDetails {
                 .password(password)
                 .email(email)
                 .nickname(nickname)
-                .userType(userType)
+                .role(role)
           //      .profile(profile)
                 .build();
     }

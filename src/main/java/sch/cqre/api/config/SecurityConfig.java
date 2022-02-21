@@ -5,10 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
-import sch.cqre.api.jwt.JwtAccessDeniedHandler;
-import sch.cqre.api.jwt.JwtAuthenticationEntryPoint;
-import sch.cqre.api.jwt.JwtSecurityConfig;
-import sch.cqre.api.jwt.TokenProvider;
+import sch.cqre.api.jwt.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -18,6 +15,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import sch.cqre.api.service.CustomUserDetailsService;
 
 @EnableWebSecurity
 /*
@@ -30,6 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final TokenProvider tokenProvider;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+    private final CustomUserDetailsService customUserDetailsService;
 
 
     @Bean
@@ -89,25 +88,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
 
-
                 .authorizeRequests()
 
                 .antMatchers("/api/v1/**").permitAll()
              //   .antMatchers("/api/authenticate").permitAll()
 
-                .antMatchers("/login").permitAll()
-                .antMatchers("/signup").permitAll()
 
                 //인가된 유저만 접속
-                .antMatchers("/mypage").hasRole("USER")
-                .antMatchers("/board").hasRole("USER")
+                .antMatchers("/mypage").hasAnyRole(Role.define.ALL_ACCOUNT)
+                .antMatchers("/board").hasAnyRole(Role.define.ONLY_ADMIN)
+
 
        //          .antMatchers("*").permitAll()
                 .anyRequest().authenticated()
                 .and()
 
-                .apply(new JwtSecurityConfig(tokenProvider))
-        ;
+                //springSecurity 로그인할때 CustomUserDetailsService를 사용하게 변경
+                .userDetailsService(customUserDetailsService)
+
+                .apply(new JwtSecurityConfig(tokenProvider));
+
     }
 
 

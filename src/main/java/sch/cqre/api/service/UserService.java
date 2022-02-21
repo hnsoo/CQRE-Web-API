@@ -1,35 +1,25 @@
 package sch.cqre.api.service;
 
 import lombok.RequiredArgsConstructor;
-import org.hibernate.service.spi.InjectService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
-import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
-import org.springframework.validation.annotation.Validated;
 import sch.cqre.api.domain.UserEntity;
 import sch.cqre.api.dto.UserDto;
 
+import sch.cqre.api.jwt.JwtFilter;
+import sch.cqre.api.jwt.Role;
+import sch.cqre.api.jwt.TokenProvider;
 import sch.cqre.api.repository.UserDAO;
 import sch.cqre.api.repository.UserRepository;
-import sch.cqre.api.repository.UserVO;
 //import sch.cqre.api.validator.EmailCheckValidator;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 @Service
@@ -38,10 +28,15 @@ import java.util.regex.Pattern;
 public class UserService {
 
     private final UserDAO userDao;
+    private final JsonMessager jsonMessager;
+
+
     private final UserRepository userRepository;
 
     @Autowired
     PasswordEncoder passwordEncoder;
+
+    private final TokenProvider tokenProvider;
     //private final EmailCheckValidator emailCheckValidator;
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
@@ -106,7 +101,6 @@ public class UserService {
     //Join
     @Transactional
     public UserEntity createUser(UserDto form){
-
         return userDao.add(form);
     }
 
@@ -117,13 +111,17 @@ public class UserService {
 
         UserEntity userInfo = userRepository.findOnceByEmail(email);
 
+        if (email.equals("") || password.equals("")){
+            return jsonMessager.err("notValidInput");
+        }
+
         if (userRepository.countByEmail(email) == 0){
-            return ResponseEntity.badRequest().body("notFoundAccount");
+            return jsonMessager.err("notFoundAccount");
         }
 
         if (!passwordEncoder.matches(password, userInfo.getPassword())){
 
-            return ResponseEntity.badRequest().body("idPasswordNotMatched");
+            return jsonMessager.err("idPasswordNotMatched");
         }
 
        // return userDao.add(form);
@@ -134,7 +132,14 @@ public class UserService {
         header.add("email", userInfo.getEmail());
         header.add("nickname", userInfo.getNickname());
         header.add("user_type", userInfo.getUserType()); */
-        return new ResponseEntity(userInfo, HttpStatus.OK);
+
+
+       // tokenProvider.createToken(userInfo.getEmail(), userInfo.getPassword(), userInfo.getUserType());
+        String jwt = tokenProvider.createToken(userInfo.getEmail(), userInfo.getRole());
+        logger.warn("created Token : " + jwt);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Baerer ".concat(jwt));
+        return new ResponseEntity(userInfo, httpHeaders, HttpStatus.OK);
     }
 
     /* 회원가입 시, 유효성 체크 */
