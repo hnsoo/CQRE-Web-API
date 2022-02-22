@@ -51,42 +51,43 @@ import sch.cqre.api.service.my.PostService;
 
 	 // 내가 쓴 게시글 불러오기
 	 @GetMapping("/post")
-	 public List<PostEntity> getMyPost(@RequestParam(value = "userId", required = false, defaultValue = "") Integer userId) {
+	 public ResponseEntity getMyPost(@RequestParam(value = "userId", required = false, defaultValue = "") Integer userId) {
 		 List<PostEntity> result = this.postService.searchAllByAuthorId(userId);
-		 return result;
+		 return ResponseEntity.ok().body(result);
 	 }
 
 	 // 스크랩한 포스트 로드
 	 @GetMapping("/scrap")
-	 public List<Optional<PostEntity>> getMyScrap(@RequestParam(value = "userId", required = false, defaultValue = "") Integer userId) {
-		 List<Optional<PostEntity>> result = this.postService.searchScrapByUserId(userId);
-		 return result;
+	 public ResponseEntity getMyScrap(@RequestParam(value = "userId", required = false, defaultValue = "") Integer userId) {
+		 List<PostEntity> result = this.postService.searchScrapByUserId(userId);
+		 return ResponseEntity.ok().body(result);
 	 }
 
 	 // 내 알림 불러오기
 	 @GetMapping("/notice")
-	 public List<NotificationEntity> getMyNotice(@RequestParam(value = "userId", required = false, defaultValue = "") Integer userId) {
+	 public ResponseEntity getMyNotice(@RequestParam(value = "userId", required = false, defaultValue = "") Integer userId) {
 		 List<NotificationEntity> result = this.noticeService.searchAllByUserId(userId);
-		 return result;
+		 return ResponseEntity.ok().body(result);
 	 }
 
 	 // 알림 하나 읽기
 	 @PatchMapping("/notice")
-	 public void readOneNotice(@RequestParam(value = "notiId", required = false, defaultValue = "") Integer notiId) {
-	 	this.noticeService.checkNotice(notiId);
+	 public ResponseEntity readOneNotice(@RequestParam(value = "notiId", required = false, defaultValue = "") Integer notiId) {
+	 	NotificationEntity result = this.noticeService.checkNotice(notiId);
+		 return ResponseEntity.ok().body(result);
 	 }
 
 	 // 알림 하나 삭제
 	 @DeleteMapping("/notice")
-	 public void deleteOneNotice(@RequestParam(value = "notiId", required = false, defaultValue = "") Integer notiId) {
+	 public ResponseEntity deleteOneNotice(@RequestParam(value = "notiId", required = false, defaultValue = "") Integer notiId) {
 		this.noticeService.deleteOneNotice(notiId);
 	 }
 
 	 // 알림 전체 읽기
 	 @PatchMapping("/notice/all")
-	 public List<NotificationEntity> readAllNotice(@RequestParam(value = "userId", required = false, defaultValue = "") Integer userId) {
+	 public ResponseEntity readAllNotice(@RequestParam(value = "userId", required = false, defaultValue = "") Integer userId) {
 		 List<NotificationEntity> result = this.noticeService.readAllNotice(userId);
-		 return result;
+		 return ResponseEntity.ok().body(result);
 	 }
 
 	 // 읽은 알림 전체 삭제

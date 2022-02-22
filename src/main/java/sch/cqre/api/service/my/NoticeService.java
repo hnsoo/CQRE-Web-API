@@ -2,6 +2,7 @@ package sch.cqre.api.service.my;
 
 import java.util.List;
 
+import org.aspectj.weaver.ast.Not;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,10 +33,11 @@ public class NoticeService {
 	}
 
 	@Transactional
-	public void checkNotice(Integer notId) {
+	public NotificationEntity checkNotice(Integer notId) {
 		NotificationEntity notificationEntity = this.notificationRepo.findById(notId)
 			.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 		notificationEntity.setWhether(1);
+		return notificationEntity;
 	}
 	public void deleteReadNotice(Integer ReceiverId) {
 		this.notificationRepo.deleteByReceiverIdAndWhether(ReceiverId, 1);
@@ -43,7 +45,10 @@ public class NoticeService {
 	public void deleteAllNotice(Integer userId) {
 		this.notificationRepo.deleteByReceiverId(userId);
 	}
-	public void deleteOneNotice(Integer notId) {
+	public Boolean deleteOneNotice(Integer notId) {
 		this.notificationRepo.deleteById(notId);
+		this.notificationRepo.findById(notId)
+			.orElseThrow(() -> new ResponseStatusException(HttpStatus.OK));
+		return false;
 	}
 }
