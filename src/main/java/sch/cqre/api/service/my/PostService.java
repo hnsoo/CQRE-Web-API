@@ -1,13 +1,13 @@
 package sch.cqre.api.service.my;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import lombok.AllArgsConstructor;
-import sch.cqre.api.domain.NotificationEntity;
+// import sch.cqre.api.domain.NotificationEntity;
 import sch.cqre.api.domain.PostEntity;
 import sch.cqre.api.domain.ScrapEntity;
 import sch.cqre.api.repository.PostRepository;
@@ -20,16 +20,16 @@ public class PostService {
 	private final PostRepository postRepo;
 
 	public List<PostEntity> searchAllByAuthorId(Integer authorId) {
-		List<PostEntity> result = this.postRepo.findByUserId(authorId);
+		List<PostEntity> result = this.postRepo.findByAuthorId(authorId);
 		return result;
 	}
 
-	public List<PostEntity> searchScrapByUserId(Integer userId) {
+	public List<Optional<PostEntity>> searchScrapByUserId(Integer userId) {
 		List<ScrapEntity> scraps = this.scrapRepo.findByUserId(userId);
-		List<PostEntity> result = null;
+		List<Optional<PostEntity>> result = new ArrayList();
 		if (scraps != null) {
 			for (ScrapEntity scrapEntity : scraps) {
-				result.add(postRepo.getById(scrapEntity.getPostId()));
+				result.add(postRepo.findById(scrapEntity.getPostId()));
 			}
 		}
 		return result;

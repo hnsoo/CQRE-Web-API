@@ -12,8 +12,6 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.DynamicInsert;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -44,9 +42,9 @@ public class UserEntity {
 	@Basic
 	@Column(name = "user_type") // nullable, signup때 포함하지 않을 것임
 	private String userType; // defaultValue = "Guest"
-	@Basic // nullable, 자동으로 들어감
- 	@Column(name = "provider", length = 45) // social login
-	private String provider; // defaultValue = "local"
+	// @Basic // nullable, 자동으로 들어감
+ 	// @Column(name = "provider", length = 45) // social login
+	// private String provider; // defaultValue = "local"
 
 	@Builder
 	public UserEntity(Integer studentId, String password, String email, String nickname, String userType,

@@ -25,21 +25,20 @@ public class NoticeService {
 		List<NotificationEntity> result = this.notificationRepo.findByReceiverId(userId);
 		if (result != null) {
 			for (NotificationEntity notificationEntity : result) {
-				notificationEntity.setReadOrNot(1);
+				notificationEntity.setWhether(1);
 			}
 		}
 		return result;
 	}
 
 	@Transactional
-	public String checkNotice(Integer notId) {
+	public void checkNotice(Integer notId) {
 		NotificationEntity notificationEntity = this.notificationRepo.findById(notId)
 			.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-		notificationEntity.setReadOrNot(1);
-		return notificationEntity.getNotUrl();
+		notificationEntity.setWhether(1);
 	}
-	public void deleteReadNotice(Integer userId) {
-		this.notificationRepo.deleteByReceiverIdAndReadOrNot(userId, 1);
+	public void deleteReadNotice(Integer ReceiverId) {
+		this.notificationRepo.deleteByReceiverIdAndWhether(ReceiverId, 1);
 	}
 	public void deleteAllNotice(Integer userId) {
 		this.notificationRepo.deleteByReceiverId(userId);

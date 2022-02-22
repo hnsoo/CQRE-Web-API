@@ -6,9 +6,8 @@ import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
 
 import lombok.Builder;
@@ -19,6 +18,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @Table(name = "Rental", schema = "main")
+@IdClass(RentalEntityPK.class)
 public class RentalEntity {
 	@Id
 	@Column(name = "user_id")
