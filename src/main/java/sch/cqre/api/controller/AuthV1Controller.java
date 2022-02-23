@@ -84,11 +84,20 @@ public class AuthV1Controller {
 */
 
     @PostMapping("/login")
-        public ResponseEntity loginRestMap(@RequestParam(value = "email" , required = false, defaultValue = "") String email,
-                                           @RequestParam(value = "password", required = false, defaultValue = "") String password){
+    public ResponseEntity loginRestMap(@RequestParam(value = "email" , required = false, defaultValue = "") String email,
+                                       @RequestParam(value = "password", required = false, defaultValue = "") String password){
         logger.warn("loginRestMap called");
         return userService.loginProc(email, password); //ResponseEntity loginResult =
-        }
+    }
+
+
+    /*
+    @GetMapping("/logout")
+    public ResponseEntity logoutRestMap(){
+        return userService.logoutProc(); //ResponseEntity loginResult =
+    }
+
+     */
 
 
 

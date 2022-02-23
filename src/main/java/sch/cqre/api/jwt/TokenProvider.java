@@ -8,11 +8,13 @@ import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
+import sch.cqre.api.service.CustomUserDetailsService;
 
 /*
  * 토큰 생성 및 유효성 검증
@@ -24,8 +26,6 @@ import java.util.Date;
 @Component
 public class TokenProvider implements InitializingBean {
 
-
-    private static final String AUTHORITIES_KEY = "MoonSeonghunisSuperJonjal";
     private final UserDetailsService userDetailsService;
 
     private final String secret;
@@ -49,9 +49,26 @@ public class TokenProvider implements InitializingBean {
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String createToken(String userPk, String roles) {
-        Claims claims = Jwts.claims().setSubject(userPk); // JWT payload 에 저장되는 정보단위
+    public String createToken(String userId, String email, String roles) {
+
+        /*
+        Map<String, Object> paramMap = new HashMap();
+
+        Aes256Util a256 = Aes256Util.getInstance();
+        String encryptEmail = a256.AES_Encode(email);
+        String encryptUid = a256.AES_Encode(userId);
+        paramMap.put("email", encryptEmail);
+        paramMap.put("uid", encryptUid);
+        paramMap.put("roles", roles);
+
+         */
+
+        Claims claims = Jwts.claims();
+        claims.put("email", email); // JWT payload 에 저장되는 정보단위
+    //    claims.set
+        claims.put("uid", userId);
         claims.put("roles", roles); // 정보는 key / value 쌍으로 저장된다.
+        log.warn(String.valueOf(claims));
         Date now = new Date();
         return Jwts.builder()
                 .setClaims(claims) // 정보 저장
@@ -60,25 +77,11 @@ public class TokenProvider implements InitializingBean {
                 .signWith(key, SignatureAlgorithm.HS512)
                 // 사용할 암호화 알고리즘 + 시그니쳐에 들어갈 시크릿값
                 .compact();
-
-       /* String authorities = authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining(","));
-
-
-        long now = (new Date()).getTime();
-        Date validity = new Date(now + this.tokenValidityInMilliseconds);
-
-        return Jwts.builder()
-                .setSubject(authentication.getName())
-                .claim(AUTHORITIES_KEY, authorities)
-                .signWith(key, SignatureAlgorithm.HS512)
-                .setExpiration(validity)
-                .compact(); */
     }
 
     public Authentication getAuthentication(String token) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserPk(token));
+        UserDetails userDetails = userDetailsService.loadUserByUsername(this.getEmail(token));
+
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
@@ -101,8 +104,12 @@ public class TokenProvider implements InitializingBean {
 
 
     // 토큰에서 회원 정보 추출
-    public String getUserPk(String token) {
-        return Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token).getBody().getSubject();
+    public String getEmail(String token) {
+        return Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token).getBody().get("email", String.class);
+    }
+
+    public String getUid(String token) {
+        return Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token).getBody().get("uid", String.class);
     }
 
 

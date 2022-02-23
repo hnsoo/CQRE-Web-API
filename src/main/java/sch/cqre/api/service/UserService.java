@@ -1,8 +1,7 @@
 package sch.cqre.api.service;
 
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -14,17 +13,16 @@ import sch.cqre.api.domain.UserEntity;
 import sch.cqre.api.dto.UserDto;
 
 import sch.cqre.api.jwt.JwtFilter;
-import sch.cqre.api.jwt.Role;
 import sch.cqre.api.jwt.TokenProvider;
 import sch.cqre.api.repository.UserDAO;
 import sch.cqre.api.repository.UserRepository;
-//import sch.cqre.api.validator.EmailCheckValidator;
 
 import java.util.regex.Pattern;
 
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Slf4j
 public class UserService {
 
     private final UserDAO userDao;
@@ -37,13 +35,6 @@ public class UserService {
     PasswordEncoder passwordEncoder;
 
     private final TokenProvider tokenProvider;
-    //private final EmailCheckValidator emailCheckValidator;
-
-    private final Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
-
-
-
-    //private SqlSessionTemplate session;
 
 
     public String signupValidChk(UserDto form){
@@ -77,6 +68,7 @@ public class UserService {
         "fine" = 중복되는 값 없음 (이메일, 닉네임, 학번)
         "message" = 중복되는 값 있음 (회원가입 불가)
          */
+
             if (userRepository.countByStudentId(form.getStudentId()) != 0)
                 return "studentId_duplicate";
             if (userRepository.countByEmail(form.getEmail()) != 0)
@@ -88,15 +80,6 @@ public class UserService {
             return "fine";
 
         }
-
-
-
-
-
-    //Login
-    public boolean getLoginChk() throws Exception{
-        return true;
-    }
 
     //Join
     @Transactional
@@ -124,39 +107,12 @@ public class UserService {
             return jsonMessager.err("idPasswordNotMatched");
         }
 
-       // return userDao.add(form);
-        /*
-        MultiValueMap<String, String> header = new LinkedMultiValueMap<>();
-        header.add("user_id", String.valueOf(userInfo.getUserId()));
-        header.add("student_id", String.valueOf(userInfo.getStudentId()));
-        header.add("email", userInfo.getEmail());
-        header.add("nickname", userInfo.getNickname());
-        header.add("user_type", userInfo.getUserType()); */
-
-
-       // tokenProvider.createToken(userInfo.getEmail(), userInfo.getPassword(), userInfo.getUserType());
-        String jwt = tokenProvider.createToken(userInfo.getEmail(), userInfo.getRole());
-        logger.warn("created Token : " + jwt);
+        String jwt = tokenProvider.createToken(String.valueOf(userInfo.getUserId()), userInfo.getEmail(), userInfo.getRole());
+        log.warn("created Token : " + jwt);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Baerer ".concat(jwt));
         return new ResponseEntity(userInfo, httpHeaders, HttpStatus.OK);
     }
-
-    /* 회원가입 시, 유효성 체크 */
-    /*
-    @Transactional(readOnly = true)
-    public Map < String, String > validateHandling(Errors errors) {
-        Map< String, String > validatorResult = new HashMap< >(); /* 유효성 검사에 실패한 필드 목록을 받음 */
-       /* for (FieldError error: errors.getFieldErrors()) {
-            String validKeyName = String.format("valid_%s", error.getField());
-            validatorResult.put(validKeyName, error.getDefaultMessage());
-        }
-        return validatorResult;
-    }
-    */
-
-
-
 
     //Modify
 

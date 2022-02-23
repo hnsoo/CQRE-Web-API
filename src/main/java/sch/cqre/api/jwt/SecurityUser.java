@@ -19,13 +19,13 @@ public class SecurityUser extends User {
 
      */
 
-
-
     private UserEntity member;
 
     public SecurityUser(UserEntity member) {
         super(member.getEmail(), member.getPassword(), AuthorityUtils.createAuthorityList(member.getRole().toString()));
 
+
+        log.info("SecurityUser UserEntity.uid = {}", member.getUserId());
         log.info("SecurityUser UserEntity.username = {}", member.getEmail());
         log.info("SecurityUser UserEntity.password = {}", member.getPassword());
         log.info("SecurityUser UserEntity.role = {}", member.getRole().toString());

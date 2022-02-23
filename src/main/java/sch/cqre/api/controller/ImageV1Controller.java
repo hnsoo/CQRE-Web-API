@@ -1,17 +1,27 @@
 package sch.cqre.api.controller;
 
 
+import com.nimbusds.jose.shaded.json.JSONObject;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.security.RolesAllowed;
 
 @Controller
-@RequestMapping("/test")
-@RolesAllowed("hasRole('ROLE_ADMIN')")
 public class ImageV1Controller {
-    public String asd(){
-        return "a";
+/*
+    @RequestMapping("/admin")
+    public String getProfileURL(){
+        JSONObject jsonObject = new JSONObject();
+
+        //TODO:개발예쩡
+        return "qqqwe";
     }
 
+
+ */
+
+
 }
+

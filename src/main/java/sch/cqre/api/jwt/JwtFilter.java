@@ -25,6 +25,7 @@ public class JwtFilter extends GenericFilterBean {
     /*
      * 토큰의 인증정보를 Security Context(Thread Local)에 저장
      * */
+
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
@@ -45,6 +46,7 @@ public class JwtFilter extends GenericFilterBean {
 
         chain.doFilter(request, response);
     }
+
     /*
      * requestHeader에서 토큰정보를 가져온다.
      * */
