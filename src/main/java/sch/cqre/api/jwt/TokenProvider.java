@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
@@ -39,6 +40,7 @@ public class TokenProvider implements InitializingBean {
             @Value("${jwt.token-validity-in-seconds}") long tokenValidityInSeconds) {
         this.userDetailsService = userDetailsService;
         this.secret = secret;
+
         this.tokenValidityInMilliseconds = tokenValidityInSeconds * 1000;
     }
 
@@ -64,10 +66,10 @@ public class TokenProvider implements InitializingBean {
          */
 
         Claims claims = Jwts.claims();
-        claims.put("email", email); // JWT payload 에 저장되는 정보단위
+        claims.put("email", email);
     //    claims.set
         claims.put("uid", userId);
-        claims.put("roles", roles); // 정보는 key / value 쌍으로 저장된다.
+        claims.put("roles", roles); // 정보는 key / value 쌍으로 저장
         log.warn(String.valueOf(claims));
         Date now = new Date();
         return Jwts.builder()
@@ -81,7 +83,7 @@ public class TokenProvider implements InitializingBean {
 
     public Authentication getAuthentication(String token) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(this.getEmail(token));
-
+        log.warn("토큰 인증 시도한 회원 정보 : " + userDetails);
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
@@ -111,6 +113,8 @@ public class TokenProvider implements InitializingBean {
     public String getUid(String token) {
         return Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token).getBody().get("uid", String.class);
     }
+
+
 
 
 }

@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -112,6 +114,15 @@ public class UserService {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Baerer ".concat(jwt));
         return new ResponseEntity(userInfo, httpHeaders, HttpStatus.OK);
+    }
+
+
+    public String getEmail(){
+        return SecurityContextHolder.getContext().getAuthentication().getName();
+    }
+
+    public String getRole(){
+        return SecurityContextHolder.getContext().getAuthentication().getAuthorities().toString();
     }
 
     //Modify

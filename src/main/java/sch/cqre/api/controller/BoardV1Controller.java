@@ -1,5 +1,6 @@
 package sch.cqre.api.controller;
 
+import com.nimbusds.jose.shaded.json.JSONObject;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,11 +23,14 @@ public class BoardV1Controller {
     private final JsonMessager jsonMessager;
 
 
-/*
-    @PostMapping("/view")
-    public ResponseEntity viewMap(){
 
+    @PostMapping("/write")
+    public ResponseEntity writeMap(){
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("message", "hi~ " + userService.getRole());
+        jsonObject.put("email", userService.getEmail());
+        return ResponseEntity.ok().body(jsonObject);
     }
 
- */
+
 }
