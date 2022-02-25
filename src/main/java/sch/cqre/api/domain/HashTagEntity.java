@@ -22,7 +22,7 @@ public class HashTagEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	@Column(name = "hashtag_id")
-	private Long hashtagId;
+	private int hashtagId;
 	@Basic(optional = false)
 	@Column(name = "name")
 	private String name;
