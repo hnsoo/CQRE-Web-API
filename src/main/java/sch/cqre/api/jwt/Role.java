@@ -49,13 +49,6 @@ public enum Role implements GrantedAuthority {
         public static final String role_MANAGER = "ROLE_MANAGER";
         public static final String role_USER = "ROLE_USER";
         public static final String role_GUEST = "ROLE_GUEST";
-
-
-        //hasRole 파라메타 명시
-        public static String[] ONLY_ADMIN = {"ADMIN"};
-        public static String[] ONLY_ADMIN_MANAGER = {"ADMIN", "MANAGER"};
-        public static String[] WITHOUT_GUEST = {"ADMIN", "MANAGER", "USER"};
-        public static String[] ALL_ACCOUNT = {"ADMIN", "MANAGER", "USER", "GUEST"};
     }
 }
 
