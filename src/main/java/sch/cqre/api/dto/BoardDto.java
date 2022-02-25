@@ -1,19 +1,25 @@
 package sch.cqre.api.dto;
 
-import lombok.Builder;
+import lombok.*;
 import sch.cqre.api.domain.PostEntity;
 import sch.cqre.api.domain.UserEntity;
+import sch.cqre.api.repository.UserRepository;
+import sch.cqre.api.service.UserService;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import java.sql.Timestamp;
 
 
-@Builder
+@Data
+@NoArgsConstructor
 public class BoardDto {
 
-    private long postId;
-    private long authorId;
+    private UserRepository userRepository;
+    private UserService userService;
+
+  //  private long postId;
+    private int authorId;
     private String postTitle;
     private String postContent;
     private int views;
@@ -23,7 +29,7 @@ public class BoardDto {
     private Timestamp updatedAt;
 
     public BoardDto(PostEntity board){
-       // this.postId = board.getPostId(); @id
+      //  this.postId = board.getPostId(); @id
         this.authorId = board.getAuthorId();
         this.postTitle = board.getPostTitle();
         this.postContent = board.getPostContent();
@@ -37,7 +43,6 @@ public class BoardDto {
 
     public PostEntity toEntity(){
         return PostEntity.builder()
-                .authorId(authorId)
                 .postTitle(postTitle)
                 .postContent(postContent)
                 .views(views)
