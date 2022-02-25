@@ -6,13 +6,18 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class JsonMessager {
-
-
     public ResponseEntity err(String message) {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("message", message);
         jsonObject.put("status", "error");
         return ResponseEntity.badRequest().body(jsonObject);
+    }
+
+    public ResponseEntity success(String message) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("message", message);
+        jsonObject.put("status", "success");
+        return ResponseEntity.ok().body(jsonObject);
     }
 
 
