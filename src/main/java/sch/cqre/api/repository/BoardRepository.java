@@ -7,5 +7,7 @@ import sch.cqre.api.domain.UserEntity;
 
 @Repository
 public interface BoardRepository extends JpaRepository<PostEntity,Long> {
+    PostEntity findOnceByPostId(int postId);
+    int countByPostId(int postId);
 
 }
