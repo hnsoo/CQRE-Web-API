@@ -3,23 +3,22 @@ package sch.cqre.api.domain;
 import java.io.Serializable;
 import java.util.Objects;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 import lombok.Data;
 
 @Data
 public class PostHashTagEntityPK implements Serializable {
+
+	//@Id
 	@Column(name = "post_id")
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long postId;
+	//@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int postId;
+
+	//@Id
 	@Column(name = "hashtag_id")
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long hashtagId;
+	//@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int hashtagId;
 
 	@Override
 	public boolean equals(Object o) {
