@@ -23,10 +23,10 @@ public class PostEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	@Column(name = "post_id")
-	private Long postId;
+	private int postId;
 	@Basic(optional = false)
 	@Column(name = "author_id")
-	private Long authorId;
+	private int authorId;
 	@Basic(optional = false)
 	@Column(name = "post_title")
 	private String postTitle;
@@ -50,7 +50,7 @@ public class PostEntity {
 	private Timestamp updatedAt;
 
 	@Builder
-	public PostEntity(Long authorId, String postTitle, String postContent, int views, int likes, String thumbnail,
+	public PostEntity(int authorId, String postTitle, String postContent, int views, int likes, String thumbnail,
 		Timestamp createdAt, Timestamp updatedAt) {
 		this.authorId = authorId;
 		this.postTitle = postTitle;
