@@ -61,7 +61,7 @@ public class AuthV1Controller {
             String validChk = userService.signupValidChk(signUpForm);
             if (validChk != "fine") {
                 //회원가입 폼이 유효하지 않음
-                return jsonMessager.err(validChk);
+                return jsonMessager.errStr(validChk);
             }
 
             //유효성 검증이후 패스워드 암호화
@@ -71,7 +71,7 @@ public class AuthV1Controller {
             if (duplicateChk != "fine") {
                 //중복있음
                 MultiValueMap<String, String> header = new LinkedMultiValueMap<>();
-                return jsonMessager.err(duplicateChk);
+                return jsonMessager.errStr(duplicateChk);
             }
                 logger.warn("good~");
                 return ResponseEntity.ok(userService.createUser(signUpForm));
