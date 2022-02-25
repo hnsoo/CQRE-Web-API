@@ -117,10 +117,12 @@ public class UserService {
     }
 
 
+    //현재 사용중인 토큰의 주인(이메일)을 불러오는 함수
     public String getEmail(){
         return SecurityContextHolder.getContext().getAuthentication().getName();
     }
 
+    //현재 사용중인 토큰의 주인(권한)을 불러오는 함수
     public String getRole(){
         return SecurityContextHolder.getContext().getAuthentication().getAuthorities().toString();
     }
