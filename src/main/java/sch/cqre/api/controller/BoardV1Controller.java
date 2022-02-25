@@ -12,12 +12,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import sch.cqre.api.repository.BoardDAO;
 import sch.cqre.api.service.BoardService;
 import sch.cqre.api.service.JsonMessager;
 import sch.cqre.api.service.UserService;
 
-@Controller
+@RestController
 @RequestMapping("/api/v1/board/*")
 @RequiredArgsConstructor
 @Slf4j
@@ -29,6 +30,20 @@ public class BoardV1Controller {
 
     @PostMapping("/write")
     public ResponseEntity writeMap(@RequestParam(value = "title", required = false, defaultValue = "") String title,
+                                   @RequestParam(value = "content", required = false, defaultValue = "") String content,
+                                   @RequestParam(value = "hashtag", required = false, defaultValue = "") String hashtag){
+
+        if (title.isBlank() || content.isBlank() || hashtag.isBlank()){
+            return jsonMessager.errStr("notVaildInput");
+        }
+
+
+        return boardService.writeProc(title, content, hashtag);
+    }
+
+    /*
+    @PostMapping("/modify") // 수정
+    public ResponseEntity writeMap(@RequestParam(value = "uid") String title,
                                    @RequestParam(value = "content", required = false, defaultValue = "") String content){
 
         if (title.isBlank() || content.isBlank()){
@@ -37,6 +52,8 @@ public class BoardV1Controller {
 
         return boardService.writeProc(title, content);
     }
+
+     */
 
 
     @PostMapping("/read")

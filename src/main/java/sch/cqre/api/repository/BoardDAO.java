@@ -27,7 +27,7 @@ public class BoardDAO {
 
 
     @Transactional
-    public ResponseEntity writePost(String title, String content){
+    public int  writePost(String title, String content){
         //form 유효성 확인
         /*if (boardForm.getPostTitle().isBlank() || boardForm.getPostContent().isBlank() ){
             return
@@ -50,10 +50,10 @@ public class BoardDAO {
         writeForm.setCreatedAt(Timestamp.valueOf(CreateAt));
         writeForm.setUpdatedAt(Timestamp.valueOf(CreateAt));
 
-        boardRepository.save(writeForm);
-
-        return jsonMessager.success("posted");
+        return boardRepository.save(writeForm).getPostId();
     }
+
+
 
     @Transactional
     public PostEntity modify(BoardDto form){
