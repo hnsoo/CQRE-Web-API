@@ -12,6 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import sch.cqre.api.repository.BoardDAO;
+import sch.cqre.api.service.BoardService;
 import sch.cqre.api.service.JsonMessager;
 import sch.cqre.api.service.UserService;
 
@@ -23,6 +25,7 @@ public class BoardV1Controller {
 
     private final UserService userService;
     private final JsonMessager jsonMessager;
+    private final BoardService boardService;
 
     @PostMapping("/write")
     public ResponseEntity writeMap(@RequestParam(value = "title", required = false, defaultValue = "") String title,
@@ -32,8 +35,7 @@ public class BoardV1Controller {
             return jsonMessager.err("notVaildInput");
         }
 
-
-        return ResponseEntity.ok().body("");
+        return boardService.writeProc(title, content);
     }
 
 
