@@ -67,7 +67,6 @@ public class TokenProvider implements InitializingBean {
 
         Claims claims = Jwts.claims();
         claims.put("email", email);
-    //    claims.set
         claims.put("uid", userId);
         claims.put("roles", roles); // 정보는 key / value 쌍으로 저장
         log.warn(String.valueOf(claims));

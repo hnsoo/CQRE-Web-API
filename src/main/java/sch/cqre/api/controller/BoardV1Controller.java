@@ -9,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import sch.cqre.api.repository.BoardDAO;
 import sch.cqre.api.service.BoardService;
 import sch.cqre.api.service.JsonMessager;
@@ -31,29 +28,38 @@ public class BoardV1Controller {
     @PostMapping("/write")
     public ResponseEntity writeMap(@RequestParam(value = "title", required = false, defaultValue = "") String title,
                                    @RequestParam(value = "content", required = false, defaultValue = "") String content,
-                                   @RequestParam(value = "hashtag", required = false, defaultValue = "") String hashtag){
+                                   @RequestParam(value = "hashtag", required = false, defaultValue = "") String hashtag) {
 
-        if (title.isBlank() || content.isBlank() || hashtag.isBlank()){
+        if (title.isBlank() || content.isBlank() || hashtag.isBlank()) {
             return jsonMessager.errStr("notVaildInput");
         }
-
 
         return boardService.writeProc(title, content, hashtag);
     }
 
-    /*
-    @PostMapping("/modify") // 수정
-    public ResponseEntity writeMap(@RequestParam(value = "uid") String title,
-                                   @RequestParam(value = "content", required = false, defaultValue = "") String content){
 
-        if (title.isBlank() || content.isBlank()){
-            return jsonMessager.err("notVaildInput");
-        }
+    @PostMapping("/delete")
+    public ResponseEntity deleteMap(){
+            //PostHashTag 지우고
+            //Post지우면 됨
 
-        return boardService.writeProc(title, content);
+        return jsonMessager.successStr("ok");
+
     }
 
-     */
+    @PutMapping("/modify") // 수정
+    public ResponseEntity writeMap(@RequestParam(value = "uid", required = false, defaultValue = "") int uid,
+                                   @RequestParam(value = "title", required = false, defaultValue = "") String title,
+                                   @RequestParam(value = "content", required = false, defaultValue = "") String content,
+                                   @RequestParam(value = "hashtag", required = false, defaultValue = "") String hashtag){
+
+        if (uid==0 || title.isBlank() || content.isBlank() || hashtag.isBlank())
+            return jsonMessager.errStr("notVaildInput");
+
+        return boardService.modifyProc(uid, title, content, hashtag);
+    }
+
+
 
 
     @PostMapping("/read")

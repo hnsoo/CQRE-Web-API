@@ -9,4 +9,7 @@ import sch.cqre.api.domain.PostHashTagEntityPK;
 @Repository
 public interface PostHashTagRepository extends JpaRepository<PostHashTagEntity,Long> {
   //  int countByPost(String email);
+      PostHashTagEntity findBypostId(int post_id);
+      int countBypostId(int post_id);
+        void deleteBypostId(int post_id);
 }

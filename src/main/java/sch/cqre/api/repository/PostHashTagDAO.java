@@ -25,5 +25,20 @@ public class PostHashTagDAO {
 
     }
 
+    @Transactional
+    public int removeTag(int postId){
+        postHashTagRepository.deleteBypostId(postId);
+
+        //태그가 정상적으로 삭제됐으면 0리턴, 아니면 -1리턴
+        if (postHashTagRepository.countBypostId(postId) == 0)
+            return 0;
+
+        else return -1;
+
+    }
+
+
+
+
 
 }
