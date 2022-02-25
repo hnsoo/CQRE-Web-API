@@ -97,16 +97,16 @@ public class UserService {
         UserEntity userInfo = userRepository.findOnceByEmail(email);
 
         if (email.equals("") || password.equals("")){
-            return jsonMessager.err("notValidInput");
+            return jsonMessager.errStr("notValidInput");
         }
 
         if (userRepository.countByEmail(email) == 0){
-            return jsonMessager.err("notFoundAccount");
+            return jsonMessager.errStr("notFoundAccount");
         }
 
         if (!passwordEncoder.matches(password, userInfo.getPassword())){
 
-            return jsonMessager.err("idPasswordNotMatched");
+            return jsonMessager.errStr("idPasswordNotMatched");
         }
 
         String jwt = tokenProvider.createToken(String.valueOf(userInfo.getUserId()), userInfo.getEmail(), userInfo.getRole());
