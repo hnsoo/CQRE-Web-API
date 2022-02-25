@@ -19,7 +19,6 @@ public class UserDAO {
     @Transactional
     public UserEntity add( UserDto form){
         //user테이블에 회원정보를 넣습니다.
-        //form.setRole( Role.define.GUEST);
         UserEntity user = form.toEntity();
         user.setRole(Role.define.role_GUEST);
         return userRepository.save(user);
@@ -29,7 +28,6 @@ public class UserDAO {
     public UserEntity modify(UserDto form){
         //user테이블 -> 회원정보를 수정합니다.
         UserEntity user = form.toEntity();
-        //UserEntity.builder()
         return userRepository.save(user);
     }
 
