@@ -1,5 +1,7 @@
 package sch.cqre.api.service;
 
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -10,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import sch.cqre.api.config.FileStorageConfig;
 import sch.cqre.api.exception.FileStorageException;
 import sch.cqre.api.exception.MyFileNotFoundException;
+import sch.cqre.api.repository.FileDAO;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -17,6 +20,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -40,6 +44,9 @@ public class FileStorageService {
         log.warn("a");
         // Normalize file name
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        UUID uuid = UUID.randomUUID();
+        String randomUploadFileName = uuid.toString() + "_" + fileName;
+
 
         try {
             // Check if the file's name contains invalid characters
