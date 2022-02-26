@@ -24,13 +24,17 @@ import java.util.UUID;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class FileStorageService {
+
     private final Path fileStorageLocation;
+    private final FileDAO fileDAO;
 
     @Autowired
-    public FileStorageService(FileStorageConfig fileStorageConfig) {
+    public FileStorageService(FileStorageConfig fileStorageConfig, FileDAO fileDAO) {
         this.fileStorageLocation = Paths.get(fileStorageConfig.getUploadDir())
                 .toAbsolutePath().normalize();
+        this.fileDAO = fileDAO;
 
         try {
             Files.createDirectories(this.fileStorageLocation);
@@ -39,9 +43,8 @@ public class FileStorageService {
         }
     }
 
-    public String storeFile(MultipartFile file) {
+    public String storeFile(MultipartFile file, String fileSource, int sourceUID) {
 
-        log.warn("a");
         // Normalize file name
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
         UUID uuid = UUID.randomUUID();
@@ -54,15 +57,18 @@ public class FileStorageService {
                 throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
             }
 
-            log.warn("b");
-
             // Copy file to the target location (Replacing existing file with the same name)
-            Path targetLocation = this.fileStorageLocation.resolve(fileName);
+            Path targetLocation = this.fileStorageLocation.resolve(randomUploadFileName);
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
 
-            log.warn("c");
-            return fileName;
+
+            // db에 작성
+            fileDAO.addFile(fileName, randomUploadFileName, String.valueOf(this.fileStorageLocation),
+                    Long.valueOf(file.getSize()).intValue(), file.getContentType(), fileSource + String.valueOf(sourceUID));
+
+            return randomUploadFileName;
+
         } catch (IOException ex) {
             throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
         }
