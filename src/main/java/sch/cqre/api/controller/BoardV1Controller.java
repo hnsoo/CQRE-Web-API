@@ -86,13 +86,6 @@ public class BoardV1Controller {
         return ResponseEntity.ok().body(jsonObject);
     }
 
-    @PostMapping("/file/upload")
-    public ResponseEntity fileUploadMap(){
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("message", "hi~ " + userService.getRole());
-        jsonObject.put("email", userService.getEmail());
-        return ResponseEntity.ok().body(jsonObject);
-    }
 
 
 }
