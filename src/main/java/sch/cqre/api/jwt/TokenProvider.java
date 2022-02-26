@@ -53,18 +53,6 @@ public class TokenProvider implements InitializingBean {
 
     public String createToken(String userId, String email, String roles) {
 
-        /*
-        Map<String, Object> paramMap = new HashMap();
-
-        Aes256Util a256 = Aes256Util.getInstance();
-        String encryptEmail = a256.AES_Encode(email);
-        String encryptUid = a256.AES_Encode(userId);
-        paramMap.put("email", encryptEmail);
-        paramMap.put("uid", encryptUid);
-        paramMap.put("roles", roles);
-
-         */
-
         Claims claims = Jwts.claims();
         claims.put("email", email);
         claims.put("uid", userId);
