@@ -38,22 +38,29 @@ public class BoardV1Controller {
     }
 
 
-    @PostMapping("/delete")
-    public ResponseEntity deleteMap(){
-            //PostHashTag 지우고
-            //Post지우면 됨
+    @DeleteMapping("/delete")
+    public ResponseEntity deleteMap(@RequestParam(value = "post_id", required = false, defaultValue = "0") int postId){
+        /*
+            본인이 작성한 게시물 or 관리자 확인 후,
+            PostHashTag 지우고
+            Post삭제
+         */
 
-        return jsonMessager.successStr("ok");
+        if (postId == 0)
+            return jsonMessager.errStr("invaildInput");
 
+        return boardService.deleteProc(postId);
     }
 
+
+
     @PutMapping("/modify") // 수정
-    public ResponseEntity writeMap(@RequestParam(value = "uid", required = false, defaultValue = "") int uid,
+    public ResponseEntity writeMap(@RequestParam(value = "uid", required = false, defaultValue = "0") int uid,
                                    @RequestParam(value = "title", required = false, defaultValue = "") String title,
                                    @RequestParam(value = "content", required = false, defaultValue = "") String content,
                                    @RequestParam(value = "hashtag", required = false, defaultValue = "") String hashtag){
 
-        if (uid==0 || title.isBlank() || content.isBlank() || hashtag.isBlank())
+        if (uid == 0 || title.isBlank() || content.isBlank() || hashtag.isBlank())
             return jsonMessager.errStr("notVaildInput");
 
         return boardService.modifyProc(uid, title, content, hashtag);

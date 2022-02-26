@@ -7,10 +7,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sch.cqre.api.domain.PostEntity;
+import sch.cqre.api.jwt.Role;
 import sch.cqre.api.repository.BoardDAO;
 import sch.cqre.api.repository.HashTagDAO;
 import sch.cqre.api.repository.PostHashTagDAO;
 import sch.cqre.api.repository.UserRepository;
+
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Service
 @Slf4j
@@ -77,8 +83,12 @@ public class BoardService {
         JSONObject jsonTagData = new JSONObject();
         JSONArray results = new JSONArray();
 
+
+        if(!boardDAO.existPost(postId))
+            return jsonMessager.errStr("modifyError");
+
         //내가 쓴 게시물인지 확인
-        if (boardDAO.isMyPost(postId) == false)
+        if (!boardDAO.isMyPost(postId))
             return jsonMessager.errStr("notMyPostError");
         log.warn("passed isMyPost");
 
@@ -120,6 +130,15 @@ public class BoardService {
 
         return jsonMessager.successArray(results);
 
+    }
+
+    @Transactional
+    public ResponseEntity deleteProc(int postId){
+        if (boardDAO.deletePost(postId)){
+            return jsonMessager.successStr("success");
+        } else {
+            return jsonMessager.errStr("fail");
+        }
     }
 
 

@@ -27,14 +27,11 @@ public class BoardDAO {
     private final UserService userService;
     private final JsonMessager jsonMessager;
 
+    private final PostHashTagDAO postHashTagDAO;
+
 
     @Transactional
     public int  writePost(String title, String content){
-        //form 유효성 확인
-        /*if (boardForm.getPostTitle().isBlank() || boardForm.getPostContent().isBlank() ){
-            return
-        } */
-
         //게시물 작성 처리
 
         PostEntity writeForm = new PostEntity();
@@ -83,18 +80,48 @@ public class BoardDAO {
     }
 
 
+    public boolean existPost(int postId){
+        //postId로 매칭되는 게시물 있는지 확인
+        return boardRepository.countByPostId(postId) == 1;
+    }
+
     public boolean isMyPost(int postId){
-        //게시물 유효 검사 +
         //내가 쓴 게시물인지 확인하는 함수
         //맞으면 true, 아니면 false
         //게시물 수정 처리
 
-        if (boardRepository.countByPostId(postId) != 1)//postId로 매칭되는 게시물이 없으면
-            return false;
-
         PostEntity post = boardRepository.findOnceByPostId(postId);
         return userRepository.countByuserIdAndEmail(post.getAuthorId(), userService.getEmail()) != 0;
     }
+
+
+    public boolean deletePost(int postId){
+        /*
+        게시물 유효 검사
+         -> 내가 쓴 게시물인지 확인 or 관리자 권한 확인
+                -> 해시태그 삭제
+                        -> 게시물 삭제
+         */
+
+        if(!existPost(postId))
+            return false;
+
+        //내가 쓴 게시물 or 관리자권한 확인
+        if (!(isMyPost(postId) || (userService.getRole() == Role.define.role_ADMIN || userService.getRole() == Role.define.role_MANAGER)))
+            return false;
+
+        //해시태그 제거
+        postHashTagDAO.removeTag(postId);
+
+        //게시물 삭제
+        boardRepository.deleteBypostId(postId);
+
+        //todo : 파일삭제
+
+        return true;
+    }
+
+
 
 
 
