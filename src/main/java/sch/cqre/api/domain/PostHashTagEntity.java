@@ -22,13 +22,14 @@ import lombok.NoArgsConstructor;
 public class PostHashTagEntity {
 	@Id
 	@Column(name = "post_id")
-	private Long postId;
-	@Id
+	private int postId;
+
+	//@JoinColumn(name="HashTag_hashtag_id")
 	@Column(name = "hashtag_id")
-	private Long hashtagId;
+	private int hashtagId;
 
 	@Builder
-	public PostHashTagEntity(Long postId, Long hashtagId) {
+	public PostHashTagEntity(int postId, int hashtagId) {
 		this.postId = postId;
 		this.hashtagId = hashtagId;
 	}
