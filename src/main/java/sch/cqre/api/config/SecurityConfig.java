@@ -92,6 +92,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 /* 일반 회원이면 접근 가능한 */
                 .authorizeRequests()
                 .antMatchers("/api/v1/board/**").hasRole("USER")
+                .antMatchers("/api/v1/file/**").hasRole("USER")
                 // .antMatchers("/api/v1/board/**").hasRole("USER")
 
                 /* 로그인 했으면 접속 가능한 페이지 */
