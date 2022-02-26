@@ -42,12 +42,12 @@ public class FileV1Controller {
 
         String fileName = fileStorageService.storeFile(file, fileSource, sourceUid);
 
-        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+        String fileDownloadUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/downloadFile/")
                 .path(fileName)
                 .toUriString();
         //UploadFileResponse
-        return fileDownloadUri;//new UploadFileResponse(fileName, fileDownloadUri,
+        return fileDownloadUrl;//new UploadFileResponse(fileName, fileDownloadUri,
         //file.getContentType(), file.getSize());
 
 
