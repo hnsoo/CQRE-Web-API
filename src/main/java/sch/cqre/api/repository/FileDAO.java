@@ -30,4 +30,14 @@ public class FileDAO {
         return fileRepository.save(fileForm).getFileId();
     }
 
+    @Transactional
+    public String getFilePath(String fileUUID){
+        return "";
+    }
+
+    public FileEntity getFileDB(String fileUUID){
+        return fileRepository.findOneByfilepathIsContaining(fileUUID);
+
+    }
+
 }
