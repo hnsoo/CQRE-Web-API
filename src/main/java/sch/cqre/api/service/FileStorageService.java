@@ -101,7 +101,7 @@ public class FileStorageService {
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
             // db에 작성
-            fileDAO.addFile(fileName, String.valueOf(targetLocation),
+            fileDAO.addFile(String.valueOf(formac), String.valueOf(targetLocation),
                     Long.valueOf(file.getSize()).intValue(), extension);
 
             return targetLocation;
