@@ -104,7 +104,7 @@ public class FileStorageService {
             fileDAO.addFile(String.valueOf(formac), String.valueOf(targetLocation),
                     Long.valueOf(file.getSize()).intValue(), extension);
 
-            return targetLocation;
+            return randomUUID;
 
         } catch (IOException ex) {
             throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
