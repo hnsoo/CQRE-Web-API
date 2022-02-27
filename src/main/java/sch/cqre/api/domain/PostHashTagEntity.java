@@ -14,11 +14,11 @@ import lombok.NoArgsConstructor;
 @Table(name = "PostHashTag", schema = "main")
 @IdClass(PostHashTagEntityPK.class)
 public class PostHashTagEntity {
+
 	@Id
 	@Column(name = "post_id")
 	private int postId;
 
-	//@JoinColumn(name="HashTag_hashtag_id")
 	@Column(name = "hashtag_id")
 	private int hashtagId;
 
