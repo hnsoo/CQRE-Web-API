@@ -36,9 +36,7 @@ public class PostEntity {
 	@Basic
 	@Column(name = "views", columnDefinition = "int unsigned default 0")
 	private int views;
-	@Basic
-	@Column(name = "likes", columnDefinition = "int unsigned default 0")
-	private int likes;
+
 	@Basic
 	@Column(name = "thumbnail")
 	private String thumbnail;
