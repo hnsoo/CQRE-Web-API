@@ -61,27 +61,27 @@ public class UserService {
         }
 
             return "fine";
-        }
+    }
 
-        public String signupDuplicateChk(UserDto form) {
+    public String signupDuplicateChk(UserDto form) {
 
-        /*
-        중복가입 체크 로직
-        "fine" = 중복되는 값 없음 (이메일, 닉네임, 학번)
-        "message" = 중복되는 값 있음 (회원가입 불가)
-         */
+    /*
+    중복가입 체크 로직
+    "fine" = 중복되는 값 없음 (이메일, 닉네임, 학번)
+    "message" = 중복되는 값 있음 (회원가입 불가)
+     */
 
-            if (userRepository.countByStudentId(form.getStudentId()) != 0)
-                return "studentId_duplicate";
-            if (userRepository.countByEmail(form.getEmail()) != 0)
-                return "email_duplicate";
-            if (userRepository.countByNickname(form.getNickname()) != 0)
-                return "nickname_duplicate";
+        if (userRepository.countByStudentId(form.getStudentId()) != 0)
+            return "studentId_duplicate";
+        if (userRepository.countByEmail(form.getEmail()) != 0)
+            return "email_duplicate";
+        if (userRepository.countByNickname(form.getNickname()) != 0)
+            return "nickname_duplicate";
 
 
-            return "fine";
+        return "fine";
 
-        }
+    }
 
     //Join
     @Transactional
