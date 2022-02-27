@@ -1,4 +1,4 @@
-package sch.cqre.api.service.my;
+package sch.cqre.api.service;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

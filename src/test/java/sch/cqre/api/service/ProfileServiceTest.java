@@ -1,4 +1,4 @@
-package sch.cqre.api.service.my;
+package sch.cqre.api.service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

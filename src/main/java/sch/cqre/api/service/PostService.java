@@ -1,4 +1,4 @@
-package sch.cqre.api.service.my;
+package sch.cqre.api.service;
 
 import java.util.ArrayList;
 import java.util.List;

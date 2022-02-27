@@ -6,7 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import sch.cqre.api.domain.NotificationEntity;
 
 public interface NotificationRepository extends JpaRepository<NotificationEntity, Integer> {
-	List<NotificationEntity> deleteByReceiverId(Integer receiverId);
+	Integer countByNotiId(Integer notiId);
 	List<NotificationEntity> findByReceiverId(Integer receiverId);
-	List<NotificationEntity> deleteByReceiverIdAndWhether(Integer receiverId, Integer whether);
+	List<NotificationEntity> findByReceiverIdAndWhether(Integer receiverId, Boolean whether);
+	List<NotificationEntity> findAllByReceiverId(Integer receiverId);
 }

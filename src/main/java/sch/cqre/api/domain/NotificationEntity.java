@@ -22,7 +22,7 @@ public class NotificationEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	@Column(name = "not_id")
-	private int notId;
+	private int notiId;
 	@Basic
 	@Column(name = "receiver_id")
 	private int receiverId;
@@ -31,19 +31,19 @@ public class NotificationEntity {
 	private int senderId;
 	@Basic
 	@Column(name = "not_type")
-	private String notType;
+	private String notiType;
 	@Basic
 	@Column(name = "not_post")
-	private int notPost;
+	private int notiPost;
 	@Basic
 	@Column(name = "not_content")
-	private String notContent;
+	private String notiContent;
 	@Basic
 	@Column(name = "not_datetime")
-	private Timestamp notDatetime;
+	private Timestamp notiDatetime;
 	@Basic
 	@Column(name = "whether")
-	private Integer whether;
+	private Boolean whether;
 
 	@Override
 	public boolean equals(Object o) {
@@ -52,18 +52,18 @@ public class NotificationEntity {
 		if (o == null || getClass() != o.getClass())
 			return false;
 		NotificationEntity that = (NotificationEntity)o;
-		return notId == that.notId && receiverId == that.receiverId && senderId == that.senderId
-			&& notPost == that.notPost
-			&& Objects.equals(notType, that.notType)
-			&& Objects.equals(notContent, that.notContent)
-			&& Objects.equals(notDatetime, that.notDatetime)
+		return notiId == that.notiId && receiverId == that.receiverId && senderId == that.senderId
+			&& notiPost == that.notiPost
+			&& Objects.equals(notiType, that.notiType)
+			&& Objects.equals(notiContent, that.notiContent)
+			&& Objects.equals(notiDatetime, that.notiDatetime)
 			&& Objects.equals(whether,
 			that.whether);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(notId, receiverId, senderId, notType, notPost, notContent, notDatetime,
+		return Objects.hash(notiId, receiverId, senderId, notiType, notiPost, notiContent, notiDatetime,
 			whether);
 	}
 }

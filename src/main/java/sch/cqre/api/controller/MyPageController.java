@@ -1,8 +1,8 @@
  package sch.cqre.api.controller;
 
 import java.util.List;
-import java.util.Optional;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,11 +15,12 @@ import lombok.AllArgsConstructor;
 import sch.cqre.api.domain.NotificationEntity;
 import sch.cqre.api.domain.PostEntity;
 import sch.cqre.api.domain.UserEntity;
-import sch.cqre.api.dto.mypage.MyInfoDTO;
-import sch.cqre.api.repository.UserRepository;
-import sch.cqre.api.service.my.AccountService;
-import sch.cqre.api.service.my.NoticeService;
-import sch.cqre.api.service.my.PostService;
+import sch.cqre.api.response.CheckNotificationResponse;
+import sch.cqre.api.response.DeleteNotificationResponse;
+import sch.cqre.api.service.AccountService;
+import sch.cqre.api.service.JsonMessager;
+import sch.cqre.api.service.NotificationService;
+import sch.cqre.api.service.PostService;
 
  /*
   * 마이페이지 컨트롤러
@@ -33,8 +34,9 @@ import sch.cqre.api.service.my.PostService;
  public class MyPageController {
 	 private final AccountService accountService;
 	 private final PostService postService;
-	 private final NoticeService noticeService;
+	 private final NotificationService noticeService;
 	 private final UserService userService;
+	 private final JsonMessager jsonMessager;
 
 	 // 회원 정보 불러오기
 	 @GetMapping
@@ -72,21 +74,24 @@ import sch.cqre.api.service.my.PostService;
 	 public ResponseEntity getMyNotice() {
 		 UserEntity userEntity = this.accountService.searchByEmail(userService.getEmail());
 		 Integer userId = userEntity.getUserId();
-		 List<NotificationEntity> result = this.noticeService.searchAllByUserId(userId);
+		 List<NotificationEntity> result = this.noticeService.searchByUserId(userId);
 		 return ResponseEntity.ok().body(result);
 	 }
 
 	 // 알림 하나 읽기
 	 @PatchMapping("/notice")
-	 public ResponseEntity readOneNotice(@RequestParam(value = "notiId", required = false, defaultValue = "") Integer notiId) {
-	 	NotificationEntity result = this.noticeService.checkNotice(notiId);
+	 public ResponseEntity readOneNotice(@RequestParam(value = "notiId", required = false, defaultValue = "0") Integer notiId) {
+	 	CheckNotificationResponse result = this.noticeService.checkNotification(notiId);
 		 return ResponseEntity.ok().body(result);
 	 }
 
 	 // 알림 하나 삭제
 	 @DeleteMapping("/notice")
-	 public void deleteOneNotice(@RequestParam(value = "notiId", required = false, defaultValue = "") Integer notiId) {
-		this.noticeService.deleteOneNotice(notiId);
+	 public ResponseEntity<DeleteNotificationResponse> deleteOneNotice(@RequestParam(value = "notiId", required = false, defaultValue = "0") Integer notiId){
+		 // 알림 삭제 실행 후 결과 객체를 불러옴
+		 DeleteNotificationResponse result = this.noticeService.deleteOneNotice(notiId);
+		 // 성공적으로 알림 삭제
+		 return new ResponseEntity<DeleteNotificationResponse>(result, HttpStatus.OK);
 	 }
 
 	 // 알림 전체 읽기
@@ -94,7 +99,7 @@ import sch.cqre.api.service.my.PostService;
 	 public ResponseEntity readAllNotice() {
 		 UserEntity userEntity = this.accountService.searchByEmail(userService.getEmail());
 		 Integer userId = userEntity.getUserId();
-		 List<NotificationEntity> result = this.noticeService.readAllNotice(userId);
+		 List<CheckNotificationResponse> result = this.noticeService.readAllNotice(userId);
 		 return ResponseEntity.ok().body(result);
 	 }
 
@@ -103,7 +108,7 @@ import sch.cqre.api.service.my.PostService;
 	 public void deleteReadNotice() {
 		 UserEntity userEntity = this.accountService.searchByEmail(userService.getEmail());
 		 Integer userId = userEntity.getUserId();
-		 this.noticeService.deleteReadNotice(userId);
+		 this.noticeService.deleteReadNotification(userId);
 	 }
 
 	 // 알림 전체 삭제
