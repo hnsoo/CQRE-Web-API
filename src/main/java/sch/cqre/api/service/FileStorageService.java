@@ -1,6 +1,5 @@
 package sch.cqre.api.service;
 
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +13,14 @@ import sch.cqre.api.exception.FileStorageException;
 import sch.cqre.api.exception.MyFileNotFoundException;
 import sch.cqre.api.repository.FileDAO;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -32,6 +33,8 @@ public class FileStorageService {
 
     @Autowired
     public FileStorageService(FileStorageConfig fileStorageConfig, FileDAO fileDAO) {
+        //init
+
         this.fileStorageLocation = Paths.get(fileStorageConfig.getUploadDir())
                 .toAbsolutePath().normalize();
         this.fileDAO = fileDAO;
@@ -43,35 +46,79 @@ public class FileStorageService {
         }
     }
 
-    public String storeFile(MultipartFile file, String fileSource, int sourceUID) {
+    public Path storeFile(MultipartFile file) {
 
         // Normalize file name
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-        UUID uuid = UUID.randomUUID();
-        String randomUploadFileName = uuid.toString() + "_" + fileName;
 
+        // Check if the file's name contains invalid characters
+        if(fileName.contains("..")) {
+            throw new FileStorageException("invaildInput");
+        }
+
+
+        String extension = fileName.substring(fileName.lastIndexOf(".") + 1);
+
+
+        UUID uuid = UUID.randomUUID();
+        String randomUUID = uuid.toString();
+
+        // Copy file to the target location (Replacing existing file with the same name)
+        Path targetLocation = this.fileStorageLocation.resolve(randomUUID);
+        File Folder = new File(String.valueOf(targetLocation));
+
+        uuid_collision:
+        while(true) { //혹시라도 uuid가 겹칠 수 있기때문
+            // 해당 디렉토리가 없을경우 디렉토리를 생성합니다.
+            if (!Folder.exists()) {
+                try {
+                    Folder.mkdir(); //폴더 생성합니다.
+                    break;
+                } catch (Exception e) {
+                    throw new FileStorageException("uncheckedError", e);
+                }
+            } else { //uuid가 겹치면
+                uuid = UUID.randomUUID(); //uuid 재발급
+                randomUUID = uuid.toString();
+                targetLocation = this.fileStorageLocation.resolve(randomUUID);
+                Folder = new File(String.valueOf(targetLocation));
+                break uuid_collision; //다시 롤백
+            }
+        }
 
         try {
-            // Check if the file's name contains invalid characters
-            if(fileName.contains("..")) {
-                throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
-            }
 
-            // Copy file to the target location (Replacing existing file with the same name)
-            Path targetLocation = this.fileStorageLocation.resolve(randomUploadFileName);
+            //fileStorageLocation.
+            targetLocation = targetLocation.resolve(fileName);
+
+            //확장자 검사
+            if (!chkAllowedExtension(extension))
+                throw new FileStorageException("notSupportFileFormat");
+
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
-
-
             // db에 작성
-            fileDAO.addFile(fileName, randomUploadFileName, String.valueOf(this.fileStorageLocation),
-                    Long.valueOf(file.getSize()).intValue(), file.getContentType(), fileSource + String.valueOf(sourceUID));
+            fileDAO.addFile(fileName, String.valueOf(targetLocation),
+                    Long.valueOf(file.getSize()).intValue(), extension);
 
-            return randomUploadFileName;
+            return targetLocation;
 
         } catch (IOException ex) {
             throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
         }
+    }
+
+    public boolean chkAllowedExtension(String extension){
+        String[] allowedExtension = {"zip", "alz", "tar", //압축파일
+                "jpeg", "jpg", "bmp", "png", "gif", "tif", //이미지
+                "hwp", "ppt", "pptx", "doc", "xls", "xlsx", "pdf", "txt" //문서
+        };
+
+        for (int i=0; i<allowedExtension.length; i++) {
+            if (Objects.equals(extension, allowedExtension[i]))
+                return true;
+        }
+        return false;
     }
 
     public Resource loadFileAsResource(String fileName) {

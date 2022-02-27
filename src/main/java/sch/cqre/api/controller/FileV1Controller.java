@@ -31,16 +31,14 @@ public class FileV1Controller {
     @Autowired
     private FileStorageService fileStorageService;
 
-    @PostMapping("/upload")
-    public String uploadFile(@RequestParam("file") MultipartFile file,
-                             @RequestParam(value = "fileSource", required = false) String fileSource,
-                             @RequestParam(value = "uid", required = false, defaultValue = "0") int sourceUid)  {
+    @PostMapping("/attachment/upload")
+    public String uploadFile(@RequestParam("file") MultipartFile file){
 
-        if ( (!Objects.equals(fileSource, "POST") && !Objects.equals(fileSource, "COMMENT")) || sourceUid == 0 ){
+       if (file == null) {
             return "invaildInput";
         }
 
-        String fileName = fileStorageService.storeFile(file, fileSource, sourceUid);
+        String fileName = String.valueOf(fileStorageService.storeFile(file));
 
         String fileDownloadUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/downloadFile/")
@@ -52,6 +50,44 @@ public class FileV1Controller {
 
 
     }
+
+    @PostMapping("/image/upload")
+    public String uploadImage(@RequestParam("image") MultipartFile image){
+
+        if (image == null) {
+            return "invaildInput";
+        }
+
+        String fileName = String.valueOf(fileStorageService.storeFile(image));
+
+        String fileDownloadUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/downloadFile/")
+                .path(fileName)
+                .toUriString();
+        //UploadFileResponse
+        return fileDownloadUrl;//new UploadFileResponse(fileName, fileDownloadUri,
+        //file.getContentType(), file.getSize());
+
+
+    }
+
+/*
+    @DeleteMapping("/delete")
+    public String uploadFile(@RequestParam("file") MultipartFile file) {
+        String fileName = fileStorageService.storeFile(file);
+
+        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/downloadFile/")
+                .path(fileName)
+                .toUriString();
+//UploadFileResponse
+        return fileDownloadUri;//new UploadFileResponse(fileName, fileDownloadUri,
+        //file.getContentType(), file.getSize());
+    }
+
+ */
+
+    /*
 
     @PostMapping("/uploadMultipleFiles")
     public List<UploadFileResponse> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {

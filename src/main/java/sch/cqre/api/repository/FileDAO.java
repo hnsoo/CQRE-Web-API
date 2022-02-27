@@ -18,12 +18,11 @@ public class FileDAO {
     private final FileRepository fileRepository;
 
     @Transactional
-    public int addFile(String orignalName, String filename, String filepath, int size, String filetype){
+    public int addFile(String orignalName, String filepath, int size, String filetype){
 
         //db에 파일정보 저장
         FileEntity fileForm = new FileEntity();
         fileForm.setOriginalname(orignalName);
-        fileForm.setFilename(filename);
         fileForm.setFilepath(filepath);
         fileForm.setSize(size);
         fileForm.setFiletype(filetype);
