@@ -141,6 +141,117 @@ public class BoardService {
         }
     }
 
+/*
+    @Transactional
+    public ResponseEntity viewProc(int postId){
+
+        //글의 존재 여부 조회
+        if (!boardDAO.existPost(postId))
+            return jsonMessager.errStr("invaildInput");
+
+
+        //게시물에 admin해시태그가 있는데 접근자가 관리자 권한이 없는 경우
+        if (!boardDAO.isAdminPost(String.valueOf(postId)) && !(userService.getRole() == Role.define.role_ADMIN || userService.getRole() == Role.define.role_MANAGER))
+            return jsonMessager.errStr("invaildInput");
+
+        JSONObject jsonPostData = new JSONObject();
+        JSONObject jsonTagData = new JSONObject();
+        JSONObject jsonFileData = new JSONObject();
+
+
+
+        JSONArray results = new JSONArray();
+        results.appendElement(jsonPostData);
+        results.appendElement(jsonTagData);
+        results.appendElement(jsonFileData);
+
+
+        return jsonMessager.errStr("asd");
+
+
+
+    }
+    todo:게시물 보기 개발
+*/
+
+
+
+    public boolean isAllowedReaction(String reaction){
+        //허용된 리액션인지 확인
+
+        String[] allowedReaction = {"useful", "hard", "thanks"};
+
+        for (int i=0; i<allowedReaction.length; i++) {
+            if (allowedReaction[i].equals(reaction))
+                return true;
+        }
+
+        return false;
+    }
+
+    @Transactional
+    public ResponseEntity reactionProc(int postId, String reaction){
+        /*
+        -> 허용된 리액션 정보인지 확인 ->
+        글 존재 하는지 확인 ->  내 글인지 확인 (본인 글이면 못하게)
+        -> 중복 리액션 확인 -> 추가
+         */
+
+        int userId = userService.getMyInfo().getUserId();
+
+        if (!isAllowedReaction(reaction))
+            return jsonMessager.errStr("invaildInput");
+        if (!boardDAO.existPost(postId))
+            return jsonMessager.errStr("invaildInput");
+        if (boardDAO.isMyPost(postId))
+            return jsonMessager.errStr("noSelfReaction");
+        if (reactionDAO.isVaildReaction(userId, postId, reaction))
+            return jsonMessager.errStr("invaildInput");
+
+        log.warn(userId + " " + postId + " " + reaction);
+        ReactionEntity reactionForm = new ReactionEntity();
+        reactionForm.setUserId(userId);
+        reactionForm.setPostId(postId);
+        reactionForm.setReaction(reaction);
+
+        if (reactionDAO.reaction(userId, postId, reaction) > 0)
+            return jsonMessager.successStr("success");
+        return jsonMessager.errStr("fail");
+
+    }
+
+    @Transactional
+    public ResponseEntity unReactionProc(int postId, String reaction){
+        /*
+        -> 허용된 리액션 정보인지 확인 ->
+        글 존재하는지 확인 -> 삭제하고자 하는 리액션 존재 확인 ->
+        삭제
+         */
+
+        int userId = userService.getMyInfo().getUserId();
+
+        if (!isAllowedReaction(reaction))
+            return jsonMessager.errStr("invaildInput");
+        if (!boardDAO.existPost(postId))
+            return jsonMessager.errStr("invaildInput");
+        if (boardDAO.isMyPost(postId))
+            return jsonMessager.errStr("invaildInput");
+
+
+
+        if (!reactionDAO.isVaildReaction(userId, postId, reaction)) //발견된 리액션이 없으면
+            return jsonMessager.errStr("invaildInput");
+
+        reactionDAO.unReaction(userId, postId, reaction); //삭제
+
+        if (!reactionDAO.isVaildReaction(userId, postId, reaction)) //발견된 리액션이 없으면
+            return jsonMessager.successStr("success");
+
+        return jsonMessager.errStr("fail");
+
+
+    }
+
 
 
 
