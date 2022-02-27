@@ -95,6 +95,22 @@ public class BoardDAO {
     }
 
 
+
+    @Transactional
+    public boolean isAdminPost(String postId){
+        HashTagEntity adminHashtagDB = hashTagRepository.findOnceByName("admin");
+        if (adminHashtagDB == null) //해시태그 테이블에서 admin해시태그가 등록되어있지 않으면
+            return false;
+
+        int adminHashtagID = adminHashtagDB.getHashtagId();
+
+        PostHashTagEntity match_postid_adminhashtag = postHashTagRepository.findByPostIdAndHashtagId(Integer.parseInt(postId), adminHashtagID);
+        if (match_postid_adminhashtag == null)
+            return false;
+        return true;
+    }
+
+
     public boolean deletePost(int postId){
         /*
         게시물 유효 검사
