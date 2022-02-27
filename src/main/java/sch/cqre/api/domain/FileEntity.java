@@ -45,13 +45,13 @@ public class FileEntity {
 
 	@Builder
 	public FileEntity(String originalname, String filename, String filepath, Integer size,
-		String filetyp, String source) {
+		String filetyp){//, String source) {
 		this.originalname = originalname;
 		this.filename = filename;
 		this.filepath = filepath;
 		this.size = size;
 		this.filetype = filetype;
-		this.source = source;
+	//	this.source = source;
 	}
 
 	@Override
@@ -63,7 +63,7 @@ public class FileEntity {
 		FileEntity that = (FileEntity)o;
 		return fileId == that.fileId && Objects.equals(originalname, that.originalname)
 			&& Objects.equals(filename, that.filename) && Objects.equals(filepath, that.filepath)
-			&& Objects.equals(size, that.size) && Objects.equals(filetype, that.filetype) && Objects.equals(source, that.source);
+			&& Objects.equals(size, that.size) && Objects.equals(filetype, that.filetype); //&& Objects.equals(source, that.source);
 	}
 
 	@Override
