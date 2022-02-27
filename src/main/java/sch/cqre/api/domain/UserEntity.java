@@ -12,7 +12,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import sch.cqre.api.jwt.Role;
 
-@Data
 @Entity
 @NoArgsConstructor
 @DynamicInsert
@@ -65,22 +64,4 @@ public class UserEntity {
 	//	this.profile = profile;
 	}
 
-	/*
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (o == null || getClass() != o.getClass())
-			return false;
-		UserEntity that = (UserEntity)o;
-		((UserEntity)o).setUserType("guest");
-		return userId == that.userId && studentId == that.studentId && Objects.equals(password, that.password)
-			&& Objects.equals(email, that.email) && Objects.equals(nickname, that.nickname)
-			&& Objects.equals(userType, that.userType) ; //&& Objects.equals(profile, that.profile);
-	}*/
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(userId, studentId, password, email, nickname, role); // profile);
-	}
 }
