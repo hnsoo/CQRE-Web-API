@@ -34,38 +34,44 @@ import sch.cqre.api.service.my.PostService;
 	 private final AccountService accountService;
 	 private final PostService postService;
 	 private final NoticeService noticeService;
-	 private final UserRepository userRepo;
+	 private final UserService userService;
 
 	 // 회원 정보 불러오기
 	 @GetMapping
-	 public ResponseEntity<MyInfoDTO> getMyInfo(@RequestParam(value = "userId", required = false, defaultValue = "") Integer userId) {
-		 UserEntity result = this.accountService.searchById(userId);
-		 return ResponseEntity.ok().body(new MyInfoDTO(result));
+	 public ResponseEntity<UserEntity> getMyInfo() {
+		 UserEntity result = this.accountService.searchByEmail(userService.getEmail());
+		 return ResponseEntity.ok().body(result);
 	 }
 
 	 // 회원 탈퇴
-	 @DeleteMapping
-	 public void withdrawMe(@RequestParam(value = "userId", required = false, defaultValue = "") Integer userId) {
-		 this.accountService.withdrawal(userId);
-	 }
+	 // @DeleteMapping
+	 // public void withdrawMe(@RequestParam() {
+		//  UserEntity result = this.accountService.searchByEmail(userService.getEmail());
+	 // }
 
 	 // 내가 쓴 게시글 불러오기
 	 @GetMapping("/post")
-	 public ResponseEntity getMyPost(@RequestParam(value = "userId", required = false, defaultValue = "") Integer userId) {
+	 public ResponseEntity getMyPost() {
+		 UserEntity userEntity = this.accountService.searchByEmail(userService.getEmail());
+		 Integer userId = userEntity.getUserId();
 		 List<PostEntity> result = this.postService.searchAllByAuthorId(userId);
 		 return ResponseEntity.ok().body(result);
 	 }
 
 	 // 스크랩한 포스트 로드
 	 @GetMapping("/scrap")
-	 public ResponseEntity getMyScrap(@RequestParam(value = "userId", required = false, defaultValue = "") Integer userId) {
+	 public ResponseEntity getMyScrap() {
+		 UserEntity userEntity = this.accountService.searchByEmail(userService.getEmail());
+		 Integer userId = userEntity.getUserId();
 		 List<PostEntity> result = this.postService.searchScrapByUserId(userId);
 		 return ResponseEntity.ok().body(result);
 	 }
 
 	 // 내 알림 불러오기
 	 @GetMapping("/notice")
-	 public ResponseEntity getMyNotice(@RequestParam(value = "userId", required = false, defaultValue = "") Integer userId) {
+	 public ResponseEntity getMyNotice() {
+		 UserEntity userEntity = this.accountService.searchByEmail(userService.getEmail());
+		 Integer userId = userEntity.getUserId();
 		 List<NotificationEntity> result = this.noticeService.searchAllByUserId(userId);
 		 return ResponseEntity.ok().body(result);
 	 }
@@ -79,26 +85,32 @@ import sch.cqre.api.service.my.PostService;
 
 	 // 알림 하나 삭제
 	 @DeleteMapping("/notice")
-	 public ResponseEntity deleteOneNotice(@RequestParam(value = "notiId", required = false, defaultValue = "") Integer notiId) {
+	 public void deleteOneNotice(@RequestParam(value = "notiId", required = false, defaultValue = "") Integer notiId) {
 		this.noticeService.deleteOneNotice(notiId);
 	 }
 
 	 // 알림 전체 읽기
 	 @PatchMapping("/notice/all")
-	 public ResponseEntity readAllNotice(@RequestParam(value = "userId", required = false, defaultValue = "") Integer userId) {
+	 public ResponseEntity readAllNotice() {
+		 UserEntity userEntity = this.accountService.searchByEmail(userService.getEmail());
+		 Integer userId = userEntity.getUserId();
 		 List<NotificationEntity> result = this.noticeService.readAllNotice(userId);
 		 return ResponseEntity.ok().body(result);
 	 }
 
 	 // 읽은 알림 전체 삭제
 	 @DeleteMapping("/notice/read")
-	 public void deleteReadNotice(@RequestParam(value = "userId", required = false, defaultValue = "") Integer userId) {
+	 public void deleteReadNotice() {
+		 UserEntity userEntity = this.accountService.searchByEmail(userService.getEmail());
+		 Integer userId = userEntity.getUserId();
 		 this.noticeService.deleteReadNotice(userId);
 	 }
 
 	 // 알림 전체 삭제
 	 @DeleteMapping("/notice/all")
-	 public void deleteAllNotice(@RequestParam(value = "userId", required = false, defaultValue = "") Integer userId) {
+	 public void deleteAllNotice() {
+		 UserEntity userEntity = this.accountService.searchByEmail(userService.getEmail());
+		 Integer userId = userEntity.getUserId();
 		 this.noticeService.deleteAllNotice(userId);
 	 }
  }

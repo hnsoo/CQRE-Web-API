@@ -14,9 +14,8 @@ import sch.cqre.api.repository.UserRepository;
 public class AccountService {
 	private final UserRepository userRepo;
 
-	public UserEntity searchById(Integer id) {
-		UserEntity result = this.userRepo.findById(id)
-			.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+	public UserEntity searchByEmail(String email) {
+		UserEntity result = this.userRepo.findByEmail(email);
 		return result;
 	}
 
