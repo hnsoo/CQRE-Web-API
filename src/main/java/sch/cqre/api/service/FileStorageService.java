@@ -95,6 +95,9 @@ public class FileStorageService {
             if (!chkAllowedExtension(extension))
                 throw new FileStorageException("notSupportFileFormat");
 
+            Path formac = Paths.get(fileName); //맥에서 파일이름 자모음 분리되는 현상때문에 추가
+
+            // Copy file to the target location (Replacing existing file with the same name)
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
             // db에 작성
