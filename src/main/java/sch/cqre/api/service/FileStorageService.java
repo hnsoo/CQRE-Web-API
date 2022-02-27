@@ -124,17 +124,32 @@ public class FileStorageService {
         return false;
     }
 
-    public Resource loadFileAsResource(String fileName) {
+    public Resource loadFileAsResource(String fileUUID) {
+        // 파일이 없으면 null,
+        // 파일이 있으면 Resource값 리턴
+
+        FileEntity fileDB = fileDAO.getFileDB(fileUUID);
+
+        if (fileDB == null)
+            return null;
+
+        String filePathString = fileDB.getFilepath();
+        String fileExtension = fileDB.getFiletype(); //not uses yet
+
         try {
-            Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
+            //파일path를 못 불러왔으면 null리턴
+            if (filePathString.isBlank())
+                return null;
+
+            Path filePath = this.fileStorageLocation.resolve(filePathString).normalize();
             Resource resource = new UrlResource(filePath.toUri());
             if(resource.exists()) {
                 return resource;
-            } else {
-                throw new MyFileNotFoundException("File not found " + fileName);
+            } else { //파일이 없으면 null리턴
+                return null;
             }
         } catch (MalformedURLException ex) {
-            throw new MyFileNotFoundException("File not found " + fileName, ex);
+            return null;
         }
     }
 }
