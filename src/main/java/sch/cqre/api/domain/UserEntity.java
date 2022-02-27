@@ -12,6 +12,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import sch.cqre.api.jwt.Role;
 
+@Data
 @Entity
 @NoArgsConstructor
 @DynamicInsert
