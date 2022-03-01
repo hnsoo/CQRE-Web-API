@@ -76,6 +76,7 @@ import sch.cqre.api.service.PostService;
 		 Integer userId = userEntity.getUserId();
 		 List<NotificationEntity> result = this.noticeService.searchByUserId(userId);
 		 return ResponseEntity.ok().body(result);
+		 // 수정
 	 }
 
 	 // 알림 하나 읽기
