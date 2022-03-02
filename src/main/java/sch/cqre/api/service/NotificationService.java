@@ -12,7 +12,6 @@ import lombok.AllArgsConstructor;
 import sch.cqre.api.domain.NotificationEntity;
 import sch.cqre.api.exception.CustomException;
 import sch.cqre.api.repository.NotificationRepository;
-import sch.cqre.api.response.DeleteNotificationResponse;
 
 @Service
 @AllArgsConstructor
@@ -68,7 +67,6 @@ public class NotificationService {
 	}
 
 	public boolean deleteAllNotice(Integer userId) {
-		List<DeleteNotificationResponse> result = new ArrayList<>();
 		// 내 알림들 로드
 		List<NotificationEntity> notifications = notificationRepo.findByReceiverId(userId)
 			// 내 알림이 없을 경우 "알림 없음" 예외 처리
