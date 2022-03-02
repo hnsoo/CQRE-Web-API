@@ -85,12 +85,17 @@ public class NotificationService {
 		return result;
 	}
 
-	public DeleteNotificationResponse deleteOneNotice(Integer notiId) {
-		//존재하는 알림인지 확인
+	public Integer deleteOneNotice(Integer notiId) {
+		// 존재하는 알림인지 확인
 		if (notificationRepo.countByNotiId(notiId) != 1)
-			return new DeleteNotificationResponse(notiId, "error", "존재하지 않는 알림");
-		//존재하면 삭제
+			throw new CustomException(NOTIFICATION_NOT_FOUND);
+		// 삭제
 		notificationRepo.deleteById(notiId);
-			return new DeleteNotificationResponse(notiId, "success", "알림 삭제 성공");
+		// 삭제 되었는지 확인
+		if (notificationRepo.countByNotiId(notiId) != 0)
+			// 삭제 실패시 "삭제 실패" 예외 처리
+			throw new CustomException(FAIL_DELETE);
+
+		return notiId;
 	}
 }

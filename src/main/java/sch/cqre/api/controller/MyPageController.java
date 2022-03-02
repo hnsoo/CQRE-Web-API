@@ -2,6 +2,8 @@
 
 import java.util.List;
 
+import javax.persistence.criteria.CriteriaBuilder;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -84,11 +86,11 @@ import sch.cqre.api.service.PostService;
 
 	 // 알림 하나 삭제
 	 @DeleteMapping("/notice")
-	 public ResponseEntity<DeleteNotificationResponse> deleteOneNotice(@RequestParam(value = "notiId", required = false, defaultValue = "0") Integer notiId){
+	 public ResponseEntity deleteOneNotice(@RequestParam(value = "notiId", required = false, defaultValue = "0") Integer notiId){
 		 // 알림 삭제 실행 후 결과 객체를 불러옴
-		 DeleteNotificationResponse result = this.noticeService.deleteOneNotice(notiId);
+		 Integer result = this.noticeService.deleteOneNotice(notiId);
 		 // 성공적으로 알림 삭제
-		 return new ResponseEntity<DeleteNotificationResponse>(result, HttpStatus.OK);
+		 return new ResponseEntity(result, HttpStatus.OK);
 	 }
 
 	 // 알림 전체 읽기
