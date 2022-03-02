@@ -1,5 +1,7 @@
 package sch.cqre.api.service;
 
+import static sch.cqre.api.exception.ErrorCode.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.AllArgsConstructor;
 import sch.cqre.api.domain.NotificationEntity;
+import sch.cqre.api.exception.CustomException;
 import sch.cqre.api.repository.NotificationRepository;
 import sch.cqre.api.response.CheckNotificationResponse;
 import sch.cqre.api.response.DeleteNotificationResponse;
@@ -19,8 +22,11 @@ import sch.cqre.api.response.DeleteNotificationResponse;
 public class NotificationService {
 	private final NotificationRepository notificationRepo;
 
+	// 유저 UID 를 기반으로 알림 검색
 	public List<NotificationEntity> searchByUserId(Integer userId) {
-		return notificationRepo.findAllByReceiverId(userId);
+		return notificationRepo.findAllByReceiverId(userId)
+			// 알림을 찾지 못할 경우 "알림 없음" 예외 처리
+			.orElseThrow(() -> new CustomException(NOTIFICATION_NOT_FOUND));
 	}
 
 	public List<CheckNotificationResponse> readAllNotice(Integer userId) {
