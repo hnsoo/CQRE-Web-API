@@ -113,9 +113,10 @@ import sch.cqre.api.service.PostService;
 
 	 // 알림 전체 삭제
 	 @DeleteMapping("/notice/all")
-	 public void deleteAllNotice() {
+	 public ResponseEntity deleteAllNotice() {
 		 UserEntity userEntity = this.accountService.searchByEmail(userService.getEmail());
 		 Integer userId = userEntity.getUserId();
 		 this.noticeService.deleteAllNotice(userId);
+		 return new ResponseEntity(HttpStatus.OK);
 	 }
  }

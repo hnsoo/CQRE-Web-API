@@ -67,20 +67,18 @@ public class NotificationService {
 		return true;
 	}
 
-	public List<DeleteNotificationResponse> deleteAllNotice(Integer userId) {
+	public boolean deleteAllNotice(Integer userId) {
 		List<DeleteNotificationResponse> result = new ArrayList<>();
 		// 내 알림들 로드
-		List<NotificationEntity> notifications = notificationRepo.findByReceiverId(userId);
-		// 내 알림이 없을 경우
-		if (notifications == null){
-			result.add(new DeleteNotificationResponse(null, "error", "존재하는 알림이 없음"));
-			return result;
-		}
+		List<NotificationEntity> notifications = notificationRepo.findByReceiverId(userId)
+			// 내 알림이 없을 경우 "알림 없음" 예외 처리
+			.orElseThrow(() -> new CustomException(NOTIFICATION_NOT_FOUND));
+
 		for(NotificationEntity notification : notifications){
 			// 알림 삭제 및 결과 코드를 리스트에 저장
-			result.add(this.deleteOneNotice(notification.getNotiId()));
+			this.deleteOneNotice(notification.getNotiId());
 		}
-		return result;
+		return true;
 	}
 
 	public Integer deleteOneNotice(Integer notiId) {
