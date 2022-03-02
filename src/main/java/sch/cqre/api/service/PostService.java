@@ -1,5 +1,7 @@
 package sch.cqre.api.service;
 
+import static sch.cqre.api.exception.ErrorCode.*;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -12,6 +14,7 @@ import lombok.AllArgsConstructor;
 // import sch.cqre.api.domain.NotificationEntity;
 import sch.cqre.api.domain.PostEntity;
 import sch.cqre.api.domain.ScrapEntity;
+import sch.cqre.api.exception.CustomException;
 import sch.cqre.api.repository.PostRepository;
 import sch.cqre.api.repository.ScrapRepository;
 
@@ -22,7 +25,8 @@ public class PostService {
 	private final PostRepository postRepo;
 
 	public List<PostEntity> searchAllByAuthorId(Integer authorId) {
-		List<PostEntity> result = this.postRepo.findByAuthorId(authorId);
+		List<PostEntity> result = this.postRepo
+			.findByAuthorId(authorId).orElseThrow(()-> new CustomException(MY_POST_NOT_FOUND));
 		return result;
 	}
 

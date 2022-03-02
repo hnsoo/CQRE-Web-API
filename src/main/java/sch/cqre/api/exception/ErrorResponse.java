@@ -1,4 +1,4 @@
-package sch.cqre.api.response;
+package sch.cqre.api.exception;
 
 import java.time.LocalDateTime;
 
@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 
 import lombok.Builder;
 import lombok.Getter;
-import sch.cqre.api.exception.ErrorCode;
 
 @Getter
 @Builder
