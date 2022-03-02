@@ -36,7 +36,6 @@ import sch.cqre.api.service.PostService;
 	 private final PostService postService;
 	 private final NotificationService noticeService;
 	 private final UserService userService;
-	 private final JsonMessager jsonMessager;
 
 	 // 회원 정보 불러오기
 	 @GetMapping

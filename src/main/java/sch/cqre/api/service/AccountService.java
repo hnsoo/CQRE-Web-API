@@ -1,5 +1,7 @@
 package sch.cqre.api.service;
 
+import static sch.cqre.api.exception.ErrorCode.*;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -7,6 +9,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import lombok.AllArgsConstructor;
 import sch.cqre.api.domain.UserEntity;
+import sch.cqre.api.exception.CustomException;
 import sch.cqre.api.repository.UserRepository;
 
 @Service
@@ -15,8 +18,8 @@ public class AccountService {
 	private final UserRepository userRepo;
 
 	public UserEntity searchByEmail(String email) {
-		UserEntity result = this.userRepo.findByEmail(email);
-		return result;
+		return this.userRepo.findByEmail(email)
+			.orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
 	}
 
 	@Transactional
