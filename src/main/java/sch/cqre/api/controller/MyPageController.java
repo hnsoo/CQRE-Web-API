@@ -104,10 +104,11 @@ import sch.cqre.api.service.PostService;
 
 	 // 읽은 알림 전체 삭제
 	 @DeleteMapping("/notice/read")
-	 public void deleteReadNotice() {
+	 public ResponseEntity deleteReadNotice() {
 		 UserEntity userEntity = this.accountService.searchByEmail(userService.getEmail());
 		 Integer userId = userEntity.getUserId();
 		 this.noticeService.deleteReadNotification(userId);
+		 return new ResponseEntity(HttpStatus.OK);
 	 }
 
 	 // 알림 전체 삭제

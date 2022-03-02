@@ -55,15 +55,16 @@ public class NotificationService {
 		return notification;
 	}
 
-	public List<DeleteNotificationResponse> deleteReadNotification(Integer userId) {
-		List<DeleteNotificationResponse> result = new ArrayList<>();
+	public Boolean deleteReadNotification(Integer userId) {
 		// 나의 읽은 알림들 로드
-		List<NotificationEntity> notifications = notificationRepo.findByReceiverIdAndWhether(userId, true);
+		List<NotificationEntity> notifications = notificationRepo.findByReceiverIdAndWhether(userId, true)
+			// 알림을 못 찾을 경우 "알림 없음" 예외 처리
+			.orElseThrow(() -> new CustomException(NOTIFICATION_NOT_FOUND));
 		for(NotificationEntity notification : notifications){
 			// 읽은 알림 삭제 및 결과 객체를 리스트에 반환
-			result.add(this.deleteOneNotice(notification.getNotiId()));
+			this.deleteOneNotice(notification.getNotiId());
 		}
-		return result;
+		return true;
 	}
 
 	public List<DeleteNotificationResponse> deleteAllNotice(Integer userId) {
