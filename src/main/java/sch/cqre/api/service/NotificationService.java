@@ -26,20 +26,17 @@ public class NotificationService {
 			.orElseThrow(() -> new CustomException(NOTIFICATION_NOT_FOUND));
 	}
 
-	public List<CheckNotificationResponse> readAllNotice(Integer userId) {
-		List<CheckNotificationResponse> result = new ArrayList<>();
+	public boolean readAllNotice(Integer userId) {
 		// 내 알림 불러오기
-		List<NotificationEntity> notifications = this.notificationRepo.findByReceiverId(userId);
-		// 알림이 없을 경우
-		if (notifications == null){
-			result.add(new CheckNotificationResponse(null, null, "fail", "존재하는 알림이 없음"));
-			return result;
-		}
+		List<NotificationEntity> notifications = this.notificationRepo.findByReceiverId(userId)
+			// 알림이 없을 경우 "알림 없음" 예외 처리
+			.orElseThrow(() -> new CustomException(NOTIFICATION_NOT_FOUND));
+
 		for (NotificationEntity notification : notifications) {
-			// 읽음 처리 후 결과 객체를 리스트에 저장
-			result.add(this.checkNotification(notification.getNotiId()));
+			// 읽음 처리
+			this.checkNotification(notification.getNotiId());
 		}
-		return result;
+		return true;
 
 	}
 

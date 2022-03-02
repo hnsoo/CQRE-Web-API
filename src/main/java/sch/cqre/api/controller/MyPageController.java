@@ -98,8 +98,8 @@ import sch.cqre.api.service.PostService;
 	 public ResponseEntity readAllNotice() {
 		 UserEntity userEntity = this.accountService.searchByEmail(userService.getEmail());
 		 Integer userId = userEntity.getUserId();
-		 List<CheckNotificationResponse> result = this.noticeService.readAllNotice(userId);
-		 return ResponseEntity.ok().body(result);
+		 this.noticeService.readAllNotice(userId);
+		 return new ResponseEntity(HttpStatus.OK);
 	 }
 
 	 // 읽은 알림 전체 삭제
