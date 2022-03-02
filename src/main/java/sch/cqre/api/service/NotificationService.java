@@ -5,8 +5,6 @@ import static sch.cqre.api.exception.ErrorCode.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.criteria.CriteriaBuilder;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,7 +12,6 @@ import lombok.AllArgsConstructor;
 import sch.cqre.api.domain.NotificationEntity;
 import sch.cqre.api.exception.CustomException;
 import sch.cqre.api.repository.NotificationRepository;
-import sch.cqre.api.response.CheckNotificationResponse;
 import sch.cqre.api.response.DeleteNotificationResponse;
 
 @Service
@@ -47,18 +44,18 @@ public class NotificationService {
 	}
 
 	@Transactional
-	public CheckNotificationResponse checkNotification(Integer notiId) {
-		// 존재하는 알림인지 확인
-		if (notificationRepo.countByNotiId(notiId) != 1)
-			return new CheckNotificationResponse(notiId, null, "error", "존재하지 않는 알림");
-		NotificationEntity notification = notificationRepo.getById(notiId);
+	public NotificationEntity checkNotification(Integer notiId) {
+		// 알림 UID 를 기반으로 알림 검색
+		NotificationEntity notification = notificationRepo.findById(notiId)
+			// 알림을 못 찾을 경우 "알림 없음" 예외 처리
+			.orElseThrow(() -> new CustomException(NOTIFICATION_NOT_FOUND));
 
 		// 안 읽없으면 읽음 처리
 		if(!notification.getWhether())
 			notification.setWhether(true);
 
-		// 결과 반환
-		return new CheckNotificationResponse(notiId, notification.getNotiPost(), "success", "알림 확인 성공");
+		// 알림 반환
+		return notification;
 	}
 
 	public List<DeleteNotificationResponse> deleteReadNotification(Integer userId) {

@@ -15,10 +15,8 @@ import lombok.AllArgsConstructor;
 import sch.cqre.api.domain.NotificationEntity;
 import sch.cqre.api.domain.PostEntity;
 import sch.cqre.api.domain.UserEntity;
-import sch.cqre.api.response.CheckNotificationResponse;
 import sch.cqre.api.response.DeleteNotificationResponse;
 import sch.cqre.api.service.AccountService;
-import sch.cqre.api.service.JsonMessager;
 import sch.cqre.api.service.NotificationService;
 import sch.cqre.api.service.PostService;
 
@@ -80,7 +78,7 @@ import sch.cqre.api.service.PostService;
 	 // 알림 하나 읽기
 	 @PatchMapping("/notice")
 	 public ResponseEntity readOneNotice(@RequestParam(value = "notiId", required = false, defaultValue = "0") Integer notiId) {
-	 	CheckNotificationResponse result = this.noticeService.checkNotification(notiId);
+	 	NotificationEntity result = this.noticeService.checkNotification(notiId);
 		 return ResponseEntity.ok().body(result);
 	 }
 
