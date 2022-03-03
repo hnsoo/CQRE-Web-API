@@ -17,6 +17,11 @@ import sch.cqre.api.repository.UserRepository;
 public class AccountService {
 	private final UserRepository userRepo;
 
+	public UserEntity searchById(Integer userId) {
+		return this.userRepo.findById(userId)
+			.orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
+	}
+
 	public UserEntity searchByEmail(String email) {
 		return this.userRepo.findByEmail(email)
 			.orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
@@ -30,6 +35,7 @@ public class AccountService {
 		return userEntity;
 	}
 	public void changePassword(Integer userId) {}
+
 	public Integer withdrawal(Integer userId) {
 		// 존재하는 유저인지 확인
 		if (userRepo.countByUserId(userId) != 1)

@@ -1,4 +1,4 @@
- package sch.cqre.api.controller;
+package sch.cqre.api.controller;
 
 import java.util.List;
 
@@ -32,17 +32,19 @@ import sch.cqre.api.service.PostService;
 	 private final AccountService accountService;
 	 private final PostService postService;
 	 private final NotificationService noticeService;
-	 private final UserService userService;
+	 // private final UserService userService;
 
 	/*
 	 기능: 회원 정보 불러오기
 	 요청: 없음 (토큰에서 유저 Email 추출 후 사용)
 	 반환: 200, body{}
 	 */
-
 	 @GetMapping
 	 public ResponseEntity<UserEntity> getMyInfo() {
-		 UserEntity result = this.accountService.searchByEmail(userService.getEmail());
+		 // UserEntity result = this.accountService.searchByEmail(userService.getEmail());
+
+		 // 테스트
+		 UserEntity result = this.accountService.searchById(100);
 		 return ResponseEntity.ok().body(result);
 	 }
 
@@ -53,9 +55,13 @@ import sch.cqre.api.service.PostService;
 	 */
 	 @DeleteMapping
 	 public ResponseEntity withdrawMe() {
-		 UserEntity userEntity = this.accountService.searchByEmail(userService.getEmail());
-		 Integer userId = userEntity.getUserId();
-		 this.accountService.withdrawal(userId);
+		 // UserEntity userEntity = this.accountService.searchByEmail(userService.getEmail());
+		 // Integer userId = userEntity.getUserId();
+		 // this.accountService.withdrawal(userId);
+
+		 // 테스트
+		 this.accountService.withdrawal(1);
+
 		 return new ResponseEntity(HttpStatus.OK);
 	 }
 
@@ -76,9 +82,12 @@ import sch.cqre.api.service.PostService;
 	 */
 	 @GetMapping("/post")
 	 public ResponseEntity getMyPost() {
-		 UserEntity userEntity = this.accountService.searchByEmail(userService.getEmail());
-		 Integer userId = userEntity.getUserId();
-		 List<PostEntity> result = this.postService.searchAllByAuthorId(userId);
+		 // UserEntity userEntity = this.accountService.searchByEmail(userService.getEmail());
+		 // Integer userId = userEntity.getUserId();
+		 // List<PostEntity> result = this.postService.searchAllByAuthorId(userId);
+
+		 // 테스트
+		 List<PostEntity> result = this.postService.searchAllByAuthorId(1);
 		 return ResponseEntity.ok().body(result);
 	 }
 
@@ -100,9 +109,12 @@ import sch.cqre.api.service.PostService;
 	 */
 	 @GetMapping("/scrap")
 	 public ResponseEntity getMyScrap() {
-		 UserEntity userEntity = this.accountService.searchByEmail(userService.getEmail());
-		 Integer userId = userEntity.getUserId();
-		 List<PostEntity> result = this.postService.searchScrapByUserId(userId);
+		 // UserEntity userEntity = this.accountService.searchByEmail(userService.getEmail());
+		 // Integer userId = userEntity.getUserId();
+		 // List<PostEntity> result = this.postService.searchScrapByUserId(userId);
+
+		 // 테스트
+		 List<PostEntity> result = this.postService.searchScrapByUserId(1);
 		 return ResponseEntity.ok().body(result);
 	 }
 
@@ -123,9 +135,12 @@ import sch.cqre.api.service.PostService;
 	 */
 	 @GetMapping("/notice")
 	 public ResponseEntity getMyNotice() {
-		 UserEntity userEntity = this.accountService.searchByEmail(userService.getEmail());
-		 Integer userId = userEntity.getUserId();
-		 List<NotificationEntity> result = this.noticeService.searchByUserId(userId);
+		 // UserEntity userEntity = this.accountService.searchByEmail(userService.getEmail());
+		 // Integer userId = userEntity.getUserId();
+		 // List<NotificationEntity> result = this.noticeService.searchByUserId(userId);
+
+		 // 테스트
+		 List<NotificationEntity> result = this.noticeService.searchByUserId(1);
 		 return ResponseEntity.ok().body(result);
 	 }
 
@@ -171,9 +186,12 @@ import sch.cqre.api.service.PostService;
 	 */
 	 @PatchMapping("/notice/all")
 	 public ResponseEntity readAllNotice() {
-		 UserEntity userEntity = this.accountService.searchByEmail(userService.getEmail());
-		 Integer userId = userEntity.getUserId();
-		 this.noticeService.readAllNotice(userId);
+		 // UserEntity userEntity = this.accountService.searchByEmail(userService.getEmail());
+		 // Integer userId = userEntity.getUserId();
+		 // this.noticeService.readAllNotice(userId);
+
+		 // 테스트
+		 this.noticeService.readAllNotice(1);
 		 return new ResponseEntity(HttpStatus.OK);
 	 }
 
@@ -184,9 +202,12 @@ import sch.cqre.api.service.PostService;
 	 */
 	 @DeleteMapping("/notice/read")
 	 public ResponseEntity deleteReadNotice() {
-		 UserEntity userEntity = this.accountService.searchByEmail(userService.getEmail());
-		 Integer userId = userEntity.getUserId();
-		 this.noticeService.deleteReadNotification(userId);
+		 // UserEntity userEntity = this.accountService.searchByEmail(userService.getEmail());
+		 // Integer userId = userEntity.getUserId();
+		 // this.noticeService.deleteReadNotification(userId);
+
+		 // 테스트
+		 this.noticeService.deleteReadNotification(1);
 		 return new ResponseEntity(HttpStatus.OK);
 	 }
 
@@ -197,9 +218,12 @@ import sch.cqre.api.service.PostService;
 	 */
 	 @DeleteMapping("/notice/all")
 	 public ResponseEntity deleteAllNotice() {
-		 UserEntity userEntity = this.accountService.searchByEmail(userService.getEmail());
-		 Integer userId = userEntity.getUserId();
-		 this.noticeService.deleteAllNotice(userId);
+		 // UserEntity userEntity = this.accountService.searchByEmail(userService.getEmail());
+		 // Integer userId = userEntity.getUserId();
+		 // this.noticeService.deleteAllNotice(userId);
+
+		 // 테스트
+		 this.noticeService.deleteAllNotice(1);
 		 return new ResponseEntity(HttpStatus.OK);
 	 }
  }

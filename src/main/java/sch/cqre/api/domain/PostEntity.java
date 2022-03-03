@@ -37,9 +37,6 @@ public class PostEntity {
 	@Column(name = "views", columnDefinition = "int unsigned default 0")
 	private int views;
 	@Basic
-	@Column(name = "likes", columnDefinition = "int unsigned default 0")
-	private int likes;
-	@Basic
 	@Column(name = "thumbnail")
 	private String thumbnail;
 	@Basic(optional = false)
@@ -50,13 +47,12 @@ public class PostEntity {
 	private Timestamp updatedAt;
 
 	@Builder
-	public PostEntity(Integer authorId, String postTitle, String postContent, int views, int likes, String thumbnail,
+	public PostEntity(Integer authorId, String postTitle, String postContent, int views, String thumbnail,
 		Timestamp createdAt, Timestamp updatedAt) {
 		this.authorId = authorId;
 		this.postTitle = postTitle;
 		this.postContent = postContent;
 		this.views = views;
-		this.likes = likes;
 		this.thumbnail = thumbnail;
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
@@ -71,12 +67,12 @@ public class PostEntity {
 		PostEntity that = (PostEntity)o;
 		return postId == that.postId && authorId == that.authorId && Objects.equals(postTitle, that.postTitle)
 			&& Objects.equals(postContent, that.postContent) && Objects.equals(views, that.views)
-			&& Objects.equals(likes, that.likes) && Objects.equals(thumbnail, that.thumbnail)
+			&& Objects.equals(thumbnail, that.thumbnail)
 			&& Objects.equals(createdAt, that.createdAt) && Objects.equals(updatedAt, that.updatedAt);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(postId, authorId, postTitle, postContent, views, likes, thumbnail, createdAt, updatedAt);
+		return Objects.hash(postId, authorId, postTitle, postContent, views, thumbnail, createdAt, updatedAt);
 	}
 }
