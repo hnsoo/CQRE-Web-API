@@ -42,10 +42,13 @@ import sch.cqre.api.service.PostService;
 	 }
 
 	 // 회원 탈퇴
-	 // @DeleteMapping
-	 // public void withdrawMe(@RequestParam() {
-		//  UserEntity result = this.accountService.searchByEmail(userService.getEmail());
-	 // }
+	 @DeleteMapping
+	 public ResponseEntity withdrawMe() {
+		 UserEntity userEntity = this.accountService.searchByEmail(userService.getEmail());
+		 Integer userId = userEntity.getUserId();
+		 this.accountService.withdrawal(userId);
+		 return new ResponseEntity(HttpStatus.OK);
+	 }
 
 	 // 내가 쓴 게시글 불러오기
 	 @GetMapping("/post")

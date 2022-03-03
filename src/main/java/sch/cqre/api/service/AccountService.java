@@ -30,7 +30,18 @@ public class AccountService {
 		return userEntity;
 	}
 	public void changePassword(Integer userId) {}
-	public void withdrawal(Integer userId) {
-		this.userRepo.deleteById(userId);
+	public Integer withdrawal(Integer userId) {
+		// 존재하는 유저인지 확인
+		if (userRepo.countByUserId(userId) != 1)
+			// 없으면 "유저 없음" 예외 처리
+			throw new CustomException(MEMBER_NOT_FOUND);
+		// 삭제
+		userRepo.deleteById(userId);
+		// 삭제 되었는지 확인
+		if (userRepo.countByUserId(userId) != 0)
+			// 삭제 실패시 "삭제 실패" 예외 처리
+			throw new CustomException(FAIL_DELETE);
+		// 삭제 성공시 삭제한 유저 아이디 반환
+		return userId;
 	}
 }
