@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.AllArgsConstructor;
 import sch.cqre.api.domain.NotificationEntity;
 import sch.cqre.api.dto.CheckNotificationResponseDto;
+import sch.cqre.api.dto.DeleteNotificationResponseDto;
 import sch.cqre.api.exception.CustomException;
 import sch.cqre.api.repository.NotificationRepository;
 
@@ -61,7 +62,7 @@ public class NotificationService {
 	}
 
 	@Transactional
-	public Integer deleteOneNotice(Integer notiId) {
+	public DeleteNotificationResponseDto deleteOneNotice(Integer notiId) {
 		// 존재하는 알림인지 확인
 		if (notificationRepo.countByNotiId(notiId) != 1)
 			throw new CustomException(NOTIFICATION_NOT_FOUND);
@@ -71,7 +72,7 @@ public class NotificationService {
 		if (notificationRepo.countByNotiId(notiId) != 0)
 			// 삭제 실패시 "삭제 실패" 예외 처리
 			throw new CustomException(FAIL_DELETE);
-		return notiId;
+		return new DeleteNotificationResponseDto(notiId);
 	}
 
 	@Transactional

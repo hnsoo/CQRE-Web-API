@@ -15,6 +15,7 @@ import lombok.AllArgsConstructor;
 import sch.cqre.api.domain.NotificationEntity;
 import sch.cqre.api.domain.PostEntity;
 import sch.cqre.api.dto.CheckNotificationResponseDto;
+import sch.cqre.api.dto.DeleteNotificationResponseDto;
 import sch.cqre.api.dto.DeleteUserResponseDto;
 import sch.cqre.api.dto.MyInfoResponseDto;
 import sch.cqre.api.service.AccountService;
@@ -177,11 +178,11 @@ import sch.cqre.api.service.PostService;
 			}
 	 */
 	 @DeleteMapping("/notice")
-	 public ResponseEntity deleteOneNotice(@RequestParam(value = "notiId", required = false, defaultValue = "0") Integer notiId){
+	 public ResponseEntity<DeleteNotificationResponseDto> deleteOneNotice(@RequestParam(value = "notiId", required = false, defaultValue = "0") Integer notiId){
 		 // 알림 삭제 실행 후 결과 객체를 불러옴
-		 Integer result = this.noticeService.deleteOneNotice(notiId);
+		 DeleteNotificationResponseDto result = this.noticeService.deleteOneNotice(notiId);
 		 // 성공적으로 알림 삭제
-		 return new ResponseEntity(result, HttpStatus.OK);
+		 return ResponseEntity.ok().body(result);
 	 }
 
 	 /*
