@@ -14,7 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.AllArgsConstructor;
 import sch.cqre.api.domain.NotificationEntity;
 import sch.cqre.api.domain.PostEntity;
-import sch.cqre.api.domain.UserEntity;
+import sch.cqre.api.dto.DeleteUserResponseDto;
+import sch.cqre.api.dto.MyInfoResponseDto;
 import sch.cqre.api.service.AccountService;
 import sch.cqre.api.service.NotificationService;
 import sch.cqre.api.service.PostService;
@@ -37,32 +38,42 @@ import sch.cqre.api.service.PostService;
 	/*
 	 기능: 회원 정보 불러오기
 	 요청: 없음 (토큰에서 유저 Email 추출 후 사용)
-	 반환: 200, body{}
+	 반환: 200, body{
+	 			studentID : 학번
+	 			email : 이메일
+	 			nickname : 닉네임
+	 		}
 	 */
 	 @GetMapping
-	 public ResponseEntity<UserEntity> getMyInfo() {
+	 public ResponseEntity<MyInfoResponseDto> getMyInfo() {
 		 // UserEntity result = this.accountService.searchByEmail(userService.getEmail());
 
 		 // 테스트
-		 UserEntity result = this.accountService.searchById(100);
+		 MyInfoResponseDto result = this.accountService.searchById(100);
 		 return ResponseEntity.ok().body(result);
 	 }
 
 	 /*
 	 기능: 회원 탈퇴
 	 요청: 없음 (토큰에서 유저 Email 추출 후 사용)
-	 반환: 200, body{}
+	 반환: 200, body{
+	 			userId : 유저 UID
+	 			studentId : 유저 학번
+	 			email : 유저 이메일
+	 			nickname : 유저 닉네임
+	 			userType : 유저 타입
+	 	}
 	 */
 	 @DeleteMapping
-	 public ResponseEntity withdrawMe() {
+	 public ResponseEntity<DeleteUserResponseDto> withdrawMe() {
 		 // UserEntity userEntity = this.accountService.searchByEmail(userService.getEmail());
 		 // Integer userId = userEntity.getUserId();
 		 // this.accountService.withdrawal(userId);
 
 		 // 테스트
-		 this.accountService.withdrawal(1);
+		 DeleteUserResponseDto result = this.accountService.withdrawal(1);
 
-		 return new ResponseEntity(HttpStatus.OK);
+		 return ResponseEntity.ok().body(result);
 	 }
 
 	 /*
