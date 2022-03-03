@@ -14,24 +14,6 @@ import sch.cqre.api.domain.PostEntity;
 
 @Getter
 @NoArgsConstructor
-public class PostResponseDto{
-	private Integer postId;
-	private Integer authorId;
-	private String postTitle;
-	private String postContent;
-	private int views;
-	private String thumbnail;
-	private Timestamp createdAt;
-	private Timestamp updatedAt;
+public class PostResponseDto extends PostEntity{
 
-	public PostResponseDto(PostEntity postEntity) {
-		this.postId = postEntity.getPostId();
-		this.authorId = postEntity.getAuthorId();
-		this.postTitle = postEntity.getPostTitle();
-		this.postContent = postEntity.getPostContent();
-		this.views = postEntity.getViews();
-		this.thumbnail = postEntity.getThumbnail();
-		this.createdAt = postEntity.getCreatedAt();
-		this.updatedAt = postEntity.getUpdatedAt();
-	}
 }
