@@ -1,8 +1,6 @@
 package sch.cqre.api.service;
 
 import static sch.cqre.api.exception.ErrorCode.*;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -20,23 +18,30 @@ public class NotificationService {
 
 	// 유저 UID 를 기반으로 알림 검색
 	public List<NotificationEntity> searchByUserId(Integer userId) {
-		return notificationRepo.findAllByReceiverId(userId)
-			// 알림을 찾지 못할 경우 "알림 없음" 예외 처리
-			.orElseThrow(() -> new CustomException(NOTIFICATION_NOT_FOUND));
+		// 내 알림 불러오기
+		List<NotificationEntity> notifications =  notificationRepo.findAllByReceiverId(userId);
+
+		// 알림을 찾지 못할 경우 "알림 없음" 예외 처리
+		if (notifications == null || notifications.isEmpty())
+			throw new CustomException(NOTIFICATION_NOT_FOUND);
+
+		return notifications;
 	}
 
+	@Transactional
 	public boolean readAllNotice(Integer userId) {
 		// 내 알림 불러오기
-		List<NotificationEntity> notifications = this.notificationRepo.findByReceiverId(userId)
-			// 알림이 없을 경우 "알림 없음" 예외 처리
-			.orElseThrow(() -> new CustomException(NOTIFICATION_NOT_FOUND));
+		List<NotificationEntity> notifications = this.notificationRepo.findByReceiverId(userId);
+
+		// 알림이 없을 경우 "알림 없음" 예외 처리
+		if (notifications == null || notifications.isEmpty())
+			throw new CustomException(NOTIFICATION_NOT_FOUND);
 
 		for (NotificationEntity notification : notifications) {
 			// 읽음 처리
 			this.checkNotification(notification.getNotiId());
 		}
 		return true;
-
 	}
 
 	@Transactional
@@ -54,31 +59,7 @@ public class NotificationService {
 		return notification;
 	}
 
-	public Boolean deleteReadNotification(Integer userId) {
-		// 나의 읽은 알림들 로드
-		List<NotificationEntity> notifications = notificationRepo.findByReceiverIdAndWhether(userId, true)
-			// 알림을 못 찾을 경우 "알림 없음" 예외 처리
-			.orElseThrow(() -> new CustomException(NOTIFICATION_NOT_FOUND));
-		for(NotificationEntity notification : notifications){
-			// 읽은 알림 삭제 및 결과 객체를 리스트에 반환
-			this.deleteOneNotice(notification.getNotiId());
-		}
-		return true;
-	}
-
-	public boolean deleteAllNotice(Integer userId) {
-		// 내 알림들 로드
-		List<NotificationEntity> notifications = notificationRepo.findByReceiverId(userId)
-			// 내 알림이 없을 경우 "알림 없음" 예외 처리
-			.orElseThrow(() -> new CustomException(NOTIFICATION_NOT_FOUND));
-
-		for(NotificationEntity notification : notifications){
-			// 알림 삭제 및 결과 코드를 리스트에 저장
-			this.deleteOneNotice(notification.getNotiId());
-		}
-		return true;
-	}
-
+	@Transactional
 	public Integer deleteOneNotice(Integer notiId) {
 		// 존재하는 알림인지 확인
 		if (notificationRepo.countByNotiId(notiId) != 1)
@@ -89,7 +70,37 @@ public class NotificationService {
 		if (notificationRepo.countByNotiId(notiId) != 0)
 			// 삭제 실패시 "삭제 실패" 예외 처리
 			throw new CustomException(FAIL_DELETE);
-
 		return notiId;
+	}
+
+	@Transactional
+	public Boolean deleteReadNotification(Integer userId) {
+		// 나의 읽은 알림들 로드
+		List<NotificationEntity> notifications = notificationRepo.findByReceiverIdAndWhether(userId, true);
+
+		// 알림을 못 찾을 경우 "알림 없음" 예외 처리
+		if (notifications == null || notifications.isEmpty())
+			throw new CustomException(NOTIFICATION_NOT_FOUND);
+
+		for(NotificationEntity notification : notifications){
+			// 읽은 알림 삭제
+			this.deleteOneNotice(notification.getNotiId());
+		}
+		return true;
+	}
+
+	@Transactional
+	public boolean deleteAllNotice(Integer userId) {
+		// 내 알림들 로드
+		List<NotificationEntity> notifications = notificationRepo.findByReceiverId(userId);
+		// 내 알림이 없을 경우 "알림 없음" 예외 처리
+		if (notifications == null || notifications.isEmpty())
+			throw new CustomException(NOTIFICATION_NOT_FOUND);
+
+		for(NotificationEntity notification : notifications){
+			// 알림 삭제 및 결과 코드를 리스트에 저장
+			this.deleteOneNotice(notification.getNotiId());
+		}
+		return true;
 	}
 }
