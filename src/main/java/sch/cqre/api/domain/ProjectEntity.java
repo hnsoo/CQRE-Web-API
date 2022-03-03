@@ -61,4 +61,9 @@ public class ProjectEntity {
 	public int hashCode() {
 		return Objects.hash(projectId, projectTitle, projectContent, startedAt, finishedAt);
 	}
+
+	public void update(String projectTitle, String projectContent){
+		this.projectTitle = projectTitle;
+		this.projectContent = projectContent;
+	}
 }
