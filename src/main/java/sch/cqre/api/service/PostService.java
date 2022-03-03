@@ -34,9 +34,10 @@ public class PostService {
 
 	// 유저가 스크랩한 모든 포스트 검색
 	public List<PostEntity> searchScrapByUserId(Integer userId) {
-		List<ScrapEntity> scraps = this.scrapRepo.findByUserId(userId)
-			// 찾지 못할 경우 "스크랩 없음" 예외 처리
-			.orElseThrow(()-> new CustomException(SCRAP_NOT_FOUND));
+		List<ScrapEntity> scraps = this.scrapRepo.findByUserId(userId);
+		// 찾지 못할 경우 "스크랩 없음" 예외 처리
+		if (scraps == null || scraps.isEmpty())
+			throw new CustomException(SCRAP_NOT_FOUND);
 
 		List<PostEntity> result = new ArrayList<>();
 
