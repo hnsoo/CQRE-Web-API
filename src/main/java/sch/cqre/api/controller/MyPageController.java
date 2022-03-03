@@ -82,7 +82,6 @@ import sch.cqre.api.service.PostService;
 				postTitle : 포스트 제목
 				postContent : 포스트 내용
 				views : 조회수
-				likes : 좋아요수
 				thumbnail : 썸네일 그림
 				createdAt : 작성 시간
 				updatedAt : 최종 수정 시간
