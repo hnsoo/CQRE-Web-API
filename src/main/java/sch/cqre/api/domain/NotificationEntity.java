@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 public class NotificationEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
-	@Column(name = "not_id")
+	@Column(name = "noti_id")
 	private int notiId;
 	@Basic
 	@Column(name = "receiver_id")
@@ -30,16 +30,16 @@ public class NotificationEntity {
 	@Column(name = "sender_id")
 	private int senderId;
 	@Basic
-	@Column(name = "not_type")
+	@Column(name = "noti_type")
 	private String notiType;
 	@Basic
-	@Column(name = "not_post")
+	@Column(name = "noti_post")
 	private int notiPost;
 	@Basic
-	@Column(name = "not_content")
+	@Column(name = "noti_content")
 	private String notiContent;
 	@Basic
-	@Column(name = "not_datetime")
+	@Column(name = "noti_datetime")
 	private Timestamp notiDatetime;
 	@Basic
 	@Column(name = "whether")
