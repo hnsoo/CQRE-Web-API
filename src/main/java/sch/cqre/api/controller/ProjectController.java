@@ -1,94 +1,63 @@
 package sch.cqre.api.controller;
 
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import lombok.RequiredArgsConstructor;
-import sch.cqre.api.dto.ProjectRequestDto;
+import sch.cqre.api.domain.ProjectEntity;
+import sch.cqre.api.dto.project.ProjectCreateRequestDto;
+import sch.cqre.api.dto.project.ProjectEditRequestDto;
+import sch.cqre.api.dto.project.ProjectResponseDto;
+import sch.cqre.api.dto.project.ProjectWriteRequestDto;
 import sch.cqre.api.service.ProjectService;
 
 @RequiredArgsConstructor
 @Controller
+@RequestMapping("/project")
 public class ProjectController {
     private final ProjectService projectService;
 
-    @GetMapping("/project/list")
-    public String getProjectList(Model model, @RequestParam(required = false, defaultValue = "0") Integer page, @RequestParam(required = false, defaultValue = "5") Integer size) throws Exception{
-        try{
-            model.addAttribute("resultMap", projectService.findAll(page, size));
-        } catch(Exception e){
-            throw new Exception(e.getMessage());
-        }
-
-        return "/project/list";
+    //프로젝트 조회
+    @GetMapping("/list")
+    public ResponseEntity<List<ProjectEntity>> getProjectList() throws Exception{
+       return ResponseEntity.ok().body(projectService.getProjectList());
     }
 
-    @GetMapping("/project/write")
-    public String getProjectWrite(Model model, ProjectRequestDto projectRequestDto){
-        return "/project/write";
+    // 프로젝트 상세 조회
+    @GetMapping("/list/{project_id}")
+    public ProjectResponseDto getDetailProject(@PathVariable Long project_id) throws Exception{
+        return projectService.getDetailProject(project_id);
     }
 
-    @GetMapping("/project/view")
-    public String getProjectView(Model model, ProjectRequestDto projectRequestDto) throws Exception{
-        try {
-            if (projectRequestDto.getProjectId() != null) {
-                model.addAttribute("info", projectService.findById(projectRequestDto.getProjectId()));
-            }
-        }catch(Exception e){
-                throw new Exception(e.getMessage());
-        }
-        return "/project/view";
+    // 프로젝트 작성
+    @PostMapping("/write")
+    public Long postWriteProject(@RequestBody ProjectWriteRequestDto requestDto){
+        return projectService.write(requestDto);
+    }
+    @PostMapping("/write")
+    public Long postCreateProject(@RequestBody ProjectCreateRequestDto requestDto){
+        return projectService.create(requestDto);
     }
 
-    @PostMapping("/project/write/action")
-    public String projectWriteAction(Model model, ProjectRequestDto projectRequestDto) throws Exception{
-        try {
-            Long result = projectService.save(projectRequestDto);
-            if (result < 0) {
-                throw new Exception("#Exception projectWriteAction!");
-            }
-        }catch(Exception e){
-            throw new Exception(e.getMessage());
-        }
-        return "redirect:/project/list";
+
+    // 프로젝트 수정
+    @PatchMapping("/project/{project_id}")
+    public Long patchEditProject(@PathVariable Long projectId, @RequestBody ProjectEditRequestDto requestDto){
+        return projectService.update(projectId, requestDto);
     }
 
-    @PostMapping("/project/view/action")
-    public String projectViewAction(Model model, ProjectRequestDto projectRequestDto) throws Exception{
-        try{
-            int result = projectService.updateProject(projectRequestDto);
-            if(result<1){
-                throw new Exception("#Exception  projectViewAction!");
-            }
-        }
-        catch(Exception e){
-            throw new Exception(e.getMessage());
-        }
-        return "redirect:/project/list";
-    }
-
-    @PostMapping("/project/view/delete")
-    public String projectViewDeleteAction(Model model, @RequestParam() Long projectId) throws Exception{
-        try{
-            projectService.deleteById(projectId);
-        }
-        catch(Exception e){
-            throw new Exception(e.getMessage());
-        }
-        return "redirect:/project/list";
-    }
-
-    @PostMapping("/project/delete")
-    public String projectDeleteAction(Model model, @RequestParam() Long[] deleteProjectId) throws Exception{
-        try{
-            projectService.deleteAll(deleteProjectId);
-        }
-        catch(Exception e){
-            throw new Exception(e.getMessage());
-        }
-        return "redirect:/project/list";
+    // 프로젝트 삭제
+    @DeleteMapping("/project/{project_id}")
+    public void deleteProject(@PathVariable Long project_id){
+        projectService.delete(project_id);
     }
 }
