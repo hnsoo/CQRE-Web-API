@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.AllArgsConstructor;
 import sch.cqre.api.domain.NotificationEntity;
+import sch.cqre.api.dto.CheckNotificationResponseDto;
 import sch.cqre.api.exception.CustomException;
 import sch.cqre.api.repository.NotificationRepository;
 
@@ -45,7 +46,7 @@ public class NotificationService {
 	}
 
 	@Transactional
-	public NotificationEntity checkNotification(Integer notiId) {
+	public CheckNotificationResponseDto checkNotification(Integer notiId) {
 		// 알림 UID 를 기반으로 알림 검색
 		NotificationEntity notification = notificationRepo.findById(notiId)
 			// 알림을 못 찾을 경우 "알림 없음" 예외 처리
@@ -56,7 +57,7 @@ public class NotificationService {
 			notification.setWhether(true);
 
 		// 알림 반환
-		return notification;
+		return new CheckNotificationResponseDto(notification);
 	}
 
 	@Transactional

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.AllArgsConstructor;
 import sch.cqre.api.domain.NotificationEntity;
 import sch.cqre.api.domain.PostEntity;
+import sch.cqre.api.dto.CheckNotificationResponseDto;
 import sch.cqre.api.dto.DeleteUserResponseDto;
 import sch.cqre.api.dto.MyInfoResponseDto;
 import sch.cqre.api.service.AccountService;
@@ -87,6 +88,7 @@ import sch.cqre.api.service.PostService;
 				updatedAt : 최종 수정 시간
 			}
 	 */
+	 //TO DO: PostResponseDto 추가
 	 @GetMapping("/post")
 	 public ResponseEntity getMyPost() {
 		 // UserEntity userEntity = this.accountService.searchByEmail(userService.getEmail());
@@ -114,6 +116,7 @@ import sch.cqre.api.service.PostService;
 				updatedAt : 최종 수정 시간
 			}
 	 */
+	 //TO DO: ScrapResponseDto 추가
 	 @GetMapping("/scrap")
 	 public ResponseEntity getMyScrap() {
 		 // UserEntity userEntity = this.accountService.searchByEmail(userService.getEmail());
@@ -140,6 +143,7 @@ import sch.cqre.api.service.PostService;
 				whether : 알림 확인 여부
 			}
 	 */
+	 //TO DO: NotificationResponseDto 추가
 	 @GetMapping("/notice")
 	 public ResponseEntity getMyNotice() {
 		 // UserEntity userEntity = this.accountService.searchByEmail(userService.getEmail());
@@ -156,18 +160,12 @@ import sch.cqre.api.service.PostService;
 	 요청: 알림 UID
 	 반환: 200, body{
 	 			notiId : 알림 UID
-				receiverId : 알림 받는 유저 UID
-				senderId : 알림 보내는 유저 UID
-				notiType : 알림 타입
-				notiPost : 알림이 발생한 포스트 UID
-				notiContent : 알림 내용
-				notiDatetime : 알림 발생 시간
 				whether : 알림 확인 여부
 			}
 	 */
 	 @PatchMapping("/notice")
-	 public ResponseEntity readOneNotice(@RequestParam(value = "notiId", required = false, defaultValue = "0") Integer notiId) {
-	 	NotificationEntity result = this.noticeService.checkNotification(notiId);
+	 public ResponseEntity<CheckNotificationResponseDto> readOneNotice(@RequestParam(value = "notiId", required = false, defaultValue = "0") Integer notiId) {
+		 CheckNotificationResponseDto result = this.noticeService.checkNotification(notiId);
 		 return ResponseEntity.ok().body(result);
 	 }
 
