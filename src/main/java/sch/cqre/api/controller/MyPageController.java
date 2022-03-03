@@ -39,6 +39,7 @@ import sch.cqre.api.service.PostService;
 	 기능: 회원 정보 불러오기
 	 요청: 없음 (토큰에서 유저 Email 추출 후 사용)
 	 반환: 200, body{
+	 			userId : 유저 UID
 	 			studentID : 학번
 	 			email : 이메일
 	 			nickname : 닉네임
@@ -58,11 +59,7 @@ import sch.cqre.api.service.PostService;
 	 요청: 없음 (토큰에서 유저 Email 추출 후 사용)
 	 반환: 200, body{
 	 			userId : 유저 UID
-	 			studentId : 유저 학번
-	 			email : 유저 이메일
-	 			nickname : 유저 닉네임
-	 			userType : 유저 타입
-	 	}
+	 		}
 	 */
 	 @DeleteMapping
 	 public ResponseEntity<DeleteUserResponseDto> withdrawMe() {
