@@ -1,56 +1,64 @@
 package sch.cqre.api.service;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-
 import lombok.RequiredArgsConstructor;
-import sch.cqre.api.dto.ProjectRequestDto;
-import sch.cqre.api.dto.ProjectResponseDto;
-import sch.cqre.api.project.Project;
-import sch.cqre.api.project.ProjectRepository;
+import sch.cqre.api.domain.ProjectEntity;
+import sch.cqre.api.dto.project.ProjectCreateRequestDto;
+import sch.cqre.api.dto.project.ProjectEditRequestDto;
+import sch.cqre.api.dto.project.ProjectResponseDto;
+import sch.cqre.api.dto.project.ProjectWriteRequestDto;
+import sch.cqre.api.repository.ProjectMemberRepository;
+import sch.cqre.api.repository.ProjectRepository;
 
 @RequiredArgsConstructor
 @Service
 public class ProjectService {
+    private final ProjectMemberRepository projectMemberRepository;
     private final ProjectRepository projectRepository;
 
-    @Transactional
-    public Long save(ProjectRequestDto projectSaveDto){
-        return projectRepository.save(projectSaveDto.toEntity()).getProjectId();
+    // 프로젝트 조회
+    public List<ProjectEntity> getProjectList() throws Exception {
+        return projectRepository.findAll();
     }
 
-    @Transactional
-    public HashMap<String, Object> findAll(Integer page, Integer size){
-       HashMap<String, Object> resultMap = new HashMap<String, Object>();
+    // 프로젝트 상세 조회
+    public ProjectResponseDto getDetailProject(Long project_id){
+        ProjectEntity project = projectRepository.findById(project_id).orElseThrow(()
+        -> new IllegalArgumentException("해당 프로젝트는 존재하지 않습니다."));
 
-       Page <Project> list = projectRepository.findAll(PageRequest.of(page, size));
-       resultMap.put("list", list.stream().map(ProjectResponseDto::new).collect(Collectors.toList()));
-       resultMap.put("paging", list.getPageable());
-       resultMap.put("totalPage", list.getTotalPages());
-
-       return resultMap;
+        return new ProjectResponseDto(entity);
     }
 
-    public ProjectResponseDto findById(Long projectId){
-        return new ProjectResponseDto(projectRepository.findById(projectId).get());
+    // 프로젝트 생성
+    public Long write(ProjectWriteRequestDto requestDto){
+        return projectRepository.save(requestDto.toEntity()).getProjectId();
+    }
+    public Long create(ProjectCreateRequestDto requestDto){
+        return projectMemberRepository.save(requestDto.toEntity()).getMemberId();
     }
 
-    public int updateProject(ProjectRequestDto projectRequestDto){
-        return projectRepository.updateProject(projectRequestDto);
+    // 프로젝트 수정
+    public Long update(Long projectId, ProjectEditRequestDto projectEditRequestDto){
+        ProjectEntity projectDto = projectRepository.findById(projectId)
+            .orElseThrow(() -> new IllegalArgumentException("해당 프로젝트가 존재하지 않습니다."));
+
+        projectDto.update(projectEditRequestDto.getProjectTitle(),
+                        projectEditRequestDto.getProjectContent());
+
+        return projectId;
     }
 
-    public void deleteById(Long projectId){
-        projectRepository.deleteById(projectId);
-    }
+    // 프로젝트 삭제
+    public void delete(Long project_id){
+        ProjectEntity project = projectRepository.findById(project_id)
+            .orElseThrow(() -> new IllegalArgumentException("해당 프로젝트는 존재하지 않습니다."));
 
-    public void deleteAll(Long[] delteId){
-        projectRepository.deleteProject(delteId);
+        projectRepository.delete(project);
     }
 }
