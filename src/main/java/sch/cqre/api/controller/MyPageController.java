@@ -87,7 +87,7 @@ import sch.cqre.api.service.PostService;
 		 // List<PostEntity> result = this.postService.searchAllByAuthorId(userId);
 
 		 // 테스트
-		 List<PostEntity> result = this.postService.searchAllByAuthorId(1);
+		 List<PostEntity> result = this.postService.searchAllByAuthorId(100);
 		 return ResponseEntity.ok().body(result);
 	 }
 

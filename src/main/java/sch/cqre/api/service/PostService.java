@@ -26,9 +26,9 @@ public class PostService {
 
 	// 작성자 정보를 가지고 모든 포스트 검색
 	public List<PostEntity> searchAllByAuthorId(Integer authorId) {
-		List<PostEntity> result = this.postRepo.findByAuthorId(authorId)
-			// 찾지 못할 경우 "포스트 없음" 예외 처리
-			.orElseThrow(()-> new CustomException(POST_NOT_FOUND));
+		List<PostEntity> result = this.postRepo.findByAuthorId(authorId);
+		if (result == null || result.isEmpty())
+			throw new CustomException(POST_NOT_FOUND);
 		return result;
 	}
 

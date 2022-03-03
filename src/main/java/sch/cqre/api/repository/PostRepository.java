@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import sch.cqre.api.domain.PostEntity;
 
 public interface PostRepository extends JpaRepository<PostEntity, Integer> {
-	Optional<List<PostEntity>> findByAuthorId(Integer author_id);
+	List<PostEntity> findByAuthorId(Integer author_id);
 }
