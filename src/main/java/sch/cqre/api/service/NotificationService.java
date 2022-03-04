@@ -1,8 +1,11 @@
 package sch.cqre.api.service;
 
 import static sch.cqre.api.exception.ErrorCode.*;
-import java.util.List;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,6 +13,7 @@ import lombok.AllArgsConstructor;
 import sch.cqre.api.domain.NotificationEntity;
 import sch.cqre.api.dto.CheckNotificationResponseDto;
 import sch.cqre.api.dto.DeleteNotificationResponseDto;
+import sch.cqre.api.dto.NotificationResponseDto;
 import sch.cqre.api.exception.CustomException;
 import sch.cqre.api.repository.NotificationRepository;
 
@@ -18,16 +22,18 @@ import sch.cqre.api.repository.NotificationRepository;
 public class NotificationService {
 	private final NotificationRepository notificationRepo;
 
+	private ModelMapper modelMapper;
+
 	// 유저 UID 를 기반으로 알림 검색
-	public List<NotificationEntity> searchByUserId(Integer userId) {
+	public List<NotificationResponseDto> searchByUserId(Integer userId) {
 		// 내 알림 불러오기
 		List<NotificationEntity> notifications =  notificationRepo.findAllByReceiverId(userId);
 
 		// 알림을 찾지 못할 경우 "알림 없음" 예외 처리
 		if (notifications == null || notifications.isEmpty())
 			throw new CustomException(NOTIFICATION_NOT_FOUND);
-
-		return notifications;
+		// 객체 변환 List<NotificationEntity> -> List<NotificationResponseDto>
+		return notifications.stream().map(p -> modelMapper.map(p, NotificationResponseDto.class)).collect(Collectors.toList());
 	}
 
 	@Transactional

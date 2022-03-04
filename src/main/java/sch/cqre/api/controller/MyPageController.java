@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
-import sch.cqre.api.domain.NotificationEntity;
 import sch.cqre.api.dto.CheckNotificationResponseDto;
 import sch.cqre.api.dto.DeleteNotificationResponseDto;
 import sch.cqre.api.dto.DeleteUserResponseDto;
 import sch.cqre.api.dto.MyInfoResponseDto;
+import sch.cqre.api.dto.NotificationResponseDto;
 import sch.cqre.api.dto.PostResponseDto;
 import sch.cqre.api.service.AccountService;
 import sch.cqre.api.service.NotificationService;
@@ -79,6 +79,7 @@ import sch.cqre.api.service.PostService;
 	 기능: 내가 쓴 게시글 불러오기
 	 요청: 없음 (토큰에서 유저 Email 추출 후 사용)
 	 반환: 200, body{
+	 			(리스트 형식으로 여러 포스트 반환)
 	 			postId : 포스트 UID
 				authorId : 작성자 UID
 				postTitle : 포스트 제목
@@ -110,7 +111,6 @@ import sch.cqre.api.service.PostService;
 				postTitle : 포스트 제목
 				postContent : 포스트 내용
 				views : 조회수
-				likes : 좋아요수
 				thumbnail : 썸네일 그림
 				createdAt : 작성 시간
 				updatedAt : 최종 수정 시간
@@ -142,7 +142,6 @@ import sch.cqre.api.service.PostService;
 				whether : 알림 확인 여부
 			}
 	 */
-	 //TO DO: NotificationResponseDto 추가
 	 @GetMapping("/notice")
 	 public ResponseEntity getMyNotice() {
 		 // UserEntity userEntity = this.accountService.searchByEmail(userService.getEmail());
@@ -150,7 +149,7 @@ import sch.cqre.api.service.PostService;
 		 // List<NotificationEntity> result = this.noticeService.searchByUserId(userId);
 
 		 // 테스트
-		 List<NotificationEntity> result = this.noticeService.searchByUserId(1);
+		 List<NotificationResponseDto> result = this.noticeService.searchByUserId(1);
 		 return ResponseEntity.ok().body(result);
 	 }
 
