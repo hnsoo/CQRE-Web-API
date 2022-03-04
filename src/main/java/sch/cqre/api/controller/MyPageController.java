@@ -35,7 +35,6 @@ import sch.cqre.api.service.PostService;
 	 private final AccountService accountService;
 	 private final PostService postService;
 	 private final NotificationService noticeService;
-	 // private final UserService userService;
 
 	/*
 	 기능: 회원 정보 불러오기
@@ -49,10 +48,10 @@ import sch.cqre.api.service.PostService;
 	 */
 	 @GetMapping
 	 public ResponseEntity<MyInfoResponseDto> getMyInfo() {
-		 // UserEntity result = this.accountService.searchByEmail(userService.getEmail());
+		 MyInfoResponseDto result = this.accountService.searchByEmail(accountService.getEmail());
 
 		 // 테스트
-		 MyInfoResponseDto result = this.accountService.searchById(1);
+		 // MyInfoResponseDto result = this.accountService.searchById(1);
 		 return ResponseEntity.ok().body(result);
 	 }
 
