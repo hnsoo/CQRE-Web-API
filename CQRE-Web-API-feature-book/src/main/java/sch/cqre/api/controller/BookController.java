@@ -46,7 +46,7 @@ public class BookController {
 
     //도서 아이디 검색
     @GetMapping("/{id}")
-    public ResponseEntity<BookEntity> findById(@PathVariable(value = "id") Long id) {
+    public ResponseEntity<BookEntity> findById(@PathVariable(value = "id") int id) {
         Optional<BookEntity> book = BookService.findById(id);
         if (!book.isPresent()) {
             log.error("Id : " + id + "  not found");
@@ -55,10 +55,21 @@ public class BookController {
         return ResponseEntity.ok(book.get());
     }
 
+    //test
+    @GetMapping("test/{id}")
+    public ResponseEntity<Byte> test(@PathVariable(value = "id") int id) {
+        Optional<BookEntity> book = BookService.findById(id);
+        if (!book.isPresent()) {
+            log.error("Id : " + id + "  not found");
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(book.get().getAmount());
+    }
+    //test
 
     //도서 수정
     @PutMapping("/{id}")
-    public ResponseEntity<BookEntity> update(@PathVariable(value = "id") Long id, @Valid @RequestBody BookEntity book) {
+    public ResponseEntity<BookEntity> update(@PathVariable(value = "id") int id, @Valid @RequestBody BookEntity book) {
         if (!BookService.findById(id).isPresent()) {
             log.error("Id : " + id + "  not found");
             return ResponseEntity.badRequest().build();
@@ -68,7 +79,7 @@ public class BookController {
 
     //도서 삭제
     @DeleteMapping("/{id}")
-    public ResponseEntity delete(@PathVariable(value = "id") Long id) {
+    public ResponseEntity delete(@PathVariable(value = "id") int id) {
         if (!BookService.findById(id).isPresent()) {
             log.error("Id : " + id + "  not found");
             return ResponseEntity.badRequest().build();

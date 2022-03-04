@@ -14,7 +14,7 @@
 <!--      <class>sch.cqre.api.domain.ProjectEntity</class>-->
 <!--      <class>sch.cqre.api.domain.ProjectLinkEntity</class>-->
 <!--      <class>sch.cqre.api.domain.ProjectMemberEntity</class>-->
-<!--      <class>sch.cqre.api.domain.RentalEntity</class>-->
+    <class>sch.cqre.api.domain.RentalEntity</class>
 <!--      <class>sch.cqre.api.domain.ScrapEntity</class>-->
 <!--      <class>sch.cqre.api.domain.SupplyEntity</class>-->
 <!--      <class>sch.cqre.api.domain.UserEntity</class>-->

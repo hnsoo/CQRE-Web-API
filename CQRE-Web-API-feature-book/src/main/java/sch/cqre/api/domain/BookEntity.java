@@ -20,12 +20,12 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 @NoArgsConstructor
-@Table(name = "bookss", schema = "testdb")
+@Table(name = "Book", schema = "main")
 public class BookEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "book_id")
-	private Long bookId;
+	private int bookId;
 
 	@Basic(optional = false)
 	@Column(name = "name")

@@ -7,7 +7,6 @@ import sch.cqre.api.domain.BookEntity;
 import sch.cqre.api.repository.BookRepository;
 
 import javax.transaction.Transactional;
-import java.awt.print.Book;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,30 +15,30 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class BookService {
     @Autowired
-    private final BookRepository dao;
+    private final BookRepository Bookdao;
 
     public List<BookEntity> findAll(){
-        return dao.findAll();
+        return Bookdao.findAll();
     }
 
-    public Optional<BookEntity> findById(Long bookid){
-        return dao.findById(bookid);
+    public Optional<BookEntity> findById(int bookid){
+        return Bookdao.findById(bookid);
     }
 
     public BookEntity addBook(BookEntity book) {
-        return dao.save(book);
+        return Bookdao.save(book);
     }
 
     public BookEntity updateBook(BookEntity book) {
-        return dao.save(book);
+        return Bookdao.save(book);
     }
 
-    public void deleteById(Long bookid) {
-        dao.deleteById(bookid);
+    public void deleteById(int bookid) {
+        Bookdao.deleteById(bookid);
     }
 
     public List<BookEntity> findByName(String keyword) {
-        return dao.findByNameContainingIgnoreCase(keyword);
+        return Bookdao.findByNameContainingIgnoreCase(keyword);
     }
 
 }

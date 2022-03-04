@@ -1,11 +1,19 @@
-spring:
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/testdb?serverTimezone=UTC&characterEncoding=UTF-8
-    username: root
-    password: s3un9s00n
-  jpa:
-    database: mysql
-    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-    generate-ddl: true
-    show-sql: true
+  spring:
+    datasource:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      username: cqre
+      url: "jdbc:mysql://cqre-web-db.cwybj99o2hv9.ap-northeast-2.rds.amazonaws.com:3306/main"
+      password: CQREDBzhdjelql
+    jpa:
+      properties:
+        hibernate:
+          format_sql: 'true'
+      show-sql: 'true'
+      hibernate:
+        ddl-auto: none
+        naming:
+          physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+#  entitymanager:
+#    packagesToScan:sch:
+#      cqre:
+#        api:
