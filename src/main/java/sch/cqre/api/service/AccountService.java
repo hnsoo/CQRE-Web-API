@@ -3,7 +3,6 @@ package sch.cqre.api.service;
 import static sch.cqre.api.exception.ErrorCode.*;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
@@ -56,9 +55,5 @@ public class AccountService {
 		return new DeleteUserResponseDto(userId);
 	}
 
-	//현재 사용중인 토큰의 주인(이메일)을 불러오는 함수
-	public String getEmail(){
-		return SecurityContextHolder.getContext().getAuthentication().getName();
-	}
 
 }

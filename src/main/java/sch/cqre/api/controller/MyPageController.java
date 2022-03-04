@@ -48,10 +48,10 @@ import sch.cqre.api.service.PostService;
 	 */
 	 @GetMapping
 	 public ResponseEntity<MyInfoResponseDto> getMyInfo() {
-		 MyInfoResponseDto result = this.accountService.searchByEmail(accountService.getEmail());
+		 // MyInfoResponseDto result = this.accountService.searchByEmail(userService.getEmail());
 
 		 // 테스트
-		 // MyInfoResponseDto result = this.accountService.searchById(1);
+		 MyInfoResponseDto result = this.accountService.searchById(1);
 		 return ResponseEntity.ok().body(result);
 	 }
 
