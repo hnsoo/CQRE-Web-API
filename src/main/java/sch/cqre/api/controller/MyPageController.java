@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
 import sch.cqre.api.domain.NotificationEntity;
-import sch.cqre.api.domain.PostEntity;
 import sch.cqre.api.dto.CheckNotificationResponseDto;
 import sch.cqre.api.dto.DeleteNotificationResponseDto;
 import sch.cqre.api.dto.DeleteUserResponseDto;
@@ -117,7 +116,6 @@ import sch.cqre.api.service.PostService;
 				updatedAt : 최종 수정 시간
 			}
 	 */
-	 //TO DO: ScrapResponseDto 추가
 	 @GetMapping("/scrap")
 	 public ResponseEntity getMyScrap() {
 		 // UserEntity userEntity = this.accountService.searchByEmail(userService.getEmail());
@@ -125,7 +123,7 @@ import sch.cqre.api.service.PostService;
 		 // List<PostEntity> result = this.postService.searchScrapByUserId(userId);
 
 		 // 테스트
-		 List<PostEntity> result = this.postService.searchScrapByUserId(32);
+		 List<PostResponseDto> result = this.postService.searchScrapByUserId(32);
 		 return ResponseEntity.ok().body(result);
 	 }
 
