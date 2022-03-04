@@ -52,7 +52,7 @@ import sch.cqre.api.service.PostService;
 		 // UserEntity result = this.accountService.searchByEmail(userService.getEmail());
 
 		 // 테스트
-		 MyInfoResponseDto result = this.accountService.searchById(100);
+		 MyInfoResponseDto result = this.accountService.searchById(1);
 		 return ResponseEntity.ok().body(result);
 	 }
 

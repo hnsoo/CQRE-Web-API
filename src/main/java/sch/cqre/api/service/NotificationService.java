@@ -106,7 +106,7 @@ public class NotificationService {
 			throw new CustomException(NOTIFICATION_NOT_FOUND);
 
 		for(NotificationEntity notification : notifications){
-			// 알림 삭제 및 결과 코드를 리스트에 저장
+			// 알림 삭제
 			this.deleteOneNotice(notification.getNotiId());
 		}
 		return true;
