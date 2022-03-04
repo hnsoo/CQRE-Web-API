@@ -18,6 +18,7 @@ import sch.cqre.api.dto.CheckNotificationResponseDto;
 import sch.cqre.api.dto.DeleteNotificationResponseDto;
 import sch.cqre.api.dto.DeleteUserResponseDto;
 import sch.cqre.api.dto.MyInfoResponseDto;
+import sch.cqre.api.dto.PostResponseDto;
 import sch.cqre.api.service.AccountService;
 import sch.cqre.api.service.NotificationService;
 import sch.cqre.api.service.PostService;
@@ -89,7 +90,6 @@ import sch.cqre.api.service.PostService;
 				updatedAt : 최종 수정 시간
 			}
 	 */
-	 //TO DO: PostResponseDto 추가
 	 @GetMapping("/post")
 	 public ResponseEntity getMyPost() {
 		 // UserEntity userEntity = this.accountService.searchByEmail(userService.getEmail());
@@ -97,7 +97,7 @@ import sch.cqre.api.service.PostService;
 		 // List<PostEntity> result = this.postService.searchAllByAuthorId(userId);
 
 		 // 테스트
-		 List<PostEntity> result = this.postService.searchAllByAuthorId(1);
+		 List<PostResponseDto> result = this.postService.searchAllByAuthorId(1);
 		 return ResponseEntity.ok().body(result);
 	 }
 

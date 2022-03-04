@@ -4,16 +4,15 @@ import static sch.cqre.api.exception.ErrorCode.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
-import org.springframework.http.HttpStatus;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import lombok.AllArgsConstructor;
-// import sch.cqre.api.domain.NotificationEntity;
 import sch.cqre.api.domain.PostEntity;
 import sch.cqre.api.domain.ScrapEntity;
+import sch.cqre.api.dto.PostResponseDto;
 import sch.cqre.api.exception.CustomException;
 import sch.cqre.api.repository.PostRepository;
 import sch.cqre.api.repository.ScrapRepository;
@@ -24,12 +23,16 @@ public class PostService {
 	private final ScrapRepository scrapRepo;
 	private final PostRepository postRepo;
 
+	private ModelMapper modelMapper;
+
 	// 작성자 정보를 가지고 모든 포스트 검색
-	public List<PostEntity> searchAllByAuthorId(Integer authorId) {
-		List<PostEntity> result = this.postRepo.findByAuthorId(authorId);
-		if (result == null || result.isEmpty())
+	public List<PostResponseDto> searchAllByAuthorId(Integer authorId) {
+		List<PostEntity> posts = this.postRepo.findByAuthorId(authorId);
+		if (posts == null || posts.isEmpty())
 			throw new CustomException(POST_NOT_FOUND);
-		return result;
+
+		// 객체 변환
+		return posts.stream().map(p -> modelMapper.map(p, PostResponseDto.class)).collect(Collectors.toList());
 	}
 
 	// 유저가 스크랩한 모든 포스트 검색
