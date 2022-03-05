@@ -1,4 +1,4 @@
-package sch.cqre.api;
+package sch.cqre.api.config;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
