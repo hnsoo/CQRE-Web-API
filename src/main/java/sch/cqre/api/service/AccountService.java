@@ -2,7 +2,6 @@ package sch.cqre.api.service;
 
 import static sch.cqre.api.exception.ErrorCode.*;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,10 +47,14 @@ public class AccountService {
 	}
 
 	@Transactional
-	public ChangePWResponseDto changePassword(UserEntity user) {
-		// 비밀번호 해시값 생성
-		createPassword()
-		userEntity.setPassword();
+	public PasswordResponseDto changePassword(MyInfoDto myInfo, String pwOne, String pwTwo) {
+		// 입력한 두 개의 비밀번호가 일치하는지 비교
+		if (!pwOne.equals(pwTwo))
+			throw new CustomException(DIFFERENT_PASSWORD);
+		UserEntity user = this.userRepo.findById(myInfo.getUserId())
+				.orElseThrow(()->new CustomException(MEMBER_NOT_FOUND));
+		user.setPassword(pwOne);
+		return new PasswordResponseDto(myInfo.getUserId());
 	}
 
 	public DeleteUserResponseDto withdrawal(Integer userId) {

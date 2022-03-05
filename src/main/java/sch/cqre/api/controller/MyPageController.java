@@ -79,16 +79,16 @@ import sch.cqre.api.service.PostService;
 	 /*
 	 기능: 비밀번호 확인
 	 요청: 없음 (토큰에서 유저 Email 추출 후 사용)
-	 반환: 200, body {}
+	 반환: 200, body {
+	 			userId: 유져 UID
+	 			}
 	 */
 	 @GetMapping(/pw)
-	 public ResponseEntity<PasswordResponseDto> CheckPassword(@RequestParam (value = "pw", required = false, defaultValue = "0") String pw) {
+	 public ResponseEntity<PasswordResponseDto> CheckPassword(@RequestParam (value = "pw", required = false, defaultValue = "") String pw) {
 		 MyInfoDto myInfo = this.accountService.searchByEmail(userService.getEmail());
 		PasswordResponseDto result = this.accountService.checkPassword(myInfo, pw);
 		 return ResponseEntity.ok().body(result);
 	 }
-
-
 
 	 /*
 	 기능: 비밀번호 변경
@@ -98,10 +98,11 @@ import sch.cqre.api.service.PostService;
 	 			}
 	  */
 	@PatchMapping("/pw")
-	public ResponseEntity<ChangePWResponseDto> changePassword() {
-		UserEntity user = this.accountService.searchByEmail(userService.getEmail());
-		ChangePWResponseDto result = this.accountService.changePassword(user);
-		return ResponseEntity().ok(result);
+	public ResponseEntity<PasswordResponseDto> changePassword(@RequestParam (value = "pwOne", required = false, defaultValue = "") String pwOne,
+		@RequestParam (value = "pwTwo", required = false, defaultValue = "") String pwTwo) {
+		MyInfoDto myInfo = this.accountService.searchByEmail(userService.getEmail());
+		PasswordResponseDto result = this.accountService.changePassword(myInfo, pwOne, pwTwo);
+		return ResponseEntity.ok().body(result);
 	}
 
 
