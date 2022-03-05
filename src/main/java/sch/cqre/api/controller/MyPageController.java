@@ -103,7 +103,6 @@ import sch.cqre.api.service.PostService;
 		return ResponseEntity.ok().body(result);
 	}
 
-
 	 /*
 	 기능: 내가 쓴 게시글 불러오기
 	 요청: 없음 (토큰에서 유저 Email 추출 후 사용)
