@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
-import sch.cqre.api.domain.UserEntity;
 import sch.cqre.api.dto.CheckNotificationResponseDto;
 import sch.cqre.api.dto.DeleteNotificationResponseDto;
 import sch.cqre.api.dto.DeleteUserResponseDto;
@@ -50,7 +49,7 @@ import sch.cqre.api.service.PostService;
 	 */
 	 @GetMapping
 	 public ResponseEntity<MyInfoDto> getMyInfo() {
-		 // MyInfoResponseDto result = this.accountService.searchByEmail(userService.getEmail());
+		 // MyInfoDto result = this.accountService.searchByEmail(userService.getEmail());
 
 		 // 테스트
 		 MyInfoDto result = this.accountService.searchById(1);
@@ -66,9 +65,8 @@ import sch.cqre.api.service.PostService;
 	 */
 	 @DeleteMapping
 	 public ResponseEntity<DeleteUserResponseDto> withdrawMe() {
-		 // MyInfoResponseDto user = this.accountService.searchByEmail(userService.getEmail());
-		 // Integer userId = user.getUserId();
-		 // this.accountService.withdrawal(userId);
+		 // MyInfoDto myInfo = this.accountService.searchByEmail(userService.getEmail());
+		 // this.accountService.withdrawal(myInfo.getUserId());
 
 		 // 테스트
 		 DeleteUserResponseDto result = this.accountService.withdrawal(1);
@@ -83,7 +81,7 @@ import sch.cqre.api.service.PostService;
 	 			userId: 유져 UID
 	 			}
 	 */
-	 @GetMapping(/pw)
+	 @GetMapping("/pw")
 	 public ResponseEntity<PasswordResponseDto> CheckPassword(@RequestParam (value = "pw", required = false, defaultValue = "") String pw) {
 		 MyInfoDto myInfo = this.accountService.searchByEmail(userService.getEmail());
 		PasswordResponseDto result = this.accountService.checkPassword(myInfo, pw);
@@ -123,9 +121,8 @@ import sch.cqre.api.service.PostService;
 	 */
 	 @GetMapping("/post")
 	 public ResponseEntity getMyPost() {
-		 // UserEntity userEntity = this.accountService.searchByEmail(userService.getEmail());
-		 // Integer userId = userEntity.getUserId();
-		 // List<PostEntity> result = this.postService.searchAllByAuthorId(userId);
+		 // MyInfoDto myInfo = this.accountService.searchByEmail(userService.getEmail());
+		 // List<PostResponseDto> result = this.postService.searchAllByAuthorId(myInfo.getUserId());
 
 		 // 테스트
 		 List<PostResponseDto> result = this.postService.searchAllByAuthorId(1);
@@ -149,9 +146,8 @@ import sch.cqre.api.service.PostService;
 	 */
 	 @GetMapping("/scrap")
 	 public ResponseEntity getMyScrap() {
-		 // UserEntity userEntity = this.accountService.searchByEmail(userService.getEmail());
-		 // Integer userId = userEntity.getUserId();
-		 // List<PostEntity> result = this.postService.searchScrapByUserId(userId);
+		 // MyInfoDto myInfo = this.accountService.searchByEmail(userService.getEmail());
+		 // List<PostResponseDto> result = this.postService.searchScrapByUserId(myInfo.getUserId());
 
 		 // 테스트
 		 List<PostResponseDto> result = this.postService.searchScrapByUserId(32);
@@ -175,9 +171,8 @@ import sch.cqre.api.service.PostService;
 	 */
 	 @GetMapping("/notice")
 	 public ResponseEntity getMyNotice() {
-		 // UserEntity userEntity = this.accountService.searchByEmail(userService.getEmail());
-		 // Integer userId = userEntity.getUserId();
-		 // List<NotificationEntity> result = this.noticeService.searchByUserId(userId);
+		 // MyInfoDto myInfo = this.accountService.searchByEmail(userService.getEmail());
+		 // List<NotificationResponseDto> result = this.noticeService.searchByUserId(myInfo.getUserId());
 
 		 // 테스트
 		 List<NotificationResponseDto> result = this.noticeService.searchByUserId(1);
@@ -220,9 +215,8 @@ import sch.cqre.api.service.PostService;
 	 */
 	 @PatchMapping("/notice/all")
 	 public ResponseEntity readAllNotice() {
-		 // UserEntity userEntity = this.accountService.searchByEmail(userService.getEmail());
-		 // Integer userId = userEntity.getUserId();
-		 // this.noticeService.readAllNotice(userId);
+		 // MyInfoDto myInfo = this.accountService.searchByEmail(userService.getEmail());
+		 // this.noticeService.readAllNotice(myInfo.getUserId());
 
 		 // 테스트
 		 this.noticeService.readAllNotice(1);
@@ -236,9 +230,8 @@ import sch.cqre.api.service.PostService;
 	 */
 	 @DeleteMapping("/notice/read")
 	 public ResponseEntity deleteReadNotice() {
-		 // UserEntity userEntity = this.accountService.searchByEmail(userService.getEmail());
-		 // Integer userId = userEntity.getUserId();
-		 // this.noticeService.deleteReadNotification(userId);
+		 // MyInfoDto myInfo = this.accountService.searchByEmail(userService.getEmail());
+		 // this.noticeService.deleteReadNotification(myInfo.getUserId());
 
 		 // 테스트
 		 this.noticeService.deleteReadNotification(1);
@@ -252,9 +245,8 @@ import sch.cqre.api.service.PostService;
 	 */
 	 @DeleteMapping("/notice/all")
 	 public ResponseEntity deleteAllNotice() {
-		 // UserEntity userEntity = this.accountService.searchByEmail(userService.getEmail());
-		 // Integer userId = userEntity.getUserId();
-		 // this.noticeService.deleteAllNotice(userId);
+		 // MyInfoDto myInfo = this.accountService.searchByEmail(userService.getEmail());
+		 // this.noticeService.deleteAllNotice(myInfo.getUserId());
 
 		 // 테스트
 		 this.noticeService.deleteAllNotice(1);
