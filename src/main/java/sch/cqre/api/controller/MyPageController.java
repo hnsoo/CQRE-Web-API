@@ -53,7 +53,7 @@ import sch.cqre.api.service.PostService;
 
 		 // 테스트
 		 MyInfoDto result = this.accountService.searchById(1);
-		 return ResponseEntity.ok().body(result);
+		 return ResponseEntity.ok(result);
 	 }
 
 	 /*
@@ -71,7 +71,7 @@ import sch.cqre.api.service.PostService;
 		 // 테스트
 		 DeleteUserResponseDto result = this.accountService.withdrawal(1);
 
-		 return ResponseEntity.ok().body(result);
+		 return ResponseEntity.ok(result);
 	 }
 
 	 /*
@@ -85,7 +85,7 @@ import sch.cqre.api.service.PostService;
 	 public ResponseEntity<PasswordResponseDto> CheckPassword(@RequestParam (value = "pw", required = false, defaultValue = "") String pw) {
 		 MyInfoDto myInfo = this.accountService.searchByEmail(userService.getEmail());
 		PasswordResponseDto result = this.accountService.checkPassword(myInfo, pw);
-		 return ResponseEntity.ok().body(result);
+		 return ResponseEntity.ok(result);
 	 }
 
 	 /*
@@ -100,7 +100,7 @@ import sch.cqre.api.service.PostService;
 		@RequestParam (value = "pwTwo", required = false, defaultValue = "") String pwTwo) {
 		MyInfoDto myInfo = this.accountService.searchByEmail(userService.getEmail());
 		PasswordResponseDto result = this.accountService.changePassword(myInfo, pwOne, pwTwo);
-		return ResponseEntity.ok().body(result);
+		return ResponseEntity.ok(result);
 	}
 
 	 /*
@@ -119,13 +119,13 @@ import sch.cqre.api.service.PostService;
 			}
 	 */
 	 @GetMapping("/post")
-	 public ResponseEntity getMyPost() {
+	 public ResponseEntity<List<PostResponseDto>> getMyPost() {
 		 // MyInfoDto myInfo = this.accountService.searchByEmail(userService.getEmail());
 		 // List<PostResponseDto> result = this.postService.searchAllByAuthorId(myInfo.getUserId());
 
 		 // 테스트
 		 List<PostResponseDto> result = this.postService.searchAllByAuthorId(1);
-		 return ResponseEntity.ok().body(result);
+		 return ResponseEntity.ok(result);
 	 }
 
 	 /*
@@ -144,13 +144,13 @@ import sch.cqre.api.service.PostService;
 			}
 	 */
 	 @GetMapping("/scrap")
-	 public ResponseEntity getMyScrap() {
+	 public ResponseEntity<List<PostResponseDto>> getMyScrap() {
 		 // MyInfoDto myInfo = this.accountService.searchByEmail(userService.getEmail());
 		 // List<PostResponseDto> result = this.postService.searchScrapByUserId(myInfo.getUserId());
 
 		 // 테스트
 		 List<PostResponseDto> result = this.postService.searchScrapByUserId(32);
-		 return ResponseEntity.ok().body(result);
+		 return ResponseEntity.ok(result);
 	 }
 
 	 /*
@@ -169,13 +169,13 @@ import sch.cqre.api.service.PostService;
 			}
 	 */
 	 @GetMapping("/notice")
-	 public ResponseEntity getMyNotice() {
+	 public ResponseEntity<List<NotificationResponseDto>> getMyNotice() {
 		 // MyInfoDto myInfo = this.accountService.searchByEmail(userService.getEmail());
 		 // List<NotificationResponseDto> result = this.noticeService.searchByUserId(myInfo.getUserId());
 
 		 // 테스트
 		 List<NotificationResponseDto> result = this.noticeService.searchByUserId(1);
-		 return ResponseEntity.ok().body(result);
+		 return ResponseEntity.ok(result);
 	 }
 
 	 /*
@@ -213,13 +213,13 @@ import sch.cqre.api.service.PostService;
 	 반환: 200, body{}
 	 */
 	 @PatchMapping("/notice/all")
-	 public ResponseEntity readAllNotice() {
+	 public ResponseEntity<HttpStatus> readAllNotice() {
 		 // MyInfoDto myInfo = this.accountService.searchByEmail(userService.getEmail());
 		 // this.noticeService.readAllNotice(myInfo.getUserId());
 
 		 // 테스트
 		 this.noticeService.readAllNotice(1);
-		 return new ResponseEntity(HttpStatus.OK);
+		 return new ResponseEntity<>(HttpStatus.OK);
 	 }
 
 	 /*
@@ -228,13 +228,13 @@ import sch.cqre.api.service.PostService;
 	 반환: 200, body{}
 	 */
 	 @DeleteMapping("/notice/read")
-	 public ResponseEntity deleteReadNotice() {
+	 public ResponseEntity<HttpStatus> deleteReadNotice() {
 		 // MyInfoDto myInfo = this.accountService.searchByEmail(userService.getEmail());
 		 // this.noticeService.deleteReadNotification(myInfo.getUserId());
 
 		 // 테스트
 		 this.noticeService.deleteReadNotification(1);
-		 return new ResponseEntity(HttpStatus.OK);
+		 return new ResponseEntity<>(HttpStatus.OK);
 	 }
 
 	 /*
@@ -243,12 +243,12 @@ import sch.cqre.api.service.PostService;
 	 반환: 200, body{}
 	 */
 	 @DeleteMapping("/notice/all")
-	 public ResponseEntity deleteAllNotice() {
+	 public ResponseEntity<HttpStatus> deleteAllNotice() {
 		 // MyInfoDto myInfo = this.accountService.searchByEmail(userService.getEmail());
 		 // this.noticeService.deleteAllNotice(myInfo.getUserId());
 
 		 // 테스트
 		 this.noticeService.deleteAllNotice(1);
-		 return new ResponseEntity(HttpStatus.OK);
+		 return new ResponseEntity<>(HttpStatus.OK);
 	 }
  }

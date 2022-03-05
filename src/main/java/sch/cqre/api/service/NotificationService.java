@@ -37,7 +37,7 @@ public class NotificationService {
 	}
 
 	@Transactional
-	public boolean readAllNotice(Integer userId) {
+	public void readAllNotice(Integer userId) {
 		// 내 알림 불러오기
 		List<NotificationEntity> notifications = this.notificationRepo.findByReceiverId(userId);
 
@@ -49,7 +49,6 @@ public class NotificationService {
 			// 읽음 처리
 			this.checkNotification(notification.getNotiId());
 		}
-		return true;
 	}
 
 	@Transactional
@@ -82,7 +81,7 @@ public class NotificationService {
 	}
 
 	@Transactional
-	public Boolean deleteReadNotification(Integer userId) {
+	public void deleteReadNotification(Integer userId) {
 		// 나의 읽은 알림들 로드
 		List<NotificationEntity> notifications = notificationRepo.findByReceiverIdAndWhether(userId, true);
 
@@ -94,11 +93,10 @@ public class NotificationService {
 			// 읽은 알림 삭제
 			this.deleteOneNotice(notification.getNotiId());
 		}
-		return true;
 	}
 
 	@Transactional
-	public boolean deleteAllNotice(Integer userId) {
+	public void deleteAllNotice(Integer userId) {
 		// 내 알림들 로드
 		List<NotificationEntity> notifications = notificationRepo.findByReceiverId(userId);
 		// 내 알림이 없을 경우 "알림 없음" 예외 처리
@@ -109,6 +107,5 @@ public class NotificationService {
 			// 알림 삭제
 			this.deleteOneNotice(notification.getNotiId());
 		}
-		return true;
 	}
 }
