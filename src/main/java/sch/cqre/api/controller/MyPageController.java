@@ -12,11 +12,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
+import sch.cqre.api.domain.UserEntity;
 import sch.cqre.api.dto.CheckNotificationResponseDto;
 import sch.cqre.api.dto.DeleteNotificationResponseDto;
 import sch.cqre.api.dto.DeleteUserResponseDto;
-import sch.cqre.api.dto.MyInfoResponseDto;
+import sch.cqre.api.dto.MyInfoDto;
 import sch.cqre.api.dto.NotificationResponseDto;
+import sch.cqre.api.dto.PasswordResponseDto;
 import sch.cqre.api.dto.PostResponseDto;
 import sch.cqre.api.service.AccountService;
 import sch.cqre.api.service.NotificationService;
@@ -47,11 +49,11 @@ import sch.cqre.api.service.PostService;
 	 		}
 	 */
 	 @GetMapping
-	 public ResponseEntity<MyInfoResponseDto> getMyInfo() {
+	 public ResponseEntity<MyInfoDto> getMyInfo() {
 		 // MyInfoResponseDto result = this.accountService.searchByEmail(userService.getEmail());
 
 		 // 테스트
-		 MyInfoResponseDto result = this.accountService.searchById(1);
+		 MyInfoDto result = this.accountService.searchById(1);
 		 return ResponseEntity.ok().body(result);
 	 }
 
@@ -64,8 +66,8 @@ import sch.cqre.api.service.PostService;
 	 */
 	 @DeleteMapping
 	 public ResponseEntity<DeleteUserResponseDto> withdrawMe() {
-		 // UserEntity userEntity = this.accountService.searchByEmail(userService.getEmail());
-		 // Integer userId = userEntity.getUserId();
+		 // MyInfoResponseDto user = this.accountService.searchByEmail(userService.getEmail());
+		 // Integer userId = user.getUserId();
 		 // this.accountService.withdrawal(userId);
 
 		 // 테스트
@@ -73,6 +75,35 @@ import sch.cqre.api.service.PostService;
 
 		 return ResponseEntity.ok().body(result);
 	 }
+
+	 /*
+	 기능: 비밀번호 확인
+	 요청: 없음 (토큰에서 유저 Email 추출 후 사용)
+	 반환: 200, body {}
+	 */
+	 @GetMapping(/pw)
+	 public ResponseEntity<PasswordResponseDto> CheckPassword(@RequestParam (value = "pw", required = false, defaultValue = "0") String pw) {
+		 MyInfoDto myInfo = this.accountService.searchByEmail(userService.getEmail());
+		PasswordResponseDto result = this.accountService.checkPassword(myInfo, pw);
+		 return ResponseEntity.ok().body(result);
+	 }
+
+
+
+	 /*
+	 기능: 비밀번호 변경
+	 요청: 없음 (토큰에서 유저 Email 추출 후 사용)
+	 반환: 200, body{
+	 			userId: 유저 UID
+	 			}
+	  */
+	@PatchMapping("/pw")
+	public ResponseEntity<ChangePWResponseDto> changePassword() {
+		UserEntity user = this.accountService.searchByEmail(userService.getEmail());
+		ChangePWResponseDto result = this.accountService.changePassword(user);
+		return ResponseEntity().ok(result);
+	}
+
 
 	 /*
 	 기능: 내가 쓴 게시글 불러오기

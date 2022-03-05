@@ -6,13 +6,13 @@ import sch.cqre.api.domain.UserEntity;
 
 @Getter
 @NoArgsConstructor
-public class MyInfoResponseDto {
+public class MyInfoDto {
 	private Integer userId;
 	private Integer studentId;
 	private String email;
 	private String nickname;
 
-	public MyInfoResponseDto(UserEntity userEntity) {
+	public MyInfoDto(UserEntity userEntity) {
 		this.userId = userEntity.getUserId();
 		this.studentId = userEntity.getStudentId();
 		this.email = userEntity.getEmail();

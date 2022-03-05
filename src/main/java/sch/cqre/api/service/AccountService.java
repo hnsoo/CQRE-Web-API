@@ -2,15 +2,16 @@ package sch.cqre.api.service;
 
 import static sch.cqre.api.exception.ErrorCode.*;
 
-import org.springframework.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 import lombok.AllArgsConstructor;
 import sch.cqre.api.domain.UserEntity;
 import sch.cqre.api.dto.DeleteUserResponseDto;
-import sch.cqre.api.dto.MyInfoResponseDto;
+import sch.cqre.api.dto.MyInfoDto;
+import sch.cqre.api.dto.PasswordResponseDto;
 import sch.cqre.api.exception.CustomException;
 import sch.cqre.api.repository.UserRepository;
 
@@ -19,26 +20,39 @@ import sch.cqre.api.repository.UserRepository;
 public class AccountService {
 	private final UserRepository userRepo;
 
-	public MyInfoResponseDto searchById(Integer userId) {
+	PasswordEncoder passwordEncoder;
+
+	public MyInfoDto searchById(Integer userId) {
 		UserEntity userEntity = this.userRepo.findById(userId)
 			.orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
-		return new MyInfoResponseDto(userEntity);
+		return new MyInfoDto(userEntity);
 	}
 
-	public MyInfoResponseDto searchByEmail(String email) {
+	public MyInfoDto searchByEmail(String email) {
 		UserEntity userEntity = this.userRepo.findByEmail(email)
 			.orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
-		return new MyInfoResponseDto(userEntity);
+		return new MyInfoDto(userEntity);
+	}
+
+	// 비밀번호 확인
+	public PasswordResponseDto checkPassword(MyInfoDto myInfo, String pw) {
+		// 내 정보 로드
+		UserEntity user = this.userRepo.findById(myInfo.getUserId())
+			// 못 찾으면 없음 예외 처리
+			.orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
+
+		// DB 비밀번호 정보와 지급한 비밀번호 서로 비교
+		if (!user.getPassword().equals(passwordEncoder.encode(pw)))
+			throw new CustomException(INVALID_PASSWORD);
+		return new PasswordResponseDto(myInfo.getUserId());
 	}
 
 	@Transactional
-	public UserEntity setEmail(Integer userId, String email) {
-		UserEntity userEntity = this.userRepo.findById(userId)
-			.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-		userEntity.setEmail(email);
-		return userEntity;
+	public ChangePWResponseDto changePassword(UserEntity user) {
+		// 비밀번호 해시값 생성
+		createPassword()
+		userEntity.setPassword();
 	}
-	public void changePassword(Integer userId) {}
 
 	public DeleteUserResponseDto withdrawal(Integer userId) {
 		// 존재하는 유저인지 확인
