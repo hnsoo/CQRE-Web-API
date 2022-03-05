@@ -30,9 +30,6 @@ public class NotificationEntity {
 	@Column(name = "sender_id")
 	private int senderId;
 	@Basic
-	@Column(name = "noti_type")
-	private String notiType;
-	@Basic
 	@Column(name = "noti_post")
 	private int notiPost;
 	@Basic
@@ -54,7 +51,6 @@ public class NotificationEntity {
 		NotificationEntity that = (NotificationEntity)o;
 		return notiId == that.notiId && receiverId == that.receiverId && senderId == that.senderId
 			&& notiPost == that.notiPost
-			&& Objects.equals(notiType, that.notiType)
 			&& Objects.equals(notiContent, that.notiContent)
 			&& Objects.equals(notiDatetime, that.notiDatetime)
 			&& Objects.equals(whether,
@@ -63,7 +59,7 @@ public class NotificationEntity {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(notiId, receiverId, senderId, notiType, notiPost, notiContent, notiDatetime,
+		return Objects.hash(notiId, receiverId, senderId, notiPost, notiContent, notiDatetime,
 			whether);
 	}
 }
