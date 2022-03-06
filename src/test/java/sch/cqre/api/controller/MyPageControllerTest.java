@@ -59,13 +59,18 @@ class MyPageControllerTest {
 
 	@Test
 	void checkPassword() throws Exception{
-		mvc.perform(get(BASE_URL + "/pw").param("pw", "khsoo2439"))
+		mvc.perform(get(BASE_URL + "/pw").param("pw", "khb2439"))
 			.andExpect(status().isOk())
 			.andDo(print());
 	}
 
 	@Test
-	void changePassword() {
+	void changePassword() throws Exception {
+		mvc.perform(patch(BASE_URL + "/pw")
+				.param("pwOne", "khb2439")
+				.param("pwTwo", "khb2439"))
+			.andExpect(status().isOk())
+			.andDo(print());
 	}
 
 	@Test
