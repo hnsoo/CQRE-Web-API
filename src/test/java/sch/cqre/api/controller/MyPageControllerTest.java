@@ -96,7 +96,11 @@ class MyPageControllerTest {
 	}
 
 	@Test
-	void readOneNotice() {
+	void readOneNotice() throws Exception {
+		mvc.perform(patch(BASE_URL + "/notice")
+				.param("notiId", "1"))
+			.andExpect(status().isOk())
+			.andDo(print());
 	}
 
 	@Test
