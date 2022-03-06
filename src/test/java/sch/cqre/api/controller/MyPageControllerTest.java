@@ -1,10 +1,10 @@
 package sch.cqre.api.controller;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import sch.cqre.api.exception.CustomException;
 import sch.cqre.api.service.AccountService;
 import sch.cqre.api.service.NotificationService;
 import sch.cqre.api.service.PostService;
@@ -45,10 +46,15 @@ class MyPageControllerTest {
 	@Test
 	void withdrawMe() throws Exception {
 		mvc.perform(delete(BASE_URL))
-			.andExpect(status().isOk())
-			.andDo(print());
+			.andExpect(status().isOk());
 
-		Assertions.assertNull(accountService.searchById(1));
+		mvc.perform((get(BASE_URL)))
+			// .andExpect(status().isNotFound())
+			// 삭제 후 유저 정보 로드시 "유저 없음" 예외가 발생하는지 확인
+			.andExpect(
+				(rslt) -> assertTrue(rslt.getResolvedException().getClass().isAssignableFrom(CustomException.class))
+			)
+			.andDo(print());
 	}
 
 	@Test
