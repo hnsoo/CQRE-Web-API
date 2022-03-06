@@ -1,54 +1,46 @@
 package sch.cqre.api.domain;
 
-import java.util.Objects;
-
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
 @Data
 @Entity
 @NoArgsConstructor
-@Table(name = "Supply", schema = "main")
+@Table(name = "Supply", schema = "main", catalog = "")
 public class SupplyEntity {
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Id
-	@Column(name = "supply_id")
-	private Long supplyId;
-	@Basic(optional = false)
-	@Column(name = "name")
-	private String name;
-	@Basic
-	@Column(name = "amount")
-	private Byte amount;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @Column(name = "supply_id")
+    private Integer supplyId;
 
-	@Builder
-	public SupplyEntity(String name, Byte amount) {
-		this.name = name;
-		this.amount = amount;
-	}
+    @Basic
+    @Column(name = "name")
+    private String name;
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (o == null || getClass() != o.getClass())
-			return false;
-		SupplyEntity that = (SupplyEntity)o;
-		return supplyId == that.supplyId && Objects.equals(name, that.name) && Objects.equals(amount,
-			that.amount);
-	}
+    @Basic
+    @Column(name = "amount")
+    private Byte amount;
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(supplyId, name, amount);
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        SupplyEntity that = (SupplyEntity) o;
+
+        if (supplyId != that.supplyId) return false;
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        if (amount != null ? !amount.equals(that.amount) : that.amount != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = supplyId;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (amount != null ? amount.hashCode() : 0);
+        return result;
+    }
 }

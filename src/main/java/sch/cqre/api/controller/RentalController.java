@@ -36,14 +36,14 @@ public class RentalController {
 //            return ResponseEntity.badRequest().build();
 //        }
 //        //도서 bookId, userId 값 설정
-////        RentalEntity rental = new RentalEntity();
-////        rental.setBookId(bookId);
-////        rental.setUserId(userId);
-////        RentalService.insertRent(rental);
-////
-////        //remainAmount -1
-////        book.get().setRemainAmount((byte) (book.get().getRemainAmount()-1));
-////        return ResponseEntity.ok(BookService.updateBook(book.get()));
+//        RentalEntity rental = new RentalEntity();
+//        rental.setBookId(bookId);
+//        rental.setUserId(userId);
+//        RentalService.insertRent(rental);
+//
+//        //remainAmount -1
+//        book.get().setRemainAmount((byte) (book.get().getRemainAmount()-1));
+//        return ResponseEntity.ok(BookService.updateBook(book.get()));
         RentalService.insertRent(bookId, userId);
         return new ResponseEntity(HttpStatus.OK);
 
