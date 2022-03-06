@@ -47,8 +47,7 @@ public class UserEntity {
 	// private String provider; // defaultValue = "local"
 
 	@Builder
-	public UserEntity(Integer studentId, String password, String email, String nickname, String userType,
-		String profile) {
+	public UserEntity(Integer studentId, String password, String email, String nickname, String userType) {
 		this.studentId = studentId;
 		this.password = password;
 		this.email = email;
