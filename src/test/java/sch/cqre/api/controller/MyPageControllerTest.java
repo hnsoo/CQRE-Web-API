@@ -59,7 +59,8 @@ class MyPageControllerTest {
 
 	@Test
 	void checkPassword() throws Exception{
-		mvc.perform(get(BASE_URL + "/pw").param("pw", "khb2439"))
+		mvc.perform(get(BASE_URL + "/pw")
+				.param("pw", "khb2439"))
 			.andExpect(status().isOk())
 			.andDo(print());
 	}
@@ -74,7 +75,10 @@ class MyPageControllerTest {
 	}
 
 	@Test
-	void getMyPost() {
+	void getMyPost() throws Exception {
+		mvc.perform(get(BASE_URL + "/post"))
+			.andExpect(status().isOk())
+			.andDo(print());
 	}
 
 	@Test
