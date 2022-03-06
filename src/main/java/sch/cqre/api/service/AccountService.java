@@ -21,6 +21,7 @@ public class AccountService {
 
 	PasswordEncoder passwordEncoder;
 
+	// 테스트 용
 	public MyInfoDto searchById(Integer userId) {
 		UserEntity userEntity = this.userRepo.findById(userId)
 			.orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
@@ -41,12 +42,14 @@ public class AccountService {
 			.orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
 
 		// DB 비밀번호 정보와 지급한 비밀번호 서로 비교
-		if (!user.getPassword().equals(passwordEncoder.encode(pw)))
+		// System.out.println(passwordEncoder.encode(pw)+"	안녕");
+		if (!passwordEncoder.matches(pw, user.getPassword()))
 			throw new CustomException(INVALID_PASSWORD);
 		return new PasswordResponseDto(myInfo.getUserId());
 	}
 
 	@Transactional
+	// 비밀번호 재설정시 오타 확인
 	public PasswordResponseDto changePassword(MyInfoDto myInfo, String pwOne, String pwTwo) {
 		// 입력한 두 개의 비밀번호가 일치하는지 비교
 		if (!pwOne.equals(pwTwo))
