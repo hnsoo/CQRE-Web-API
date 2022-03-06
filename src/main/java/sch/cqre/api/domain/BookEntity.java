@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
 import org.hibernate.annotations.DynamicInsert;
 
@@ -21,22 +22,27 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Table(name = "Book", schema = "main")
 public class BookEntity {
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "book_id")
-	private Long bookId;
+	private Integer bookId;
+
 	@Basic(optional = false)
 	@Column(name = "name")
 	private String name;
+
 	@Basic(optional = false)
 	@Column(name = "publisher")
 	private String publisher;
+
 	@Basic(optional = false)
 	@Column(name = "author")
 	private String author;
+
 	@Basic(optional = false)
 	@Column(name = "amount")
 	private byte amount;
+
 	@Basic(optional = false)
 	@Column(name = "remain_amount")
 	private byte remainAmount;
