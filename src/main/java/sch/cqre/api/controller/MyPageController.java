@@ -22,8 +22,9 @@ import sch.cqre.api.dto.PostResponseDto;
 import sch.cqre.api.service.AccountService;
 import sch.cqre.api.service.NotificationService;
 import sch.cqre.api.service.PostService;
+import sch.cqre.api.service.UserService;
 
- /*
+/*
   * 마이페이지 컨트롤러
   * 제작자: 김현수
   * 비밀번호 변경 기능 추가 필요
@@ -36,6 +37,7 @@ import sch.cqre.api.service.PostService;
 	 private final AccountService accountService;
 	 private final PostService postService;
 	 private final NotificationService noticeService;
+	 private final UserService userService;
 
 	/*
 	 기능: 회원 정보 불러오기
