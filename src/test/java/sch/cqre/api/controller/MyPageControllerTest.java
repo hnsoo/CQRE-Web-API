@@ -4,6 +4,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -42,11 +43,17 @@ class MyPageControllerTest {
 	}
 
 	@Test
-	void withdrawMe() {
+	void withdrawMe() throws Exception {
+		mvc.perform(delete(BASE_URL))
+			.andExpect(status().isOk())
+			.andDo(print());
+
+		Assertions.assertNull(accountService.searchById(1));
 	}
 
 	@Test
 	void checkPassword() {
+
 	}
 
 	@Test
