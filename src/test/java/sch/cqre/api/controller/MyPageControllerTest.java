@@ -119,7 +119,10 @@ class MyPageControllerTest {
 	}
 
 	@Test
-	void deleteReadNotice() {
+	void deleteReadNotice() throws Exception {
+		mvc.perform(delete(BASE_URL + "/notice/read"))
+			.andExpect(status().isOk())
+			.andDo(print());
 	}
 
 	@Test
