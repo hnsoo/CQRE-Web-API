@@ -58,8 +58,10 @@ class MyPageControllerTest {
 	}
 
 	@Test
-	void checkPassword() {
-
+	void checkPassword() throws Exception{
+		mvc.perform(get(BASE_URL + "/pw").param("pw", "khsoo2439"))
+			.andExpect(status().isOk())
+			.andDo(print());
 	}
 
 	@Test
