@@ -126,6 +126,9 @@ class MyPageControllerTest {
 	}
 
 	@Test
-	void deleteAllNotice() {
+	void deleteAllNotice() throws Exception {
+		mvc.perform(delete(BASE_URL + "/notice/all"))
+			.andExpect(status().isOk())
+			.andDo(print());
 	}
 }
