@@ -112,7 +112,10 @@ class MyPageControllerTest {
 	}
 
 	@Test
-	void readAllNotice() {
+	void readAllNotice() throws Exception {
+		mvc.perform(patch(BASE_URL + "/notice/all"))
+			.andExpect(status().isOk())
+			.andDo(print());
 	}
 
 	@Test
