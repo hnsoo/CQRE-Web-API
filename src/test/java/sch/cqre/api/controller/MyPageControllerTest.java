@@ -89,7 +89,10 @@ class MyPageControllerTest {
 	}
 
 	@Test
-	void getMyNotice() {
+	void getMyNotice() throws Exception {
+		mvc.perform(get(BASE_URL + "/notice"))
+			.andExpect(status().isOk())
+			.andDo(print());
 	}
 
 	@Test
