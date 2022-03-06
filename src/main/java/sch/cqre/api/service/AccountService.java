@@ -56,7 +56,7 @@ public class AccountService {
 			throw new CustomException(DIFFERENT_PASSWORD);
 		UserEntity user = this.userRepo.findById(myInfo.getUserId())
 				.orElseThrow(()->new CustomException(MEMBER_NOT_FOUND));
-		user.setPassword(pwOne);
+		user.setPassword(passwordEncoder.encode(pwOne));
 		return new PasswordResponseDto(myInfo.getUserId());
 	}
 
