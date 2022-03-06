@@ -82,7 +82,10 @@ class MyPageControllerTest {
 	}
 
 	@Test
-	void getMyScrap() {
+	void getMyScrap() throws Exception {
+		mvc.perform(get(BASE_URL + "/scrap"))
+			.andExpect(status().isOk())
+			.andDo(print());
 	}
 
 	@Test
