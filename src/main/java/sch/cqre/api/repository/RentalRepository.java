@@ -7,4 +7,5 @@ import sch.cqre.api.domain.RentalEntity;
 
 @Repository
 public interface RentalRepository extends JpaRepository<RentalEntity, Integer> {
+    RentalEntity findByBookIdAndUserId(Integer bookId, Integer userId);
 }

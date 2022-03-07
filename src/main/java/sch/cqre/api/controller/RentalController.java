@@ -26,27 +26,8 @@ public class RentalController {
     @PostMapping("/rental")
     public ResponseEntity toRent(@RequestParam(value = "bookId",required = false, defaultValue = "") Integer bookId,
                                  @RequestParam(value = "userId",required = false, defaultValue = "") Integer userId){
-        //빌릴 도서가 존재하는지, 남아있는 수량이 1개 이상인지 확인
-//        Optional<BookEntity> book = BookService.findById(bookId);
-//        if (!book.isPresent(){
-//            log.error("book id not exist");
-//            return ResponseEntity.badRequest().build();
-//        }if (book.get().getRemainAmount() <= 0) {
-//            log.error("remained book not exist");
-//            return ResponseEntity.badRequest().build();
-//        }
-//        //도서 bookId, userId 값 설정
-//        RentalEntity rental = new RentalEntity();
-//        rental.setBookId(bookId);
-//        rental.setUserId(userId);
-//        RentalService.insertRent(rental);
-//
-//        //remainAmount -1
-//        book.get().setRemainAmount((byte) (book.get().getRemainAmount()-1));
-//        return ResponseEntity.ok(BookService.updateBook(book.get()));
         RentalService.insertRent(bookId, userId);
         return new ResponseEntity(HttpStatus.OK);
-
     }
 
     //도서 대여 bookid, userid, timestamp 확인

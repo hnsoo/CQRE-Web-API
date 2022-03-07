@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import sch.cqre.api.DTO.BookDTO;
 import sch.cqre.api.domain.BookEntity;
 import sch.cqre.api.exception.CustomException;
-import sch.cqre.api.exception.ErrorCode;
 import sch.cqre.api.repository.BookRepository;
 
 import javax.transaction.Transactional;
@@ -15,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static sch.cqre.api.exception.ErrorCode.Book_Not_Exist;
+import static sch.cqre.api.exception.ErrorCode.BOOK_NOT_EXIST;
 
 @Service
 @Transactional
@@ -26,21 +25,20 @@ public class BookService {
     @Autowired
     private ModelMapper modelMapper;
 
+    //도서 전체 조회 서비스
     public List<BookDTO> findAll(){
         return Bookdao.findAll().stream().map(p -> modelMapper.map(p, BookDTO.class)).collect(Collectors.toList());
     }
 
-    public Optional<BookEntity> findById(Integer bookid){
-        return Bookdao.findById(bookid);
-    }
-
+    //도서 이름으로 검색 서비스
     public List<BookDTO> findBookByName(String keyword) {
         List<BookEntity> book = Bookdao.findByNameContainingIgnoreCase(keyword);
         if (book.isEmpty()) {
-            throw new CustomException(Book_Not_Exist);
+            throw new CustomException(BOOK_NOT_EXIST);
         }
         return book.stream().map(p -> modelMapper.map(p, BookDTO.class)).collect(Collectors.toList());
     }
+}
 //CUD 주석처리
 //    public BookEntity addBook(BookEntity book) {
 //        return Bookdao.save(book);
@@ -51,4 +49,6 @@ public class BookService {
 //    public void deleteById(Integer bookid) {
 //        Bookdao.deleteById(bookid);
 //    }
-}
+//    public Optional<BookEntity> findById(Integer bookid){
+////        return Bookdao.findById(bookid);
+////    }

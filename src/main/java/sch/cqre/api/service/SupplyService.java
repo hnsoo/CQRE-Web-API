@@ -7,14 +7,13 @@ import org.springframework.stereotype.Service;
 import sch.cqre.api.DTO.SupplyDTO;
 import sch.cqre.api.domain.SupplyEntity;
 import sch.cqre.api.exception.CustomException;
-import sch.cqre.api.exception.ErrorCode;
 import sch.cqre.api.repository.SupplyRepository;
 
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static sch.cqre.api.exception.ErrorCode.Supply_Not_Exist;
+import static sch.cqre.api.exception.ErrorCode.SUPPLY_NOT_EXIST;
 
 @Service
 @Transactional
@@ -24,15 +23,17 @@ public class SupplyService {
     private final SupplyRepository Supplydao;
     @Autowired
     private ModelMapper modelMapper;
-
+    
+    //비품 전체 조회 서비스
     public List<SupplyDTO> findAll() {
         return Supplydao.findAll().stream().map(p -> modelMapper.map(p,SupplyDTO.class)).collect(Collectors.toList());
     }
-
+    
+    //비품 이름으로 검색 서비스
     public List<SupplyDTO> findSupplyByName(String keyword) {
         List<SupplyEntity> supply = Supplydao.findByNameContainingIgnoreCase(keyword);
         if (supply.isEmpty()) {
-            throw new CustomException(Supply_Not_Exist);
+            throw new CustomException(SUPPLY_NOT_EXIST);
         }
         return supply.stream().map(p->modelMapper.map(p, SupplyDTO.class)).collect(Collectors.toList());
     }

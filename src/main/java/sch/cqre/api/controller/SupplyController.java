@@ -22,7 +22,7 @@ public class SupplyController {
         return ResponseEntity.ok(supplyService.findAll());
     }
 
-    //비품 이름 검색
+    //비품 이름으로 검색
     @PostMapping("/search")
     public ResponseEntity<List<SupplyDTO>> supplySearch(@RequestParam(value = "keyword",required = false, defaultValue = "") String name) {
         return ResponseEntity.ok(supplyService.findSupplyByName(name));
