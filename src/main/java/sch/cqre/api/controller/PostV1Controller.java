@@ -1,84 +1,70 @@
 package sch.cqre.api.controller;
 
-import com.nimbusds.jose.shaded.json.JSONObject;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import sch.cqre.api.dto.BoardDto;
+import sch.cqre.api.exception.CustomExeption;
+import sch.cqre.api.exception.ErrorCode;
 import sch.cqre.api.service.BoardService;
-import sch.cqre.api.service.JsonMessager;
-import sch.cqre.api.service.UserService;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.NotNull;
 
 @RestController
 @RequestMapping("/api/v1/post/*")
 @RequiredArgsConstructor
 @Slf4j
-
 public class PostV1Controller {
 
-    private final UserService userService;
-    private final JsonMessager jsonMessager;
     private final BoardService boardService;
 
+    //view
+    @GetMapping("/{boardUID}")
+    public ResponseEntity viewPostMap(@PathVariable @Validated @NotNull long boardUID) {
+        // Load file as Resource
+        return ResponseEntity.ok(boardService.viewProc(boardUID));
+
+    }
+
     @PostMapping("/write")
-    public ResponseEntity writeMap(@RequestParam(value = "title", required = false, defaultValue = "") String title,
-                                   @RequestParam(value = "content", required = false, defaultValue = "") String content,
-                                   @RequestParam(value = "hashtag", required = false, defaultValue = "") String hashtag) {
-
-        if (title.isBlank() || content.isBlank() || hashtag.isBlank()) {
-            return jsonMessager.errStr("notVaildInput");
-        }
-
-        return boardService.writeProc(title, content, hashtag);
+    public ResponseEntity writeMap(@RequestBody @Validated BoardDto.WritePostRequest writePostRequest) {
+        return ResponseEntity.ok(boardService.writeProc(writePostRequest));
     }
 
+    @DeleteMapping("/delete/{boardUID}")
+    public ResponseEntity deleteMap(@PathVariable @Validated @NotNull long boardUID){
+        if (boardUID <= 0)
+            throw new CustomExeption(ErrorCode.INVALID_INPUT);
 
-    @DeleteMapping("/delete")
-    public ResponseEntity deleteMap(@RequestParam(value = "post_id", required = false, defaultValue = "0") int postId){
-        /*
-            본인이 작성한 게시물 or 관리자 확인 후,
-            PostHashTag 지우고
-            Post삭제
-         */
-
-        if (postId == 0)
-            return jsonMessager.errStr("invaildInput");
-
-        return boardService.deleteProc(postId);
+        boardService.deleteProc(boardUID);
+        return ResponseEntity.ok("");
     }
-
 
 
     @PutMapping("/modify") // 수정
-    public ResponseEntity writeMap(@RequestParam(value = "uid", required = false, defaultValue = "0") int uid,
-                                   @RequestParam(value = "title", required = false, defaultValue = "") String title,
-                                   @RequestParam(value = "content", required = false, defaultValue = "") String content,
-                                   @RequestParam(value = "hashtag", required = false, defaultValue = "") String hashtag){
-
-        if (uid == 0 || title.isBlank() || content.isBlank() || hashtag.isBlank())
-            return jsonMessager.errStr("notVaildInput");
-
-        return boardService.modifyProc(uid, title, content, hashtag);
+    public ResponseEntity modifyMap(@RequestBody @Validated BoardDto.ModifyPostRequest modifyPostRequest, HttpServletRequest request){
+        return ResponseEntity.ok(boardService.modifyProc(modifyPostRequest));
     }
 
 
 
+    @PostMapping("/reaction")
+    public ResponseEntity reactionMap(@RequestBody @Validated BoardDto.ReactionRequest reactionRequest) {
 
-    @PostMapping("/read")
-    public ResponseEntity readMap(){
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("message", "hi~ " + userService.getRole());
-        jsonObject.put("email", userService.getEmail());
-        return ResponseEntity.ok().body(jsonObject);
+        boardService.reactionProc(reactionRequest.getPostId(), reactionRequest.getReaction());
+        return ResponseEntity.ok("");
     }
 
+    @DeleteMapping("/unreaction/{boardUID}")
+    public ResponseEntity unReactionMap(@PathVariable @Validated @NotNull Long boardUID) {
+        if (boardUID <= 0)
+            throw new CustomExeption(ErrorCode.INVALID_INPUT);
 
-    @PostMapping("/list")
-    public ResponseEntity listMap(){
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("message", "hi~ " + userService.getRole());
-        jsonObject.put("email", userService.getEmail());
-        return ResponseEntity.ok().body(jsonObject);
+        boardService.unReactionProc(boardUID);
+        return ResponseEntity.ok("");
     }
 
 

@@ -1,14 +1,30 @@
 package sch.cqre.api.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import sch.cqre.api.domain.PostEntity;
-import sch.cqre.api.domain.UserEntity;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 @Repository
-public interface BoardRepository extends JpaRepository<PostEntity,Long> {
-    PostEntity findOnceByPostId(int postId);
-    int countByPostId(int postId);
-    void deleteBypostId(int post_id);
+public class BoardRepository {
+
+    @PersistenceContext
+    private EntityManager em;
+
+    public void save(PostEntity postEntity){
+        em.persist(postEntity);
+    }
+
+    public PostEntity findOne(Long postId){
+        return em.find(PostEntity.class, postId);
+    }
+
+    public void deleteOne(Long postId) { em.remove(findOne(postId)); }
+
+
+
+
+
 
 }

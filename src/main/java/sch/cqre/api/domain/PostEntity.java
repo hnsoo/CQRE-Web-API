@@ -1,80 +1,97 @@
 package sch.cqre.api.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
+import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.Objects;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
 @Entity
 @NoArgsConstructor
+@Setter @Getter
+@Builder
+@AllArgsConstructor
+@DynamicUpdate
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "Post", schema = "main")
-public class PostEntity {
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Id
+public class PostEntity{
+
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "post_id")
-	private int postId;
-	@Basic(optional = false)
-	@Column(name = "author_id")
-	private int authorId;
+	private long postId;
+
+	@JsonIgnore
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="author_id", referencedColumnName = "user_id")
+	//@Column(name = "author_id")
+	private UserEntity user;
+
+
 	@Basic(optional = false)
 	@Column(name = "post_title")
 	private String postTitle;
+
 	@Basic(optional = false)
 	@Column(name = "post_content")
 	private String postContent;
-	@Basic
+
 	@Column(name = "views", columnDefinition = "int unsigned default 0")
 	private int views;
 
-	@Basic
 	@Column(name = "thumbnail")
 	private String thumbnail;
-	@Basic(optional = false)
-	@Column(name = "created_at", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+
+	@Column(name = "created_at")
+	@CreatedDate
 	private Timestamp createdAt;
-	@Basic(optional = false)
+
 	@Column(name = "updated_at")
+	@LastModifiedDate
 	private Timestamp updatedAt;
 
-	@Builder
-	public PostEntity(int authorId, String postTitle, String postContent, int views, int likes, String thumbnail,
-		Timestamp createdAt, Timestamp updatedAt) {
-		this.authorId = authorId;
-		this.postTitle = postTitle;
-		this.postContent = postContent;
-		this.views = views;
-		this.likes = likes;
-		this.thumbnail = thumbnail;
-		this.createdAt = createdAt;
-		this.updatedAt = updatedAt;
-	}
+//	@Builder.Default
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (o == null || getClass() != o.getClass())
-			return false;
-		PostEntity that = (PostEntity)o;
-		return postId == that.postId && authorId == that.authorId && Objects.equals(postTitle, that.postTitle)
-			&& Objects.equals(postContent, that.postContent) && Objects.equals(views, that.views)
-			&& Objects.equals(likes, that.likes) && Objects.equals(thumbnail, that.thumbnail)
-			&& Objects.equals(createdAt, that.createdAt) && Objects.equals(updatedAt, that.updatedAt);
-	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(postId, authorId, postTitle, postContent, views, likes, thumbnail, createdAt, updatedAt);
-	}
+//	@Transient
+//	@JoinColumn(insertable=false, updatable = false)
+//	List<CommentEntity> comments = new ArrayList<>();
+
+/*
+	@OneToMany(fetch = FetchType.EAGER)
+	@JoinColumn(insertable=false, updatable = false)
+	public List<PostHashTagEntity> hashtags = new ArrayList<PostHashTagEntity>();
+*/
+
+	/*
+	@Transient
+	@JoinColumn(insertable=false, updatable = false)
+	List<ReactionEntity> reactions = new ArrayList<>();*/
+
+//	@Builder.Default
+/*	@Transient
+	@JoinColumn(insertable=false, updatable = false)
+	List<PostHashTagEntity> hashtags = new ArrayList<>();*//*
+
+//
+//	@Builder.Default
+
+	@JoinColumn(insertable=false, updatable = false)
+	List<ReactionEntity> reactions = new ArrayList<>();
+
+
+
+
+
+
+
+
+/*	@PreUpdate
+	public void mappingUserAndPost(){
+		//this.setAuthorId();
+	}*/
+
 }

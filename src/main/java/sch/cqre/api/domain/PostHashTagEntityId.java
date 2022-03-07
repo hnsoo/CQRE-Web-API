@@ -1,32 +1,19 @@
 package sch.cqre.api.domain;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import java.io.Serializable;
 import java.util.Objects;
 
-@Entity
-@NoArgsConstructor
-@Table(name = "PostHashTag", schema = "main")
-@IdClass(PostHashTagEntityId.class)
-@Setter @Getter
-public class PostHashTagEntity {
+@Data
+public class PostHashTagEntityId implements Serializable {
 
-    @Id
     @Column(name = "post_id")
     private long postId;
 
     @Column(name = "hashtag_id")
     private long hashtagId;
-
-    @Builder
-    public PostHashTagEntity(long postId, long hashtagId) {
-        this.postId = postId;
-        this.hashtagId = hashtagId;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -34,7 +21,7 @@ public class PostHashTagEntity {
             return true;
         if (o == null || getClass() != o.getClass())
             return false;
-        PostHashTagEntity that = (PostHashTagEntity)o;
+        PostHashTagEntityId that = (PostHashTagEntityId)o;
         return postId == that.postId && hashtagId == that.hashtagId;
     }
 

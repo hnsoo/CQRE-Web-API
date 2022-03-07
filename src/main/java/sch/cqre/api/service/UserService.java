@@ -2,33 +2,31 @@ package sch.cqre.api.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sch.cqre.api.domain.UserEntity;
-import sch.cqre.api.dto.UserDto;
-
+import sch.cqre.api.dto.AccountDto;
+import sch.cqre.api.exception.CustomExeption;
+import sch.cqre.api.exception.ErrorCode;
 import sch.cqre.api.jwt.JwtFilter;
+import sch.cqre.api.jwt.Role;
 import sch.cqre.api.jwt.TokenProvider;
-import sch.cqre.api.repository.UserDAO;
 import sch.cqre.api.repository.UserRepository;
-
-import java.util.regex.Pattern;
 
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Slf4j
 public class UserService {
-
-    private final UserDAO userDao;
-    private final JsonMessager jsonMessager;
+    @Autowired
+    private ModelMapper modelMapper;
 
 
     private final UserRepository userRepository;
@@ -38,88 +36,44 @@ public class UserService {
 
     private final TokenProvider tokenProvider;
 
-
-    public String signupValidChk(UserDto form){
-
-        /*
-        회원가입 입력 폼을 체크하는 로직
-        "fine" = 유효한 값
-        "message" = 유효하지 않음 (회원가입 불가)
-         */
-
-        if (!Pattern.matches("^[a-z0-9A-Z._-]*@[a-z0-9A-Z]*.[a-zA-Z.]*$", form.getEmail())){
-            return "EmailWrong"; //이메일 양식 오류
-        }
-            if (!(form.getNickname().length() > 1 && form.getNickname().length() <= 10)){
-                return "NicknameWrong"; //닉네임은 2자이상 10자 이하
-            }
-            if (!(form.getStudentId() > 20000000 && form.getStudentId() < 29999999)){
-                return "StudentIdWrong"; //학번 잘못 기재함
-            }
-        if (!Pattern.matches("^[a-zA-Z0-9]{10,15}$", form.getPassword())){
-            return "PasswordWrong"; //비밀번호는 숫자+영문 조합으로 8~20자
-        }
-
-            return "fine";
-    }
-
-    public String signupDuplicateChk(UserDto form) {
-
-    /*
-    중복가입 체크 로직
-    "fine" = 중복되는 값 없음 (이메일, 닉네임, 학번)
-    "message" = 중복되는 값 있음 (회원가입 불가)
-     */
-
-        if (userRepository.countByStudentId(form.getStudentId()) != 0)
-            return "studentId_duplicate";
-        if (userRepository.countByEmail(form.getEmail()) != 0)
-            return "email_duplicate";
-        if (userRepository.countByNickname(form.getNickname()) != 0)
-            return "nickname_duplicate";
-
-
-        return "fine";
-
-    }
-
-    //Join
     @Transactional
-    public UserEntity createUser(UserDto form){
-        return userDao.add(form);
+    public UserEntity signUpProc(AccountDto.SignupRequest signupRequest){
+        //회원 중복 검사
+        if (userRepository.existByStudentId(signupRequest.getStudentId()))
+            throw new CustomExeption(ErrorCode.DUPLICATE_STUDENTID);
+        if (userRepository.existByEmail(signupRequest.getEmail()))
+            throw new CustomExeption(ErrorCode.DUPLICATE_EMAIL);
+        if (userRepository.existByNickname(signupRequest.getNickname()))
+            throw new CustomExeption(ErrorCode.DUPLICATE_NICKNAME);
+
+        //패스워드 암호화
+        signupRequest.setPassword(passwordEncoder.encode(signupRequest.getPassword()));
+
+        //signRequest -> UserEntity 객체 변경
+        UserEntity signupForm = modelMapper.map(signupRequest, UserEntity.class);
+
+        //실질적인 회원가입
+        userRepository.save(signupForm);
+        return signupForm;
     }
 
 
     //Join
     @Transactional
-    public ResponseEntity loginProc(String email, String password){
+    public ResponseEntity loginProc(AccountDto.LoginRequest loginRequestDto){
+        UserEntity userInfo = userRepository.findOneByEmail(loginRequestDto.getEmail());
 
-        UserEntity userInfo = userRepository.findOnceByEmail(email);
-
-        if (email.equals("") || password.equals("")){
-            return jsonMessager.errStr("notValidInput");
-        }
-
-        if (userRepository.countByEmail(email) == 0){
-            return jsonMessager.errStr("notFoundAccount");
-        }
-
-        if (!passwordEncoder.matches(password, userInfo.getPassword())){
-
-            return jsonMessager.errStr("idPasswordNotMatched");
-        }
+        if (userInfo == null) throw new CustomExeption(ErrorCode.MEMBER_NOT_FOUND);
+        if (!passwordEncoder.matches(loginRequestDto.getPassword(), userInfo.getPassword())) throw new CustomExeption(ErrorCode.LOGIN_FAIL);
 
         String jwt = tokenProvider.createToken(String.valueOf(userInfo.getUserId()), userInfo.getEmail(), userInfo.getRole());
-        log.warn("created Token : " + jwt);
+        log.info("login Success {}", userInfo.getEmail());
+        log.info("created Token : " + jwt);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Baerer ".concat(jwt));
-        return new ResponseEntity(userInfo, httpHeaders, HttpStatus.OK);
-    }
+        AccountDto.LoginResponse loginResponse = modelMapper.map(userInfo, AccountDto.LoginResponse.class);
 
-
-    //현재 사용중인 토큰의 주인(이메일)을 불러오는 함수
-    public String getEmail(){
-        return SecurityContextHolder.getContext().getAuthentication().getName();
+        return new ResponseEntity(loginResponse, httpHeaders, HttpStatus.OK);
     }
 
     //현재 사용중인 토큰의 주인(권한)을 불러오는 함수
@@ -127,8 +81,13 @@ public class UserService {
         return SecurityContextHolder.getContext().getAuthentication().getAuthorities().toString();
     }
 
-    //Modify
+    public UserEntity getMyInfo(){
+        return userRepository.findOneByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+    }
 
+    public boolean chkAdmin(){
+        return getRole() == Role.define.role_ADMIN || getRole() == Role.define.role_MANAGER;
+    }
 
 
     //회원탈퇴

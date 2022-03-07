@@ -9,7 +9,7 @@
     <class>sch.cqre.api.domain.CommentEntity</class>
     <class>sch.cqre.api.domain.FileEntity</class>
       <class>sch.cqre.api.domain.HashTagEntity</class>
-      <class>sch.cqre.api.domain.PostEntity</class>
+      <class>sch.cqre.api.domain.ReactionEntity</class>
     <class>sch.cqre.api.domain.ReactionEntity</class>
     <class>sch.cqre.api.domain.PostHashTagEntity</class>
       <class>sch.cqre.api.domain.ProjectEntity</class>

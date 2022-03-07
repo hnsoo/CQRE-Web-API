@@ -36,9 +36,10 @@ public class JwtFilter extends GenericFilterBean {
         if(StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)){
 
             Authentication authentication = tokenProvider.getAuthentication(jwt);
+
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            log.debug("SecurityContext - {} save Authentication, URI = {}",authentication.getName(),requestURI);
+            log.debug("SecurityContext - {} save Authentication, URI = {}  ",authentication.getName(),requestURI);
         }else{
 
             log.debug("There is no Valid Valid JWT Token. URI = {}",requestURI);

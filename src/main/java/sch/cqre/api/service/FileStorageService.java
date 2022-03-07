@@ -9,9 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import sch.cqre.api.config.FileStorageConfig;
+import sch.cqre.api.domain.FileEntity;
 import sch.cqre.api.exception.FileStorageException;
-import sch.cqre.api.exception.MyFileNotFoundException;
 import sch.cqre.api.repository.FileDAO;
+import sch.cqre.api.repository.FileRepository;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,9 +35,7 @@ public class FileStorageService {
     @Autowired
     public FileStorageService(FileStorageConfig fileStorageConfig, FileDAO fileDAO) {
         //init
-
-        this.fileStorageLocation = Paths.get(fileStorageConfig.getUploadDir())
-                .toAbsolutePath().normalize();
+        this.fileStorageLocation = Paths.get(fileStorageConfig.getUploadDir()).toAbsolutePath().normalize();
         this.fileDAO = fileDAO;
 
         try {
@@ -46,7 +45,7 @@ public class FileStorageService {
         }
     }
 
-    public Path storeFile(MultipartFile file) {
+    public String storeFile(MultipartFile file) {
 
         // Normalize file name
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
@@ -57,13 +56,12 @@ public class FileStorageService {
         }
 
 
-        String extension = fileName.substring(fileName.lastIndexOf(".") + 1);
 
+        String extension = fileName.substring(fileName.lastIndexOf(".") + 1);
 
         UUID uuid = UUID.randomUUID();
         String randomUUID = uuid.toString();
 
-        // Copy file to the target location (Replacing existing file with the same name)
         Path targetLocation = this.fileStorageLocation.resolve(randomUUID);
         File Folder = new File(String.valueOf(targetLocation));
 
@@ -88,8 +86,9 @@ public class FileStorageService {
 
         try {
 
-            //fileStorageLocation.
             targetLocation = targetLocation.resolve(fileName);
+
+            //log.warn("a " + fileName);
 
             //확장자 검사
             if (!chkAllowedExtension(extension))
@@ -110,6 +109,8 @@ public class FileStorageService {
             throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
         }
     }
+
+
 
     public boolean chkAllowedExtension(String extension){
         String[] allowedExtension = {"zip", "alz", "tar", //압축파일

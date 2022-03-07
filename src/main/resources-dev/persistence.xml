@@ -9,7 +9,7 @@
     <class>sch.cqre.api.domain.CommentEntity</class>
     <class>sch.cqre.api.domain.FileEntity</class>
       <class>sch.cqre.api.domain.HashTagEntity</class>
-      <class>sch.cqre.api.domain.PostEntity</class>
+      <class>sch.cqre.api.domain.ReactionEntity</class>
     <class>sch.cqre.api.domain.ReactionEntity</class>
     <class>sch.cqre.api.domain.PostHashTagEntity</class>
       <class>sch.cqre.api.domain.ProjectEntity</class>
@@ -19,6 +19,7 @@
       <class>sch.cqre.api.domain.ScrapEntity</class>
       <class>sch.cqre.api.domain.SupplyEntity</class>
     <class>sch.cqre.api.domain.UserEntity</class>
+
 
     <properties>
       <property name="hibernate.connection.url"

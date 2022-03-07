@@ -1,21 +1,17 @@
 package sch.cqre.api.domain;
 
-import java.util.Objects;
-
-import javax.persistence.*;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.DynamicInsert;
-
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import sch.cqre.api.jwt.Role;
+import org.hibernate.annotations.DynamicInsert;
+
+import javax.persistence.*;
 
 @Data
 @Entity
 @NoArgsConstructor
 @DynamicInsert
+//@Cacheable
 @Table(name = "User", schema = "main")
 public class UserEntity {
 
@@ -23,16 +19,19 @@ public class UserEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	@Column(name = "user_id")
-	private int userId;
+	private long userId;
+
+
+
 	@Basic(optional = false)
 	@Column(name = "student_id")
 	private int studentId;
 	@Basic(optional = false)
-	// @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+//	 @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	@Column(name = "password")
-	@JsonIgnore
+//	@JsonIgnore
 	private String password;
-	@Basic(optional = false)
+	@Basic()
 	@Column(name = "email", unique = true)
 	private String email;
 	@Basic(optional = false)
@@ -45,17 +44,14 @@ public class UserEntity {
 	//private String userType; // defaultValue = "Guest"
 	private String role;
 
-	//엔티티 이름 변경
 
-	//@Basic(optional = false)
-	//@Column(name = "profile")
-	//private String profile;
-	//@Basic // nullable, 자동으로 들어감
- 	//@Column(name = "provider", length = 45) // social login
-	//private String provider; // defaultValue = "local"
+
+	//@OneToOne()
+	//@JoinColumn(name = "User_user_id",)
+	//private UserEntity user;
 
 	@Builder
-	public UserEntity(int userId, int studentId, String password, String email, String nickname, String role){
+	public UserEntity(long userId, int studentId, String password, String email, String nickname, String role){
 	//	String profile) {
 		this.studentId = studentId;
 		this.password = password;

@@ -8,21 +8,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sch.cqre.api.domain.UserEntity;
-import sch.cqre.api.dto.UserDto;
 import sch.cqre.api.jwt.SecurityUser;
 import sch.cqre.api.repository.UserRepository;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 
 @Slf4j
-//@Component("userDetailsService")
 @Service
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
@@ -39,7 +34,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Optional<UserEntity> findMember = Optional.ofNullable(userRepository.findOnceByEmail(email));
+        Optional<UserEntity> findMember = Optional.ofNullable(userRepository.findOneByEmail(email));
         if (!findMember.isPresent()) throw new UsernameNotFoundException("존재하지 않는 email 입니다.");
 
         log.info("loadUserByUsername member.email = {}", email);

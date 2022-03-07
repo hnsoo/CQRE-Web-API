@@ -1,28 +1,22 @@
 package sch.cqre.api.domain;
 
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import javax.persistence.*;
 import java.util.Objects;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
 @Entity
 @NoArgsConstructor
+@Setter @Getter
 @Table(name = "File", schema = "main")
 public class FileEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	@Column(name = "file_id")
-	private int fileId;
+	private int fileId; //todo LONG
 	@Basic(optional = false)
 	@Column(name = "originalname")
 	private String originalname;

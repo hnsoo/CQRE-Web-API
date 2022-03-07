@@ -1,39 +1,50 @@
 package sch.cqre.api.service;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
+import sch.cqre.api.domain.UserEntity;
+import sch.cqre.api.repository.UserRepository;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-//단위테스트를 스프링과 연동
-//@RunWith(SpringRunner.class)
-
+@SpringBootTest
+@Transactional
 class UserServiceTest {
 
+    @Autowired UserService userService;
+    @Autowired UserRepository userRepository;
+
+    // @Autowired MockMvc mockMvc;
+    // @Autowired ObjectMapper objectMapper;
+
+    @DisplayName("회원가입 테스트")
     @Test
-    public void test1(){
+    public void 회원가입(){
         //given
+        final int userid = 1;
+        final int studentID = 20191111;
+        final String email = "testcode@testcode.com";
+        final String nickname = "testcode";
+        final String password = "testcode1234";
+        final String role = "ROLE_GUEST";
+
+        UserEntity userEntity = UserEntity.builder()
+                .userId(userid)
+                .studentId(studentID)
+                .email(email)
+                .nickname(nickname)
+                .password(password)
+                .role(role)
+                .build();
+        userRepository.save(userEntity);
 
         //when
+        UserEntity resultUser = userRepository.findOnceByEmail(email);
 
         //then
-    }
-    /*
-    @Test
-    void createUser() {
-        //given
-        Long userId = Long.valueOf("penekhun");
-        //Long studentId = 20194581;
-        String password;
-        String email;
-        String nickname;
-        String userType; // defaultValue = "Guest"
-        String profile;
-        //when
-
-        //then
+        Assertions.assertEquals(resultUser.getEmail(), email);
     }
 
-     */
 }

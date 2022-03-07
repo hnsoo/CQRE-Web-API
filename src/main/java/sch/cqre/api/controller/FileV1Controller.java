@@ -10,8 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import sch.cqre.api.exception.CustomExeption;
+import sch.cqre.api.exception.ErrorCode;
 import sch.cqre.api.service.FileStorageService;
-import sch.cqre.api.service.JsonMessager;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -23,7 +24,6 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class FileV1Controller {
 
-    private final JsonMessager jsonMessager;
     private final FileStorageService fileStorageService;
 
     @PostMapping("/upload")
@@ -77,11 +77,11 @@ public class FileV1Controller {
         // Load file as Resource
 
         if(fileUUID.isBlank() || fileUUID.length() != 36) //fileUUID가 비어있거나 UUID(36자)가 아니면
-            return jsonMessager.errStr("invaildInput");
+            throw new CustomExeption(ErrorCode.INVALID_INPUT);
 
         Resource resource = fileStorageService.loadFileAsResource(fileUUID);
         if (resource == null)
-            return jsonMessager.errStr("fileNotFound");
+            throw new CustomExeption(ErrorCode.INVALID_INPUT);
 
         // Try to determine file's content type
         String contentType = null;

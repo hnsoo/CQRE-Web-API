@@ -3,32 +3,22 @@ package sch.cqre.api.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.Range;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import sch.cqre.api.domain.UserEntity;
-import sch.cqre.api.jwt.Role;
 
-import javax.validation.constraints.*;
 import java.util.Collection;
 
 @Data
 @NoArgsConstructor
 public class UserDto implements UserDetails {
-    private int userId;
 
+    private long userId;
     private int studentId;
-
     private String password;
-
     private String email;
-
     private String nickname;
-
     private String role;
-    //UserRole userType;
-    //TODO : 디폴트 변수 상수화 - hun
-   // private String profile;
 
     public UserDto(UserEntity user){
         this.userId = user.getUserId();
@@ -49,13 +39,11 @@ public class UserDto implements UserDetails {
                 .email(email)
                 .nickname(nickname)
                 .role(role)
-          //      .profile(profile)
                 .build();
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-
         return null;
     }
 

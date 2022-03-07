@@ -5,11 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import sch.cqre.api.domain.FileEntity;
-import sch.cqre.api.domain.PostEntity;
-
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 @Repository
 @RequiredArgsConstructor
@@ -19,7 +14,6 @@ public class FileDAO {
 
     @Transactional
     public int addFile(String orignalName, String filepath, int size, String filetype){
-
         //db에 파일정보 저장
         FileEntity fileForm = new FileEntity();
         fileForm.setOriginalname(orignalName);
