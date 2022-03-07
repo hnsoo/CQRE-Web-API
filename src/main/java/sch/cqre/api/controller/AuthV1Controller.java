@@ -1,8 +1,5 @@
 package sch.cqre.api.controller;
 
-
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +11,11 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import sch.cqre.api.dto.AccountDto;
-import sch.cqre.api.exception.CustomExeption;
+import sch.cqre.api.exception.CustomException;
 import sch.cqre.api.exception.ErrorCode;
 import sch.cqre.api.service.UserService;
 
@@ -44,7 +44,7 @@ public class AuthV1Controller {
 
     @PostMapping("/login")
     public ResponseEntity loginRestMap(@RequestBody @Validated AccountDto.LoginRequest loginRequestDto, BindingResult bindingResult){
-        if (bindingResult.hasErrors()) throw new CustomExeption(ErrorCode.INVALID_INPUT);
+        if (bindingResult.hasErrors()) throw new CustomException(ErrorCode.INVALID_INPUT);
 
         return userService.loginProc(loginRequestDto);
     }

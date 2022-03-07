@@ -1,7 +1,5 @@
 package sch.cqre.api.service;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -11,9 +9,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import sch.cqre.api.domain.UserEntity;
 import sch.cqre.api.dto.AccountDto;
-import sch.cqre.api.exception.CustomExeption;
+import sch.cqre.api.exception.CustomException;
 import sch.cqre.api.exception.ErrorCode;
 import sch.cqre.api.jwt.JwtFilter;
 import sch.cqre.api.jwt.Role;
@@ -40,11 +41,11 @@ public class UserService {
     public UserEntity signUpProc(AccountDto.SignupRequest signupRequest){
         //회원 중복 검사
         if (userRepository.existByStudentId(signupRequest.getStudentId()))
-            throw new CustomExeption(ErrorCode.DUPLICATE_STUDENTID);
+            throw new CustomException(ErrorCode.DUPLICATE_STUDENTID);
         if (userRepository.existByEmail(signupRequest.getEmail()))
-            throw new CustomExeption(ErrorCode.DUPLICATE_EMAIL);
+            throw new CustomException(ErrorCode.DUPLICATE_EMAIL);
         if (userRepository.existByNickname(signupRequest.getNickname()))
-            throw new CustomExeption(ErrorCode.DUPLICATE_NICKNAME);
+            throw new CustomException(ErrorCode.DUPLICATE_NICKNAME);
 
         //패스워드 암호화
         signupRequest.setPassword(passwordEncoder.encode(signupRequest.getPassword()));
@@ -63,8 +64,8 @@ public class UserService {
     public ResponseEntity loginProc(AccountDto.LoginRequest loginRequestDto){
         UserEntity userInfo = userRepository.findOneByEmail(loginRequestDto.getEmail());
 
-        if (userInfo == null) throw new CustomExeption(ErrorCode.MEMBER_NOT_FOUND);
-        if (!passwordEncoder.matches(loginRequestDto.getPassword(), userInfo.getPassword())) throw new CustomExeption(ErrorCode.LOGIN_FAIL);
+        if (userInfo == null) throw new CustomException(ErrorCode.MEMBER_NOT_FOUND);
+        if (!passwordEncoder.matches(loginRequestDto.getPassword(), userInfo.getPassword())) throw new CustomException(ErrorCode.LOGIN_FAIL);
 
         String jwt = tokenProvider.createToken(String.valueOf(userInfo.getUserId()), userInfo.getEmail(), userInfo.getRole());
         log.info("login Success {}", userInfo.getEmail());

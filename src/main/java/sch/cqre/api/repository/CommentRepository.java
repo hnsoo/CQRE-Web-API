@@ -1,13 +1,15 @@
 package sch.cqre.api.repository;
 
-import org.springframework.stereotype.Repository;
-import sch.cqre.api.domain.CommentEntity;
-import sch.cqre.api.exception.CustomExeption;
-import sch.cqre.api.exception.ErrorCode;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.List;
+
+import org.springframework.stereotype.Repository;
+
+import sch.cqre.api.domain.CommentEntity;
+import sch.cqre.api.exception.CustomException;
+import sch.cqre.api.exception.ErrorCode;
 
 @Repository
 public class CommentRepository {
@@ -30,7 +32,7 @@ public class CommentRepository {
                     .setParameter("commentId", commentId)
                     .getSingleResult();
         } catch (Exception e){
-            throw new CustomExeption(ErrorCode.INVALID_INPUT);
+            throw new CustomException(ErrorCode.INVALID_INPUT);
         }
     }
 

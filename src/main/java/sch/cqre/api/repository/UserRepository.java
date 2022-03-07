@@ -1,10 +1,13 @@
 package sch.cqre.api.repository;
 
-import org.springframework.stereotype.Repository;
-import sch.cqre.api.domain.UserEntity;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+
+import org.springframework.stereotype.Repository;
+
+import sch.cqre.api.domain.UserEntity;
+import sch.cqre.api.exception.CustomException;
+import sch.cqre.api.exception.ErrorCode;
 
 @Repository
 public class UserRepository{ //extends JpaRepository<UserEntity,Long>{
@@ -16,10 +19,39 @@ public class UserRepository{ //extends JpaRepository<UserEntity,Long>{
         em.persist(userEntity);
     }
 
-    public UserEntity findid(String name){
-        return em.find(UserEntity.class, name);
+    public UserEntity findOne(Long userId){
+        try {
+            return em.find(UserEntity.class, userId);
+        } catch(Exception e){
+            throw new CustomException(ErrorCode.MEMBER_NOT_FOUND);
+        }
     }
 
+    // public Integer countByUserId(Long userId) {
+    //     try {
+    //         return (em.createQuery("select m FROM UserEntity m WHERE m.userId = :userId", UserEntity.class)
+    //             .setParameter("userId", userId).getResultList());
+    //     } catch (Exception e) {
+    //         return null;
+    //     }
+    // }
+    //
+    //         try {
+    //     return em.createQuery("select m from ReactionEntity m where m.postId = :postId And m.reaction = :reaction", UserEntity.class)
+    //         .setParameter("userId", userId)
+    //         .getResultList().size();
+    // } catch (Exception e){
+    //     return 0;
+    // }
+    //
+    // public void deleteById(Long userId) {
+    //     try {
+    //         return (em.createQuery("select count(m.userId) FROM UserEntity m WHERE m.userId = :userId", UserEntity.class)
+    //             .setParameter("userId", userId).getResultList());
+    //     } catch (Exception e) {
+    //         return null;
+    //     }
+    // }
 
     public UserEntity findOneByEmail(String email){
         try {
@@ -60,17 +92,7 @@ public class UserRepository{ //extends JpaRepository<UserEntity,Long>{
         }
     }
 
-    public UserEntity countByEmailAndPassword(String email, String password){
-        try {
-            return em.createQuery("select m from UserEntity m where m.email = :email", UserEntity.class)
-                    .setParameter("email", email)
-                    .setParameter("password", password)
-                    .getSingleResult();
-        } catch (Exception e){
-            return null;
-        }
+    public void deleteOne(Long postId){
+        em.remove(findOne(postId));
     }
-
-
 }
-

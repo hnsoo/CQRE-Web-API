@@ -1,25 +1,35 @@
 package sch.cqre.api.service;
 
-import com.nimbusds.jose.shaded.json.JSONArray;
-import com.nimbusds.jose.shaded.json.JSONObject;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import sch.cqre.api.domain.*;
-import sch.cqre.api.dto.BoardDto;
-import sch.cqre.api.dto.CommentDto;
-import sch.cqre.api.exception.CustomExeption;
-import sch.cqre.api.exception.ErrorCode;
-import sch.cqre.api.repository.*;
+import static sch.cqre.api.config.AppConfig.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import static sch.cqre.api.config.AppConfig.allowedReaction;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.nimbusds.jose.shaded.json.JSONArray;
+import com.nimbusds.jose.shaded.json.JSONObject;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import sch.cqre.api.domain.CommentEntity;
+import sch.cqre.api.domain.HashTagEntity;
+import sch.cqre.api.domain.PostEntity;
+import sch.cqre.api.domain.PostHashTagEntity;
+import sch.cqre.api.domain.ReactionEntity;
+import sch.cqre.api.dto.BoardDto;
+import sch.cqre.api.dto.CommentDto;
+import sch.cqre.api.exception.CustomException;
+import sch.cqre.api.exception.ErrorCode;
+import sch.cqre.api.repository.BoardRepository;
+import sch.cqre.api.repository.CommentRepository;
+import sch.cqre.api.repository.HashTagRepository;
+import sch.cqre.api.repository.PostHashTagRepository;
+import sch.cqre.api.repository.ReactionRepository;
 
 @Service
 @Slf4j
@@ -114,7 +124,7 @@ public class BoardService {
 
         //게시물에 admin해시태그가 있는데 접근자가 관리자 권한이 없는 경우
         if (isAdminPost(postId) && (userService.chkAdmin()))
-            throw new CustomExeption(ErrorCode.INVALID_PERMISSION);
+            throw new CustomException(ErrorCode.INVALID_PERMISSION);
 
 
         PostEntity post = boardRepository.findOne(postId);
@@ -183,7 +193,7 @@ public class BoardService {
         long userId = userService.getMyInfo().getUserId();
 
         if (!isAllowedReaction(reaction))
-            throw new CustomExeption(ErrorCode.INVALID_INPUT);
+            throw new CustomException(ErrorCode.INVALID_INPUT);
 
         throwDuplicateReaction(postId, userId);
         throwNotExistPost(postId);
@@ -228,7 +238,7 @@ public class BoardService {
         throwNotExistPost(commentWriteRequest.getPostId());
 
         if (isAdminPost(commentWriteRequest.getPostId()) && !userService.chkAdmin())
-            throw new CustomExeption(ErrorCode.INVALID_PERMISSION);
+            throw new CustomException(ErrorCode.INVALID_PERMISSION);
 
         CommentEntity commentEntity = new CommentEntity();
         commentEntity.setPostId(commentWriteRequest.getPostId());
@@ -268,7 +278,7 @@ public class BoardService {
 
         PostEntity post = boardRepository.findOne(postId);
         if (post.getUser().getUserId() == userService.getMyInfo().getUserId())
-            throw new CustomExeption(ErrorCode.MY_POST);
+            throw new CustomException(ErrorCode.MY_POST);
     }
 
     public void thorwNotMyPost(long postId){
@@ -280,21 +290,21 @@ public class BoardService {
 
         PostEntity post = boardRepository.findOne(postId);
         if (post.getUser().getUserId() != userService.getMyInfo().getUserId())
-            throw new CustomExeption(ErrorCode.NOT_MY_POST);
+            throw new CustomException(ErrorCode.NOT_MY_POST);
     }
 
     public void throwDuplicateReaction(long postId, long userId){
         //이미 리액션 했으면 throw
         ReactionEntity reaction = reactionRepository.findReaction(userId, postId);
         if (reaction != null)
-            throw new CustomExeption(ErrorCode.DUPLICATE_REACTION);
+            throw new CustomException(ErrorCode.DUPLICATE_REACTION);
     }
 
     public void throwNotExistPost(long postId){
         //게시물이 없으면 throw
         PostEntity post = boardRepository.findOne(postId);
         if (post == null)
-            throw new CustomExeption(ErrorCode.INVALID_INPUT);
+            throw new CustomException(ErrorCode.INVALID_INPUT);
     }
 
     @Transactional

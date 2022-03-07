@@ -1,11 +1,18 @@
 package sch.cqre.api.domain;
 
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.DynamicInsert;
+
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.DynamicInsert;
-
-import javax.persistence.*;
 
 @Data
 @Entity
@@ -19,13 +26,10 @@ public class UserEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	@Column(name = "user_id")
-	private long userId;
-
-
-
+	private Long userId;
 	@Basic(optional = false)
 	@Column(name = "student_id")
-	private int studentId;
+	private Long studentId;
 	@Basic(optional = false)
 //	 @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	@Column(name = "password")
@@ -37,7 +41,6 @@ public class UserEntity {
 	@Basic(optional = false)
 	@Column(name = "nickname")
 	private String nickname;
-
 	@Basic
 	@Column(name = "user_type") // nullable, signup때 포함하지 않을 것임
 	//@Enumerated(EnumType.STRING)
@@ -51,7 +54,7 @@ public class UserEntity {
 	//private UserEntity user;
 
 	@Builder
-	public UserEntity(long userId, int studentId, String password, String email, String nickname, String role){
+	public UserEntity(Long userId, Long studentId, String password, String email, String nickname, String role){
 	//	String profile) {
 		this.studentId = studentId;
 		this.password = password;

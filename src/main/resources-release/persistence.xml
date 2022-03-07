@@ -9,6 +9,9 @@
     <class>sch.cqre.api.domain.CommentEntity</class>
     <class>sch.cqre.api.domain.FileEntity</class>
       <class>sch.cqre.api.domain.HashTagEntity</class>
+      <class>sch.cqre.api.domain.NotificationEntity</class>
+      <class>sch.cqre.api.domain.PostEntity</class>
+      <class>sch.cqre.api.domain.PostHashTagEntity</class>
       <class>sch.cqre.api.domain.ReactionEntity</class>
     <class>sch.cqre.api.domain.ReactionEntity</class>
     <class>sch.cqre.api.domain.PostHashTagEntity</class>
@@ -21,9 +24,10 @@
       <class>sch.cqre.api.domain.UserEntity</class>
     <properties>
       <property name="hibernate.connection.url"
-                value="jdbc:mysql://cqre-web-db.cwybj99o2hv9.ap-northeast-2.rds.amazonaws.com:3306"/>
+                value="jdbc:mysql://test-database.cwybj99o2hv9.ap-northeast-2.rds.amazonaws.com:3306"/>
       <property name="hibernate.connection.driver_class" value="com.mysql.cj.jdbc.Driver"/>
     </properties>
+
   </persistence-unit>
     <persistence-unit name="persistenceUnit"/>
 </persistence>

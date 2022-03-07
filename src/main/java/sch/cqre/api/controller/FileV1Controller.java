@@ -1,21 +1,27 @@
 package sch.cqre.api.controller;
 
+import java.io.IOException;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import sch.cqre.api.exception.CustomExeption;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import sch.cqre.api.exception.CustomException;
 import sch.cqre.api.exception.ErrorCode;
 import sch.cqre.api.service.FileStorageService;
-
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 
 
 @Slf4j
@@ -77,11 +83,11 @@ public class FileV1Controller {
         // Load file as Resource
 
         if(fileUUID.isBlank() || fileUUID.length() != 36) //fileUUID가 비어있거나 UUID(36자)가 아니면
-            throw new CustomExeption(ErrorCode.INVALID_INPUT);
+            throw new CustomException(ErrorCode.INVALID_INPUT);
 
         Resource resource = fileStorageService.loadFileAsResource(fileUUID);
         if (resource == null)
-            throw new CustomExeption(ErrorCode.INVALID_INPUT);
+            throw new CustomException(ErrorCode.INVALID_INPUT);
 
         // Try to determine file's content type
         String contentType = null;

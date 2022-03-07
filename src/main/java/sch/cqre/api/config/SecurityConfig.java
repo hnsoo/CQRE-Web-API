@@ -1,34 +1,26 @@
 package sch.cqre.api.config;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.access.AccessDecisionManager;
-import org.springframework.security.access.AccessDecisionVoter;
 import org.springframework.security.access.expression.SecurityExpressionHandler;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
-import org.springframework.security.access.hierarchicalroles.RoleHierarchyUtils;
-import org.springframework.security.access.vote.AffirmativeBased;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
-import org.springframework.security.web.access.expression.WebExpressionVoter;
-import sch.cqre.api.domain.UserEntity;
-import sch.cqre.api.jwt.*;
-import sch.cqre.api.service.CustomUserDetailsService;
 
-import java.util.*;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import sch.cqre.api.jwt.JwtAccessDeniedHandler;
+import sch.cqre.api.jwt.JwtAuthenticationEntryPoint;
+import sch.cqre.api.jwt.JwtSecurityConfig;
+import sch.cqre.api.jwt.TokenProvider;
+import sch.cqre.api.service.CustomUserDetailsService;
 
 
 /*
@@ -96,7 +88,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // .antMatchers("/api/v1/board/**").hasRole("USER")
 
                 /* 로그인 했으면 접속 가능한 페이지 */
-                .antMatchers("/mypage").hasRole("GUEST")
+                .antMatchers("/api/v1/mypage").hasRole("GUEST")
 
                 /* 관리자만 접속 가능한 페이지 */
                 .antMatchers("/admin").hasRole("ADMIN")

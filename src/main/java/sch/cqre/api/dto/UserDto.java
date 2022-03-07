@@ -1,20 +1,20 @@
 package sch.cqre.api.dto;
 
+import java.util.Collection;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import sch.cqre.api.domain.UserEntity;
-
-import java.util.Collection;
 
 @Data
 @NoArgsConstructor
 public class UserDto implements UserDetails {
 
-    private long userId;
-    private int studentId;
+    private Long userId;
+    private Long studentId;
     private String password;
     private String email;
     private String nickname;

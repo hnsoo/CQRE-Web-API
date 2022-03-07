@@ -14,16 +14,15 @@ import java.util.Objects;
 @IdClass(PostHashTagEntityId.class)
 @Setter @Getter
 public class PostHashTagEntity {
-
     @Id
     @Column(name = "post_id")
-    private long postId;
+    private Long postId;
 
     @Column(name = "hashtag_id")
-    private long hashtagId;
+    private Long hashtagId;
 
     @Builder
-    public PostHashTagEntity(long postId, long hashtagId) {
+    public PostHashTagEntity(Long postId, Long hashtagId) {
         this.postId = postId;
         this.hashtagId = hashtagId;
     }
