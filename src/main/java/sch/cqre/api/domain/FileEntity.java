@@ -11,12 +11,13 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
 @Entity
 @NoArgsConstructor
+@Setter @Getter
 @Table(name = "File", schema = "main")
 public class FileEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,7 +42,7 @@ public class FileEntity {
 
 	@Builder
 	public FileEntity(String originalname, String filename, String filepath, Integer size,
-		String filetype) {
+		String filetype){
 		this.originalname = originalname;
 		this.filename = filename;
 		this.filepath = filepath;

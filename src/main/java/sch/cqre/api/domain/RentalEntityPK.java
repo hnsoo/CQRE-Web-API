@@ -12,11 +12,11 @@ import java.io.Serializable;
 public class RentalEntityPK implements Serializable {
     @Column(name = "user_id")
     @Id
-    private Integer userId;
+    private Long userId;
 
     @Column(name = "book_id")
     @Id
-    private Integer bookId;
+    private Long bookId;
 
     @Override
     public boolean equals(Object o) {
