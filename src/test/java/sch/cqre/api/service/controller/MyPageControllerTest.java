@@ -1,22 +1,21 @@
 package sch.cqre.api.service.controller;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
-
 import sch.cqre.api.exception.CustomException;
 import sch.cqre.api.service.AccountService;
 import sch.cqre.api.service.NotificationService;
 import sch.cqre.api.service.PostService;
 import sch.cqre.api.service.UserService;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -34,7 +33,7 @@ class MyPageControllerTest {
 	@Autowired
 	private UserService userService;
 
-	private static final String BASE_URL = "/api/mypage";
+	private static final String BASE_URL = "/api/v1/mypage";
 
 	@Test
 	void getMyInfo() throws Exception {

@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import sch.cqre.api.domain.CommentEntity;
+import sch.cqre.api.domain.PostEntity;
 import sch.cqre.api.domain.ReactionEntity;
 
 import javax.validation.constraints.NotBlank;
@@ -17,30 +18,6 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 public class BoardDto {
-
-  //  private long postId;
-    /*
-    private int authorId;
-    private String postTitle;
-    private String postContent;
-    private int views;
-    private int likes;
-    private String thumbnail;
-    private Timestamp createdAt;
-    private Timestamp updatedAt;
-
-     */
-
-
-/*
-    @Transient
-    private CommentEntity comment;
-    @Transient
-    private ReactionEntity reaction;
-    @Transient
-    private PostHashTagEntity postHashTag;
-*/
-
 
     @Setter@Getter
     public static class ReactionRequest{
@@ -100,11 +77,16 @@ public class BoardDto {
 
     @Setter
     @Getter
-    public static class ModifyPostRequest extends WritePostRequest{
+    public static class ModifyPostRequest{//} extends WritePostRequest{
         @NotNull
         private long postId;
 
-        //  private WritePostRequest writePostRequest;
+        @NotBlank
+        private String title;
+        @NotBlank
+        private String content;
+        @NotBlank
+        private String hashtag;
     }
 
 
@@ -133,6 +115,12 @@ public class BoardDto {
     @Getter
     public static class ModifyReactionResponse extends WriteReactionRequest{
 
+
+    }
+
+    @Setter
+    @Getter
+    public class PostResponseDto extends PostEntity{
 
     }
 

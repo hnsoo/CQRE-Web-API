@@ -1,21 +1,19 @@
 package sch.cqre.api.service;
 
-import static sch.cqre.api.exception.ErrorCode.*;
+import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import sch.cqre.api.domain.NotificationEntity;
+import sch.cqre.api.dto.NotiDto;
+import sch.cqre.api.exception.CustomException;
+import sch.cqre.api.repository.NotificationRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import lombok.AllArgsConstructor;
-import sch.cqre.api.domain.NotificationEntity;
-import sch.cqre.api.dto.CheckNotificationResponseDto;
-import sch.cqre.api.dto.DeleteNotificationResponseDto;
-import sch.cqre.api.dto.NotificationResponseDto;
-import sch.cqre.api.exception.CustomException;
-import sch.cqre.api.repository.NotificationRepository;
+import static sch.cqre.api.exception.ErrorCode.DELETE_FAIL;
+import static sch.cqre.api.exception.ErrorCode.NOTIFICATION_NOT_FOUND;
 
 @Service
 @AllArgsConstructor
@@ -25,7 +23,7 @@ public class NotificationService {
 	private ModelMapper modelMapper;
 
 	// 유저 UID 를 기반으로 알림 검색
-	public List<NotificationResponseDto> searchByUserId(Long userId) {
+	public List<NotiDto.NotiResponse> searchByUserId(Long userId) {
 		// 내 알림 불러오기
 		List<NotificationEntity> notifications =  notificationRepo.findAllByReceiverId(userId);
 
@@ -33,7 +31,7 @@ public class NotificationService {
 		if (notifications == null || notifications.isEmpty())
 			throw new CustomException(NOTIFICATION_NOT_FOUND);
 		// 객체 변환 List<NotificationEntity> -> List<NotificationResponseDto>
-		return notifications.stream().map(p -> modelMapper.map(p, NotificationResponseDto.class)).collect(Collectors.toList());
+		return notifications.stream().map(p -> modelMapper.map(p, NotiDto.NotiResponse.class)).collect(Collectors.toList());
 	}
 
 	@Transactional
@@ -52,7 +50,7 @@ public class NotificationService {
 	}
 
 	@Transactional
-	public CheckNotificationResponseDto checkNotification(Long notiId) {
+	public NotiDto.CheckNotiResponse checkNotification(Long notiId) {
 		// 알림 UID 를 기반으로 알림 검색
 		NotificationEntity notification = notificationRepo.findById(notiId)
 			// 알림을 못 찾을 경우 "알림 없음" 예외 처리
@@ -63,11 +61,14 @@ public class NotificationService {
 			notification.setWhether(true);
 
 		// 알림 반환
-		return new CheckNotificationResponseDto(notification);
+		return NotiDto.CheckNotiResponse.builder()
+				.notiId(notification.getNotiId())
+				.whether(notification.getWhether())
+				.build();
 	}
 
 	@Transactional
-	public DeleteNotificationResponseDto deleteOneNotice(Long notiId) {
+	public NotiDto.DeleteNotiResponseDto deleteOneNotice(Long notiId) {
 		// 존재하는 알림인지 확인
 		if (notificationRepo.countByNotiId(notiId) != 1)
 			throw new CustomException(NOTIFICATION_NOT_FOUND);
@@ -77,7 +78,7 @@ public class NotificationService {
 		if (notificationRepo.countByNotiId(notiId) != 0)
 			// 삭제 실패시 "삭제 실패" 예외 처리
 			throw new CustomException(DELETE_FAIL);
-		return new DeleteNotificationResponseDto(notiId);
+		return new NotiDto.DeleteNotiResponseDto(notiId);
 	}
 
 	@Transactional

@@ -1,28 +1,19 @@
 package sch.cqre.api.controller;
 
-import java.util.List;
-
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import lombok.AllArgsConstructor;
-import sch.cqre.api.dto.CheckNotificationResponseDto;
-import sch.cqre.api.dto.DeleteNotificationResponseDto;
-import sch.cqre.api.dto.DeleteUserResponseDto;
+import org.springframework.web.bind.annotation.*;
+import sch.cqre.api.dto.BoardDto;
 import sch.cqre.api.dto.MyInfoDto;
-import sch.cqre.api.dto.NotificationResponseDto;
+import sch.cqre.api.dto.NotiDto;
 import sch.cqre.api.dto.PasswordResponseDto;
-import sch.cqre.api.dto.PostResponseDto;
 import sch.cqre.api.service.AccountService;
 import sch.cqre.api.service.NotificationService;
 import sch.cqre.api.service.PostService;
 import sch.cqre.api.service.UserService;
+
+import java.util.List;
 
 /*
   * 마이페이지 컨트롤러
@@ -66,9 +57,9 @@ import sch.cqre.api.service.UserService;
 	 		}
 	 */
 	 @DeleteMapping
-	 public ResponseEntity<DeleteUserResponseDto> withdrawMe() {
+	 public ResponseEntity<NotiDto.DeleteNotiResponseDto> withdrawMe() {
 		 MyInfoDto myInfo = new MyInfoDto(userService.getMyInfo());
-		 DeleteUserResponseDto result = this.accountService.withdrawal(myInfo.getUserId());
+		 NotiDto.DeleteNotiResponseDto result = this.accountService.withdrawal(myInfo.getUserId());
 
 		 // 테스트
 		 // DeleteUserResponseDto result = this.accountService.withdrawal(1);
@@ -121,9 +112,9 @@ import sch.cqre.api.service.UserService;
 			}
 	 */
 	 @GetMapping("/post")
-	 public ResponseEntity<List<PostResponseDto>> getMyPost() {
+	 public ResponseEntity<List<BoardDto.PostResponseDto>> getMyPost() {
 		 MyInfoDto myInfo = new MyInfoDto(userService.getMyInfo());
-		 List<PostResponseDto> result = this.postService.searchAllByAuthorId(myInfo.getUserId());
+		 List<BoardDto.PostResponseDto> result = this.postService.searchAllByAuthorId(myInfo.getUserId());
 
 		 // 테스트
 		 // List<PostResponseDto> result = this.postService.searchAllByAuthorId(1);
@@ -146,9 +137,9 @@ import sch.cqre.api.service.UserService;
 			}
 	 */
 	 @GetMapping("/scrap")
-	 public ResponseEntity<List<PostResponseDto>> getMyScrap() {
+	 public ResponseEntity<List<BoardDto.PostResponseDto>> getMyScrap() {
 		 MyInfoDto myInfo = new MyInfoDto(userService.getMyInfo());
-		 List<PostResponseDto> result = this.postService.searchScrapByUserId(myInfo.getUserId());
+		 List<BoardDto.PostResponseDto> result = this.postService.searchScrapByUserId(myInfo.getUserId());
 
 
 		 // 테스트
@@ -172,9 +163,9 @@ import sch.cqre.api.service.UserService;
 			}
 	 */
 	 @GetMapping("/notice")
-	 public ResponseEntity<List<NotificationResponseDto>> getMyNotice() {
+	 public ResponseEntity<List<NotiDto.NotiResponse>> getMyNotice() {
 		 MyInfoDto myInfo = new MyInfoDto(userService.getMyInfo());
-		 List<NotificationResponseDto> result = this.noticeService.searchByUserId(myInfo.getUserId());
+		 List<NotiDto.NotiResponse> result = this.noticeService.searchByUserId(myInfo.getUserId());
 
 		 // 테스트
 		 // List<NotificationResponseDto> result = this.noticeService.searchByUserId(1);
@@ -190,8 +181,8 @@ import sch.cqre.api.service.UserService;
 			}
 	 */
 	 @PatchMapping("/notice")
-	 public ResponseEntity<CheckNotificationResponseDto> readOneNotice(@RequestParam(value = "notiId", required = false, defaultValue = "0") Long notiId) {
-		 CheckNotificationResponseDto result = this.noticeService.checkNotification(notiId);
+	 public ResponseEntity<NotiDto.CheckNotiResponse> readOneNotice(@RequestParam(value = "notiId", required = false, defaultValue = "0") Long notiId) {
+		 NotiDto.CheckNotiResponse result = this.noticeService.checkNotification(notiId);
 		 return ResponseEntity.ok().body(result);
 	 }
 
@@ -203,9 +194,9 @@ import sch.cqre.api.service.UserService;
 			}
 	 */
 	 @DeleteMapping("/notice")
-	 public ResponseEntity<DeleteNotificationResponseDto> deleteOneNotice(@RequestParam(value = "notiId", required = false, defaultValue = "0") Long notiId){
+	 public ResponseEntity<NotiDto.DeleteNotiResponseDto> deleteOneNotice(@RequestParam(value = "notiId", required = false, defaultValue = "0") Long notiId){
 		 // 알림 삭제 실행 후 결과 객체를 불러옴
-		 DeleteNotificationResponseDto result = this.noticeService.deleteOneNotice(notiId);
+		 NotiDto.DeleteNotiResponseDto result = this.noticeService.deleteOneNotice(notiId);
 		 // 성공적으로 알림 삭제
 		 return ResponseEntity.ok().body(result);
 	 }

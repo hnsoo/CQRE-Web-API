@@ -1,13 +1,12 @@
 package sch.cqre.api.dto;
 
-import java.util.Collection;
-
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import sch.cqre.api.domain.UserEntity;
+
+import java.util.Collection;
 
 @Data
 @NoArgsConstructor
@@ -27,7 +26,6 @@ public class UserDto implements UserDetails {
         this.email = user.getEmail();
         this.nickname = user.getNickname();
         this.role = user.getRole();
-     //   this.profile = user.getProfile();
     }
 
 
@@ -60,7 +58,6 @@ public class UserDto implements UserDetails {
     @Override
     public boolean isAccountNonLocked() {
         return true;
-        //TODO : asdasd
     }
 
     @Override

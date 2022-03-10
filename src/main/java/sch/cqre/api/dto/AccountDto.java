@@ -1,9 +1,6 @@
 package sch.cqre.api.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import sch.cqre.api.jwt.Role;
 
 import javax.validation.constraints.*;
@@ -34,6 +31,8 @@ public class AccountDto {
     @Setter
     @Getter
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class LoginRequest{
         @Email
         @NotBlank

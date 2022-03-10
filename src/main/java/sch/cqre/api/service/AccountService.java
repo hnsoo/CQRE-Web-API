@@ -5,8 +5,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sch.cqre.api.domain.UserEntity;
-import sch.cqre.api.dto.DeleteUserResponseDto;
 import sch.cqre.api.dto.MyInfoDto;
+import sch.cqre.api.dto.NotiDto;
 import sch.cqre.api.dto.PasswordResponseDto;
 import sch.cqre.api.exception.CustomException;
 import sch.cqre.api.repository.UserRepository;
@@ -56,11 +56,11 @@ public class AccountService {
 		return new PasswordResponseDto(myInfo.getUserId());
 	}
 
-	public DeleteUserResponseDto withdrawal(Long userId) {
+	public NotiDto.DeleteNotiResponseDto withdrawal(Long userId) {
 		// 삭제
 		userRepo.deleteOne(userId);
 		// 삭제 성공시 삭제한 유저 아이디 반환
-		return new DeleteUserResponseDto(userId);
+		return new NotiDto.DeleteNotiResponseDto(userId);
 	}
 
 

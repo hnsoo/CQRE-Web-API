@@ -1,21 +1,21 @@
 package sch.cqre.api.service;
 
-import static sch.cqre.api.exception.ErrorCode.*;
+import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
+import sch.cqre.api.domain.PostEntity;
+import sch.cqre.api.domain.ScrapEntity;
+import sch.cqre.api.dto.BoardDto;
+import sch.cqre.api.exception.CustomException;
+import sch.cqre.api.repository.BoardRepository;
+import sch.cqre.api.repository.ScrapRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Service;
-
-import lombok.AllArgsConstructor;
-import sch.cqre.api.domain.PostEntity;
-import sch.cqre.api.domain.ScrapEntity;
-import sch.cqre.api.dto.PostResponseDto;
-import sch.cqre.api.exception.CustomException;
-import sch.cqre.api.repository.BoardRepository;
-import sch.cqre.api.repository.ScrapRepository;
+import static sch.cqre.api.exception.ErrorCode.POST_NOT_FOUND;
+import static sch.cqre.api.exception.ErrorCode.SCRAP_NOT_FOUND;
 
 @Service
 @AllArgsConstructor
@@ -27,18 +27,18 @@ public class PostService {
 	private ModelMapper modelMapper;
 
 	// 작성자 정보를 가지고 모든 포스트 검색
-	public List<PostResponseDto> searchAllByAuthorId(Long authorId) {
+	public List<BoardDto.PostResponseDto> searchAllByAuthorId(Long authorId) {
 
 		List<PostEntity> posts = this.postRepo.findPostListByUserId(userService.getMyInfo());
 		if (posts == null || posts.isEmpty())
 			throw new CustomException(POST_NOT_FOUND);
 
 		// 객체 변환
-		return posts.stream().map(p -> modelMapper.map(p, PostResponseDto.class)).collect(Collectors.toList());
+		return posts.stream().map(p -> modelMapper.map(p, BoardDto.PostResponseDto.class)).collect(Collectors.toList());
 	}
 
 	// 유저가 스크랩한 모든 포스트 검색
-	public List<PostResponseDto> searchScrapByUserId(Long userId) {
+	public List<BoardDto.PostResponseDto> searchScrapByUserId(Long userId) {
 		List<ScrapEntity> scraps = this.scrapRepo.findByUserId(userId);
 		// 찾지 못할 경우 "스크랩 없음" 예외 처리
 		if (scraps == null || scraps.isEmpty())
@@ -51,6 +51,6 @@ public class PostService {
 		for (ScrapEntity scrapEntity : scraps) {
 			posts.add(postRepo.findOne(scrapEntity.getPostId()));
 		}
-		return posts.stream().map(p -> modelMapper.map(p, PostResponseDto.class)).collect(Collectors.toList());
+		return posts.stream().map(p -> modelMapper.map(p, BoardDto.PostResponseDto.class)).collect(Collectors.toList());
 	}
 }
