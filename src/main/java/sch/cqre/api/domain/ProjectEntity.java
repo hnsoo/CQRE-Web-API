@@ -34,7 +34,7 @@ public class ProjectEntity {
 	@Column(name = "started_at")
 	private Timestamp startedAt;
 	@Basic
-	@Column(name = "finished_at", nullable = true)
+	@Column(name = "finished_at")
 	private Timestamp finishedAt;
 
 	@Builder

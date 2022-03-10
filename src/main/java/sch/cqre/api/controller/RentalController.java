@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/book")
+@RequestMapping("/api/rental")
 @Slf4j
 @RequiredArgsConstructor
 public class RentalController {
@@ -23,7 +23,7 @@ public class RentalController {
     private final BookService BookService;
 
     //도서 대여
-    @PostMapping("/rental")
+    @PostMapping()
     public ResponseEntity toRent(@RequestParam(value = "bookId",required = false, defaultValue = "") Integer bookId,
                                  @RequestParam(value = "userId",required = false, defaultValue = "") Integer userId){
         RentalService.insertRent(bookId, userId);
@@ -31,7 +31,7 @@ public class RentalController {
     }
 
     //도서 대여 bookid, userid, timestamp 확인
-    @PostMapping("/rental/log")
+    @PostMapping("/log")
     public ResponseEntity<List<RentalDTO>> findAll(){
         return ResponseEntity.ok(RentalService.findAll());
     }
