@@ -1,18 +1,18 @@
 package sch.cqre.api.service;
 
-import static sch.cqre.api.exception.ErrorCode.*;
-
+import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import lombok.AllArgsConstructor;
 import sch.cqre.api.domain.UserEntity;
 import sch.cqre.api.dto.DeleteUserResponseDto;
 import sch.cqre.api.dto.MyInfoDto;
 import sch.cqre.api.dto.PasswordResponseDto;
 import sch.cqre.api.exception.CustomException;
 import sch.cqre.api.repository.UserRepository;
+
+import static sch.cqre.api.exception.ErrorCode.DIFFERENT_PASSWORD;
+import static sch.cqre.api.exception.ErrorCode.INVALID_PASSWORD;
 
 @Service
 @AllArgsConstructor
@@ -40,7 +40,6 @@ public class AccountService {
 		UserEntity user = this.userRepo.findOne(myInfo.getUserId());
 
 		// DB 비밀번호 정보와 지급한 비밀번호 서로 비교
-		// System.out.println(passwordEncoder.encode(pw)+"	안녕");
 		if (!passwordEncoder.matches(pw, user.getPassword()))
 			throw new CustomException(INVALID_PASSWORD);
 		return new PasswordResponseDto(myInfo.getUserId());
