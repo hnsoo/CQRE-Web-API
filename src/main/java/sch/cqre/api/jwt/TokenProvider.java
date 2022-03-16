@@ -1,8 +1,9 @@
 package sch.cqre.api.jwt;
 
-import java.security.Key;
-import java.util.Date;
-
+제import io.jsonwebtoken.*;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -10,16 +11,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
+import sch.cqre.api.exception.CustomException;
+import sch.cqre.api.exception.ErrorCode;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.UnsupportedJwtException;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
-import lombok.extern.slf4j.Slf4j;
+import java.security.Key;
+import java.util.Date;
 
 @Slf4j
 @Component
@@ -50,11 +46,10 @@ public class TokenProvider implements InitializingBean {
     }
 
     public String createToken(String userId, String email, String roles) {
-
         Claims claims = Jwts.claims();
         claims.put("email", email);
         claims.put("uid", userId);
-        claims.put("roles", roles); // 정보는 key / value 쌍으로 저장
+        claims.put("roles", roles);
         log.warn(String.valueOf(claims));
         Date now = new Date();
         return Jwts.builder()
@@ -79,8 +74,10 @@ public class TokenProvider implements InitializingBean {
             return true;
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
             log.info("wrong JWT - securityException");
+            throw new CustomException(ErrorCode.WRONG_TOKEN);
         } catch (ExpiredJwtException e) {
             log.info("Expired Jwt");
+            throw new CustomException(ErrorCode.EXPIRED_TOKEN);
         } catch (UnsupportedJwtException e) {
             log.info("unsupport jwt");
         } catch (IllegalArgumentException e) {
