@@ -35,7 +35,7 @@ public class RentalService {
     }
     
     //대여 서비스 로직
-    public void insertRent(Integer bookId, Integer userId) {
+    public void insertRent(Long bookId, Long userId) {
         Optional<BookEntity> book = Bookdao.findById(bookId);
         Optional<RentalEntity> rentalEntity = Optional.ofNullable(Rentaldao.findByBookIdAndUserId(bookId, userId));
         //빌릴 도서가 존재하는지

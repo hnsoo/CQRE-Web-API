@@ -10,8 +10,8 @@ import java.sql.Timestamp;
 @Data
 @NoArgsConstructor
 public class RentalDTO {
-    private Integer userId;
-    private Integer bookId;
+    private Long userId;
+    private Long bookId;
     private Timestamp borrowAt;
     private Timestamp returnAt;
 

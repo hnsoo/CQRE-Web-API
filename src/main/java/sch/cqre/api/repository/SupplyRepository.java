@@ -5,6 +5,6 @@ import sch.cqre.api.domain.SupplyEntity;
 
 import java.util.List;
 
-public interface SupplyRepository extends JpaRepository<SupplyEntity, Integer> {
+public interface SupplyRepository extends JpaRepository<SupplyEntity, Long> {
     List<SupplyEntity> findByNameContainingIgnoreCase(String keyword);
 }

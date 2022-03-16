@@ -10,7 +10,7 @@ import sch.cqre.api.service.SupplyService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/supply")
+@RequestMapping("/api/v1/supply")
 @Slf4j
 @RequiredArgsConstructor
 public class SupplyController {

@@ -7,7 +7,7 @@ import sch.cqre.api.domain.BookEntity;
 
 import java.util.List;
 @Repository
-public interface BookRepository extends JpaRepository<BookEntity, Integer> {
+public interface BookRepository extends JpaRepository<BookEntity, Long> {
     List<BookEntity> findByNameContainingIgnoreCase(String keyword);
 
 }

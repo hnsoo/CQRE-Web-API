@@ -1,19 +1,52 @@
-  spring:
-    datasource:
-      driver-class-name: com.mysql.cj.jdbc.Driver
-      username: cqre
-      url: "jdbc:mysql://cqre-web-db.cwybj99o2hv9.ap-northeast-2.rds.amazonaws.com:3306/main"
-      password: CQREDBzhdjelql
-    jpa:
-      properties:
-        hibernate:
-          format_sql: 'true'
-      show-sql: 'true'
+#  spring:
+#    datasource:
+#      driver-class-name: com.mysql.cj.jdbc.Driver
+#      username: cqre
+#      url: "jdbc:mysql://cqre-web-db.cwybj99o2hv9.ap-northeast-2.rds.amazonaws.com:3306/main"
+#      password: CQREDBzhdjelql
+#    jpa:
+#      properties:
+#        hibernate:
+#          format_sql: 'true'
+#      show-sql: 'true'
+#      hibernate:
+#        ddl-auto: none
+#        naming:
+#          physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+##  entitymanager:
+##    packagesToScan:sch:
+##      cqre:
+##        api:
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: admin
+    url: "jdbc:mysql://test-database.cwybj99o2hv9.ap-northeast-2.rds.amazonaws.com/main"
+    password: peneksoftsz
+
+  jpa:
+    properties:
       hibernate:
-        ddl-auto: none
-        naming:
-          physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-#  entitymanager:
-#    packagesToScan:sch:
-#      cqre:
-#        api:
+        format_sql: 'true'
+    #        generate_statistics: 'true' #캐시 적용여부 확인
+
+    show-sql: 'true'
+
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+
+  servlet:
+    multipart:
+      file-size-threshold: 2KB
+      max-file-size: 200MB
+      max-request-size: 215MB
+
+jwt:
+  header: Autorization #HS512 알고리즘을 사용할 것이기 때문에 512bit, 즉 64byte 이상의 secret key를 사용해야 한다.
+  secret: a0lsdmVybmluZS10ZWKoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyQRQtc2lsdmVxbmluZS10ZWLoLXNwcmluLy1ib290LWp3dC10dXRvcmlhbC1zZWNyQXQK
+  token-validity-in-seconds: 86400
+file:
+  upload-dir: 'C:\Users\CSH\Desktop\Q6'

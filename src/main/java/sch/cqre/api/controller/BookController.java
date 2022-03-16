@@ -10,7 +10,7 @@ import sch.cqre.api.service.BookService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/book")
+@RequestMapping("/api/v1/book")
 @Slf4j
 @RequiredArgsConstructor
 public class BookController {

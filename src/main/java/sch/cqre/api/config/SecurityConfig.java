@@ -37,7 +37,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private final CustomUserDetailsService customUserDetailsService;
-
     private final TokenProvider tokenProvider;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
@@ -85,6 +84,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/api/v1/post/**").hasRole("USER")
                 .antMatchers("/api/v1/file/**").hasRole("USER")
+                .antMatchers("/api/v1/rental").hasRole("USER")
+
                 // .antMatchers("/api/v1/board/**").hasRole("USER")
 
                 /* 로그인 했으면 접속 가능한 페이지 */
@@ -92,7 +93,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 /* 관리자만 접속 가능한 페이지 */
                 .antMatchers("/admin").hasRole("ADMIN")
-
 
                 /* 그냥 모두 접속 가능한 페이지 */
                 .antMatchers("/api/v1/auth/**").permitAll()
@@ -103,6 +103,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/contact").permitAll()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/register").permitAll()
+                .antMatchers("/api/v1/book/**").permitAll()
+                .antMatchers("/api/v1/supply/**").permitAll()
                 //.accessDecisionManager(accessDecisionManager())
                 .expressionHandler(expressionHandler())
                 .anyRequest().authenticated()

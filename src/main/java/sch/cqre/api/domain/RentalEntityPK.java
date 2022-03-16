@@ -18,23 +18,23 @@ public class RentalEntityPK implements Serializable {
     @Id
     private Long bookId;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//
+//        RentalEntityPK that = (RentalEntityPK) o;
+//
+//        if (userId != that.userId) return false;
+//        if (bookId != that.bookId) return false;
+//
+//        return true;
+//    }
 
-        RentalEntityPK that = (RentalEntityPK) o;
-
-        if (userId != that.userId) return false;
-        if (bookId != that.bookId) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = userId;
-        result = 31 * result + bookId;
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = userId;
+//        result = 31 * result + bookId;
+//        return result;
+//    }
 }
