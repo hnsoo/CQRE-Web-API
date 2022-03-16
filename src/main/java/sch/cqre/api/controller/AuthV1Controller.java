@@ -1,5 +1,7 @@
 package sch.cqre.api.controller;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +13,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import sch.cqre.api.dto.AccountDto;
 import sch.cqre.api.exception.CustomException;
 import sch.cqre.api.exception.ErrorCode;
@@ -32,7 +31,11 @@ public class AuthV1Controller {
     PasswordEncoder passwordEncoder;
 
     @PostMapping("/signup")
-    public ResponseEntity signupRestMap(@RequestBody @Validated  AccountDto.SignupRequest signupRequest) {
+    public ResponseEntity signupRestMap(@RequestBody @Validated  AccountDto.SignupRequest signupRequest, BindingResult bindingResult) {
+        log.info("AuthController - signup called");
+
+        if (bindingResult.hasErrors()) throw new CustomException(ErrorCode.INVALID_INPUT);
+
         return ResponseEntity.ok(userService.signUpProc(signupRequest));
     }
 
@@ -44,6 +47,7 @@ public class AuthV1Controller {
 
     @PostMapping("/login")
     public ResponseEntity loginRestMap(@RequestBody @Validated AccountDto.LoginRequest loginRequestDto, BindingResult bindingResult){
+        log.info("AuthController - login called");
         if (bindingResult.hasErrors()) throw new CustomException(ErrorCode.INVALID_INPUT);
 
         return userService.loginProc(loginRequestDto);

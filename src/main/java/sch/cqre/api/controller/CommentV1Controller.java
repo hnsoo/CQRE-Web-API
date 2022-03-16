@@ -25,11 +25,13 @@ public class CommentV1Controller {
 
     @PostMapping("/write")
     public ResponseEntity commentWriteMap(@RequestBody @Validated CommentDto.CommentWriteRequest commentWriteRequest) {
+        log.info("CommentController - write called");
         return ResponseEntity.ok(boardService.commentWriteProc(commentWriteRequest));
     }
 
     @PutMapping("/modify")
     public ResponseEntity commentModifyMap(@RequestBody @Validated CommentDto.CommentModifyRequest commentModifyRequest) {
+        log.info("CommentController - modify called");
         return ResponseEntity.ok(boardService.commentModifyProc(commentModifyRequest));
     }
 
