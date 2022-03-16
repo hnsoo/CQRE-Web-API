@@ -1,19 +1,18 @@
 package sch.cqre.api.exception;
 
-import static org.springframework.http.HttpStatus.*;
-
-import org.springframework.http.HttpStatus;
-
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+
+import static org.springframework.http.HttpStatus.*;
 
 @Getter
 @RequiredArgsConstructor
 public enum ErrorCode {
 
     /* 400 BAD_REQUEST : 잘못된 요청 */
-    INVALID_REFRESH_TOKEN(BAD_REQUEST, "리프레시 토큰이 유효하지 않습니다"),
-    MISMATCH_REFRESH_TOKEN(BAD_REQUEST, "리프레시 토큰의 유저 정보가 일치하지 않습니다"),
+    WRONG_TOKEN(BAD_REQUEST, "잘못된 토큰입니다"),
+    EXPIRED_TOKEN(BAD_REQUEST, "만료된 토큰입니다"),
     CANNOT_FOLLOW_MYSELF(BAD_REQUEST, "자기 자신은 팔로우 할 수 없습니다"),
     INVALID_PASSWORD(BAD_REQUEST, "올바르지 않은 비밀번호입니다."),
     LOGIN_FAIL(BAD_REQUEST, "로그인에 실패 했습니다"),
@@ -36,7 +35,6 @@ public enum ErrorCode {
     SCRAP_NOT_FOUND(NOT_FOUND, "스크랩을 찾을 수 없습니다"),
     NOTIFICATION_NOT_FOUND(NOT_FOUND, "알림을 찾을 수 없습니다"),
     REFRESH_TOKEN_NOT_FOUND(NOT_FOUND, "로그아웃 된 사용자입니다"),
-    NOT_FOLLOW(NOT_FOUND, "팔로우 중이지 않습니다"),
     POST_NOT_FOUND(BAD_REQUEST, "게시물을 찾을 수 없습니다"),
 
     /* 409 CONFLICT : Resource 의 현재 상태와 충돌. 보통 중복된 데이터 존재 */
