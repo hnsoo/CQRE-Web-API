@@ -1,13 +1,12 @@
 package sch.cqre.api.repository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 import org.springframework.stereotype.Repository;
-
 import sch.cqre.api.domain.UserEntity;
 import sch.cqre.api.exception.CustomException;
 import sch.cqre.api.exception.ErrorCode;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 @Repository
 public class UserRepository{ //extends JpaRepository<UserEntity,Long>{
@@ -26,32 +25,6 @@ public class UserRepository{ //extends JpaRepository<UserEntity,Long>{
             throw new CustomException(ErrorCode.MEMBER_NOT_FOUND);
         }
     }
-
-    // public Integer countByUserId(Long userId) {
-    //     try {
-    //         return (em.createQuery("select m FROM UserEntity m WHERE m.userId = :userId", UserEntity.class)
-    //             .setParameter("userId", userId).getResultList());
-    //     } catch (Exception e) {
-    //         return null;
-    //     }
-    // }
-    //
-    //         try {
-    //     return em.createQuery("select m from ReactionEntity m where m.postId = :postId And m.reaction = :reaction", UserEntity.class)
-    //         .setParameter("userId", userId)
-    //         .getResultList().size();
-    // } catch (Exception e){
-    //     return 0;
-    // }
-    //
-    // public void deleteById(Long userId) {
-    //     try {
-    //         return (em.createQuery("select count(m.userId) FROM UserEntity m WHERE m.userId = :userId", UserEntity.class)
-    //             .setParameter("userId", userId).getResultList());
-    //     } catch (Exception e) {
-    //         return null;
-    //     }
-    // }
 
     public UserEntity findOneByEmail(String email){
         try {
