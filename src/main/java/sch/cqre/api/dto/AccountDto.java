@@ -60,7 +60,7 @@ public class AccountDto {
         private String nickname;
 
         @NotBlank
-        @Pattern(regexp = "^[a-zA-Z0-9]{10,15}$", message = "영문+숫자 조합으로 8~20자만 가능합니다") //비밀번호는 숫자+영문 조합으로 8~20자
+        @Pattern(regexp = "^[a-zA-Z0-9]{8,20}$", message = "영문+숫자 조합으로 8~20자만 가능합니다") //비밀번호는 숫자+영문 조합으로 8~20자
         private String password;
 
         private final String role = Role.define.role_GUEST; //가입시 권한 guest 자동 설정
