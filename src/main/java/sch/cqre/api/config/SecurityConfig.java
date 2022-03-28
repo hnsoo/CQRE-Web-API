@@ -1,5 +1,7 @@
 package sch.cqre.api.config;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,9 +15,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
-
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import sch.cqre.api.jwt.JwtAccessDeniedHandler;
 import sch.cqre.api.jwt.JwtAuthenticationEntryPoint;
 import sch.cqre.api.jwt.JwtSecurityConfig;
@@ -80,9 +82,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .csrf().disable()//rest api라 필요업슴
 
+                .cors().configurationSource(corsConfigurationSource()) //cors 설정
+                .and()
+
 
                 /* 일반 회원이면 접근 가능한 */
                 .authorizeRequests()
+
+
                 .antMatchers("/api/v1/post/**").hasRole("USER")
                 .antMatchers("/api/v1/file/**").hasRole("USER")
                 // .antMatchers("/api/v1/board/**").hasRole("USER")
@@ -110,6 +117,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .and()
                 // .httpBasic().disable() //restapi이므로 필요업슴
+
                 .exceptionHandling()// 예외 처리 진입점
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint) // 인증 실패 진입점
                 .accessDeniedHandler(jwtAccessDeniedHandler) // 인가 실패 진입점
@@ -133,6 +141,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .apply(new JwtSecurityConfig(tokenProvider));
 
+    }
+
+    // CORS 허용 적용
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+
+        configuration.addAllowedOriginPattern("*");
+        configuration.addAllowedHeader("*");
+        configuration.addAllowedMethod("*");
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 
 
